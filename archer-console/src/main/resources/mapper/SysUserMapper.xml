@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mr.archer.dao.SysUserMapper">
+
+    <resultMap id="userMap" type="com.mr.archer.entity.SysUser">
+        <id property="id" column="id"/>
+        <result property="username"  column="username" />
+        <result property="nick"  column="nick" />
+        <result property="mail"  column="mail" />
+        <result property="phone"  column="phone" />
+        <result property="avator"  column="avator" />
+        <result property="lock"  column="lock" />
+        <result column="create_by" property="createBy"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_by" property="updateBy"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <!-- 一对多：user、role -->
+    <resultMap id="userIncludeRolesMap" extends="userMap" type="SysUser">
+        <collection property="roleList" resultMap="com.mr.archer.dao.SysRoleMapper.roleMap">
+        </collection>
+    </resultMap>
+
+    <select id="selectUserIncludeRoles" resultMap="userIncludeRolesMap">
+        select
+          u.*,
+          r.id as id,
+          r.role_name as role_name,
+          r.role_desc as role_desc,
+          r.role_value as role_value,
+          r.create_time as create_time,
+          r.update_time  as update_time
+        from sys_user u
+        left join sys_user_role ur on u.id = ur.user_id
+        left join sys_role r on ur.role_id = r.id
+        <where>
+            <if test="nick != null and nick != ''">
+                u.`nick` like concat('%',#{nick},'%')
+            </if>
+        </where>
+        order by u.uid
+    </select>
+
+    <select id="selectUserByToken" resultType="userMap">
+        SELECT u.* FROM sys_user u, sys_user_token t
+        WHERE u.username = t.username AND
+        token = #{token}
+    </select>
+
+</mapper>
