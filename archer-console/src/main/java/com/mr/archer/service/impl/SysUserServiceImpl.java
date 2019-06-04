@@ -1,5 +1,7 @@
 package com.mr.archer.service.impl;
 
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.google.common.collect.Lists;
@@ -11,11 +13,12 @@ import com.mr.archer.exception.ArcherBusinessException;
 import com.mr.archer.service.SysUserService;
 import com.mr.archer.utils.SystemUtil;
 import com.mr.archer.vo.AuthVo;
-import com.mr.archer.constant.SystemConstant;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
+
+import static com.mr.archer.constant.SystemConstant.SYSTEM_NAME;
 
 @Service
 public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> implements SysUserService {
@@ -35,8 +38,8 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     @Value("${superAdmin.phone}")
     private String adminPhone;
 
-    @Value("${superAdmin.avator}")
-    private String adminAvator;
+    @Value("${superAdmin.avatar}")
+    private String adminAvatar;
 
     @Value("${superAdmin.roleName}")
     private String adminRoleName;
@@ -66,13 +69,14 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     }
 
     public SysUser getAdmin() {
-        if(!SystemUtil.isStared()) throw new ArcherBusinessException(String.format("%s has not been started", SystemConstant.SYSTEM_NAME));
+        if(!SystemUtil.isStared()) throw new ArcherBusinessException(String.format("%s has not been started",SYSTEM_NAME));
         if(Objects.nonNull(superAdmin)) return superAdmin;
         SysUser user = new SysUser();
         user.setUsername(adminUsername);
         user.setNick(adminNick);
+        user.setAvatar(adminAvatar);
         user.setMail(adminMail);
-        user.setPhone("18800000000");
+        user.setPhone(adminPhone);
         SysRole role = new SysRole();
         role.setRoleName(adminRoleName);
         role.setRoleValue(adminRoleValue);
@@ -91,12 +95,14 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
     @Override
     public SysUser selectUserByToken(String token) {
-        return baseMapper.selectUserByToken(token);
+        String username = baseMapper.selectUsernameByToken(token);
+        if(isAdmin(username)) return getAdmin();
+        return selectOne(new EntityWrapper<SysUser>().eq("username", username));
     }
 
     @Override
     public String selectUsernameByToken(String token) {
-        return baseMapper.selectUserByToken(token).getUsername();
+        return baseMapper.selectUsernameByToken(token);
     }
 
 }

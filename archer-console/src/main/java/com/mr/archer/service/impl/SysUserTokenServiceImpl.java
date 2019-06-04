@@ -32,8 +32,7 @@ public class SysUserTokenServiceImpl extends ServiceImpl<SysUserTokenMapper, Sys
 	@Override
 	public String clearToken(String token) {
 		SysUserToken userToken = selectOne(new EntityWrapper<SysUserToken>().eq("token", token));
-		userToken.setToken(null);
-		userToken.setUpdateTime(new Date());
+		baseMapper.clearToken(token);
 		return userToken.getUsername();
 	}
 }

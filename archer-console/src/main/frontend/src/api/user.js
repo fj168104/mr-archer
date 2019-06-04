@@ -39,11 +39,10 @@ export function updateUserRoles(data) {
  * 删除用户
  * @param perm
  */
-export function deleteUser(data) {
+export function deleteUser(uid) {
   return request({
-    url: '/user/delete',
-    method: 'post',
-    data
+    url: `/user/delete/${uid}`,
+    method: 'delete'
   })
 }
 
@@ -51,11 +50,11 @@ export function deleteUser(data) {
  * 查询所有用户记录
  * @param query
  */
-export function fetchUserList(query) {
+export function fetchUserList(data) {
   return request({
-    url: '/article/list',
-    method: 'get',
-    params: query
+    url: '/user/list',
+    method: 'post',
+    data
   })
 }
 
@@ -65,7 +64,7 @@ export function fetchUserList(query) {
  */
 export function createUser(data) {
   return request({
-    url: '/article/create',
+    url: '/user/create',
     method: 'post',
     data
   })
@@ -77,7 +76,7 @@ export function createUser(data) {
  */
 export function updateUser(data) {
   return request({
-    url: '/article/update',
+    url: '/user/update',
     method: 'post',
     data
   })

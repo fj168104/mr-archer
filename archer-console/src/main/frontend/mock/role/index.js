@@ -46,6 +46,14 @@ const roles = [
   }
 ]
 
+const rList = []
+const count = 10
+
+for (let i = 0; i < count; i++) {
+  rList.push(roles[i % 3]
+  )
+}
+
 export default [
   // mock get all routes form server
   {
@@ -73,12 +81,12 @@ export default [
 
   // add role
   {
-    url: '/role/add',
+    url: '/role/create',
     type: 'post',
     response: _ => {
       return {
         code: 20000,
-        data: roles[2]
+        data: {id : 1000}
       }
     }
   },
@@ -97,7 +105,7 @@ export default [
 
   // delete role
   {
-    url: '/role/delete/[A-Za-z0-9]',
+    url: '/role/[A-Za-z0-9]',
     type: 'delete',
     response: {
       code: 20000,
@@ -115,6 +123,31 @@ export default [
       code: 20000,
       data: {
         status: 'success'
+      }
+    }
+  },
+
+  //list with page
+  {
+    url: '/role/list',
+    type: 'post',
+    response: config => {
+      const { roleValue, roleName, page = 1, limit = 20, sort } = config.query
+
+      let mockList = rList.filter(item => {
+        if (roleValue && item.roleValue.indexOf(roleValue) < 0) return false
+        if (roleName && item.roleName.indexOf(roleName) < 0) return false
+        return true
+      })
+
+      const pageList = mockList.filter((item, index) => index < limit * page && index >= limit * (page - 1))
+
+      return {
+        code: 20000,
+        data: {
+          total: mockList.length,
+          records: pageList
+        }
       }
     }
   }

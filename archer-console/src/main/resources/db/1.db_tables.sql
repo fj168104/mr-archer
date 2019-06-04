@@ -12,7 +12,7 @@ USE archer;
 --   `enabled` bit(1) NOT NULL DEFAULT b'1',
 --   `create_by` varchar(20) NOT NULL,
 --   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
---   `update_by` varchar(20) NOT NULL,
+--   `update_by` varchar(20),
 --   `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 --   PRIMARY KEY (`id`)
 -- ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -27,7 +27,7 @@ USE archer;
 --   `enabled` bit(1) NOT NULL DEFAULT b'1',
 --   `create_by` varchar(20) NOT NULL,
 --   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
---   `update_by` varchar(20) NOT NULL,
+--   `update_by` varchar(20),
 --   `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 --   PRIMARY KEY (`id`)
 -- ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -42,7 +42,7 @@ USE archer;
 --   `enabled` bit(1) NOT NULL DEFAULT '1',
 --   `create_by` varchar(20) NOT NULL,
 --   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
---   `update_by` varchar(20) NOT NULL,
+--   `update_by` varchar(20),
 --   `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 --   PRIMARY KEY (`id`)
 -- ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -56,7 +56,7 @@ USE archer;
 --   `enabled` bit(1) NOT NULL DEFAULT b'1',
 --   `create_by` varchar(20) NOT NULL,
 --   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
---   `update_by` varchar(20) NOT NULL,
+--   `update_by` varchar(20),
 --   `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 --   PRIMARY KEY (`id`)
 -- ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -72,7 +72,7 @@ CREATE TABLE `sys_perm` (
   `leaf` tinyint(1) DEFAULT NULL COMMENT '是否叶子节点, 1 是; 0 不是',
   `create_by` varchar(20) NOT NULL,
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `update_by` varchar(20) NOT NULL,
+  `update_by` varchar(20),
   `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='权限';
@@ -89,7 +89,7 @@ CREATE TABLE `sys_role` (
   `role_value` varchar(100) NOT NULL COMMENT '角色值，用于权限判断',
   `create_by` varchar(20) NOT NULL,
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `update_by` varchar(20) NOT NULL,
+  `update_by` varchar(20),
   `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uidx_role_value` (`role_value`)
@@ -109,7 +109,7 @@ CREATE TABLE `sys_role_perm` (
   `perm_id` bigint(20) NOT NULL,
   `create_by` varchar(20) NOT NULL,
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `update_by` varchar(20) NOT NULL,
+  `update_by` varchar(20),
   `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='角色权限表';
@@ -124,15 +124,19 @@ CREATE TABLE `sys_user` (
   `nick` varchar(50) DEFAULT NULL COMMENT '用户昵称，可改',
   `mail` varchar(50) DEFAULT NULL COMMENT '邮箱',
   `phone` varchar(50) DEFAULT NULL COMMENT '手机',
-  'avatar' varchar(50) DEFAULT NULL COMMENT '头像',
-  `lock` tinyint(1) DEFAULT NULL COMMENT '是否锁定, 1 锁定; 0 未锁定',
+  `avatar` varchar(200) DEFAULT NULL COMMENT '头像',
+  `lock` tinyint(1) DEFAULT 0 COMMENT '是否锁定, 1 锁定; 0 未锁定',
   `create_by` varchar(20) NOT NULL,
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `update_by` varchar(20) NOT NULL,
+  `update_by` varchar(20),
   `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `uidx_user_name` (`user_name`)
+  UNIQUE KEY `uidx_user_name` (`username`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户表';
+
+/*Table structure for table `sys_user` */
+
+DROP TABLE IF EXISTS `sys_user_token`;
 
 CREATE TABLE `sys_user_token` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -140,7 +144,7 @@ CREATE TABLE `sys_user_token` (
   `username` varchar(50) DEFAULT NULL COMMENT '登录名，不可改',
   `create_by` varchar(20) NOT NULL,
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `update_by` varchar(20) NOT NULL,
+  `update_by` varchar(20),
   `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT '用户登录token表';
@@ -156,7 +160,7 @@ CREATE TABLE `sys_user_role` (
   `role_id` varchar(25) NOT NULL,
   `create_by` varchar(20) NOT NULL,
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `update_by` varchar(20) NOT NULL,
+  `update_by` varchar(20),
   `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT '用户角色表';
@@ -181,7 +185,7 @@ CREATE TABLE `app_audit` (
   `refuse_reason` varchar(360) DEFAULT NULL COMMENT '驳回理由',
   `create_by` varchar(20) NOT NULL,
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `update_by` varchar(20) NOT NULL,
+  `update_by` varchar(20),
   `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='应用审核表';

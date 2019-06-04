@@ -6,11 +6,13 @@ import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
+import com.google.common.collect.Sets;
 import com.mr.archer.annotation.PermInfo;
 import com.mr.archer.entity.SysPerm;
 import com.mr.archer.entity.SysRole;
 import com.mr.archer.entity.SysRolePerm;
 import com.mr.archer.entity.SysUserRole;
+import com.mr.archer.exception.ArcherBusinessException;
 import com.mr.archer.service.*;
 import com.mr.archer.utils.PageUtils;
 import com.mr.archer.vo.AuthVo;
@@ -43,41 +45,7 @@ public class SysRoleController extends BaseController {
 	@Autowired
 	private SysUserService userService;
 
-	@PostMapping("/role/add")
-	public Json add(@RequestBody String body) {
-
-		String oper = "add role";
-		SysRole role = JSON.parseObject(body, SysRole.class);
-
-		if (StringUtils.isBlank(role.getRoleValue())) {
-			return Json.fail(oper, "权限值不能为空");
-		}
-
-		SysRole roleDB = roleService.selectOne(new EntityWrapper<SysRole>().eq("role_value", role.getRoleValue()));
-		if (roleDB != null) {
-			return Json.fail(oper, String.format("角色值[{}]已存在：", role.getRoleValue()));
-		}
-
-		//保存新用户数据
-		role.setCreateTime(new Date());
-		role.setCreateBy(userService.selectUsernameByToken(getToken()));
-		boolean success = roleService.insert(role);
-		return Json.succ(oper, role);
-	}
-
-	@DeleteMapping("/role/delete/{rid}")
-	public Json delete(@PathVariable Integer rid) {
-
-		String oper = "delete role";
-
-		roleService.deleteById(rid);
-		rolePermService.delete(new EntityWrapper<SysRolePerm>().eq("role_id", rid));
-		userRoleService.delete(new EntityWrapper<SysUserRole>().eq("role_id", rid));
-
-		return Json.succ(oper);
-	}
-
-	@GetMapping("/roles")
+	@PostMapping("/role/list")
 	public Json query(@RequestBody String body) {
 
 		String oper = "query all roles";
@@ -93,6 +61,7 @@ public class SysRoleController extends BaseController {
 
 		String roleValue = json.getString("roleValue");
 		if (StringUtils.isNotBlank(roleValue)) {
+			if(queryParams.isNotEmptyOfWhere()) queryParams.and();
 			queryParams.like("role_value", roleValue);
 		}
 
@@ -110,6 +79,73 @@ public class SysRoleController extends BaseController {
 		return Json.succ(oper, page);
 	}
 
+	@PostMapping("/role/create")
+	public Json add(@RequestBody String body) {
+
+		String oper = "add create";
+		JSONObject roleObject = JSON.parseObject(body);
+
+		SysRole role = new SysRole();
+		role.setRoleName(roleObject.getString("roleName"));
+		role.setRoleValue(roleObject.getString("roleValue"));
+		role.setRoleDesc(roleObject.getString("roleDesc"));
+		role.setCreateTime(new Date());
+		role.setCreateBy(userService.selectUsernameByToken(getToken()));
+		role.setUpdateBy(userService.selectUsernameByToken(getToken()));
+		role.setUpdateTime(new Date());
+
+		if (StringUtils.isBlank(role.getRoleValue())) {
+			return Json.fail(oper, "角色值不能为空");
+		}
+
+		SysRole roleDB = roleService.selectOne(new EntityWrapper<SysRole>().eq("role_value", role.getRoleValue()));
+		if (roleDB != null) {
+			return Json.fail(oper, String.format("角色值[{}]已存在：", role.getRoleValue()));
+		}
+
+		//保存新用户数据
+		roleService.insert(role);
+
+		role = roleService.selectOne(new EntityWrapper<SysRole>().eq("role_value", role.getRoleValue()));
+		//update role perm
+		String result = updateRolePerm(roleObject.getJSONArray("routes"), role, Sets.newHashSet());
+
+		if (StringUtils.isBlank(result)) {
+			return Json.succ(oper);
+		} else {
+			return Json.fail(oper, result);
+		}
+
+	}
+
+	@DeleteMapping("/role/delete/{rid}")
+	public Json delete(@PathVariable Integer rid) {
+
+		String oper = "delete role";
+
+		roleService.deleteById(rid);
+		rolePermService.delete(new EntityWrapper<SysRolePerm>().eq("role_id", rid));
+		userRoleService.delete(new EntityWrapper<SysUserRole>().eq("role_id", rid));
+
+		return Json.succ(oper);
+	}
+
+	@GetMapping("/roles")
+	public Json query() {
+
+		String oper = "query all roles";
+		log.info("{}", oper);
+
+		List<SysRole> roles = roleService.selectList(new EntityWrapper<>());
+		roles.forEach(role -> {
+			role.setPerms(permService.getPermsByRoleId(role.getId())
+					.stream().map(r -> new AuthVo(r.getPermName(), r.getPermValue())).collect(Collectors.toSet())
+			);
+		});
+
+		return Json.succ(oper, roles);
+	}
+
 	@PutMapping("/role/update")
 	public Json update(@RequestBody String body) {
 
@@ -117,8 +153,9 @@ public class SysRoleController extends BaseController {
 		log.info("{}, body: {}", oper, body);
 
 		JSONObject roleObject = JSON.parseObject(body);
-
+		if(Objects.isNull(roleObject.get("id"))) throw new ArcherBusinessException("Id is not exists");
 		SysRole role = roleService.selectById(roleObject.getString("id"));
+		if(Objects.isNull(role)) throw new ArcherBusinessException(String.format("The role[%s] is not exists", roleObject.get("id")));
 		role.setRoleName(roleObject.getString("roleName"));
 		role.setRoleValue(roleObject.getString("roleValue"));
 		role.setRoleDesc(roleObject.getString("roleDesc"));
@@ -126,8 +163,11 @@ public class SysRoleController extends BaseController {
 		role.setUpdateTime(new Date());
 		roleService.updateById(role);
 
+		Set<Integer> rolePermValues = Sets.newHashSet();
 		//update role perm
-		String result = updateRolePerm(roleObject.getJSONArray("routes"), role);
+		String result = updateRolePerm(roleObject.getJSONArray("routes"), role, rolePermValues);
+		//delete role perm in Db but not exist in body
+		deleteNoExistRolePerm(rolePermValues, role.getId());
 
 		if (StringUtils.isBlank(result)) {
 			return Json.succ(oper);
@@ -137,15 +177,16 @@ public class SysRoleController extends BaseController {
 	}
 
 
-	private String updateRolePerm(JSONArray routeArray, SysRole role) {
+	private String updateRolePerm(JSONArray routeArray, SysRole role, Set<Integer> rolePermValues) {
 		for (int i = 0; i < routeArray.size(); i++) {
 			JSONObject metaOjb = routeArray.getJSONObject(i).getJSONObject("meta");
-
-			SysPerm sysPerm = permService.selectOne(new EntityWrapper<SysPerm>().eq("perm_value", metaOjb.get("perm")));
+			if(Objects.isNull(metaOjb) || Objects.isNull(metaOjb.get("perm"))) return null;
+			SysPerm sysPerm = permService.selectOne(new EntityWrapper<SysPerm>().eq("perm_value", metaOjb.getString("perm")));
 			if (Objects.isNull(sysPerm)) {
 				return String.format("perm:[%s} is not exists", metaOjb.get("perm"));
 			}
 
+			rolePermValues.add(sysPerm.getId());
 			SysRolePerm rp = rolePermService.selectOne(new EntityWrapper<SysRolePerm>()
 					.eq("role_id", role.getId())
 					.eq("perm_id", sysPerm.getId())
@@ -163,11 +204,18 @@ public class SysRoleController extends BaseController {
 			}
 			//update children
 			if (routeArray.getJSONObject(i).containsKey("children")) {
-				String result = updateRolePerm(routeArray.getJSONObject(i).getJSONArray("children"), role);
+				String result = updateRolePerm(routeArray.getJSONObject(i).getJSONArray("children"), role, rolePermValues);
 				if (StringUtils.isNotBlank(result)) return result;
 			}
 		}
 		return null;
 	}
 
+	private void deleteNoExistRolePerm(Set<Integer> rolePermSet, Integer roleId) {
+		rolePermService.selectList(new EntityWrapper<SysRolePerm>().eq("role_id", roleId)).forEach(rolePerm -> {
+			if (!rolePermSet.contains(rolePerm.getPermId())) {
+				rolePermService.deleteById(rolePerm.getId());
+			}
+		});
+	}
 }

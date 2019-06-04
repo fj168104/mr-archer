@@ -2,13 +2,13 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.mr.archer.dao.SysUserMapper">
 
-    <resultMap id="userMap" type="com.mr.archer.entity.SysUser">
+    <resultMap id="userMap" type="SysUser">
         <id property="id" column="id"/>
         <result property="username"  column="username" />
         <result property="nick"  column="nick" />
         <result property="mail"  column="mail" />
         <result property="phone"  column="phone" />
-        <result property="avator"  column="avator" />
+        <result property="avatar"  column="avatar" />
         <result property="lock"  column="lock" />
         <result column="create_by" property="createBy"/>
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
@@ -42,10 +42,8 @@
         order by u.uid
     </select>
 
-    <select id="selectUserByToken" resultType="userMap">
-        SELECT u.* FROM sys_user u, sys_user_token t
-        WHERE u.username = t.username AND
-        token = #{token}
+    <select id="selectUsernameByToken" resultType="java.lang.String">
+        SELECT username FROM sys_user_token WHERE token = #{token}
     </select>
 
 </mapper>

@@ -2,14 +2,14 @@ db: archer
 server:
   port: 8888
   servlet:
-    context-path: /api/v1
+    context-path: /dev-api
     session:
       cookie:
         name: BIUSID
 spring:
   profiles:
     active: dev
-    include: druid,mybatisplus,shiro
+    include: druid,mybatisplus,siro
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
     url: jdbc:mysql://192.168.25.117:3306/${db}?characterEncoding=UTF-8&useSSL=false
@@ -25,9 +25,10 @@ superAdmin:
   password: 111111
   nick: 系统管理员
   mail: jiang.feng@mr.com
-  avator: https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif
+  phone: 18888888888
+  avatar: https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif
   roleName: 超级管理员
   roleDesc: 内置角色
   roleValue: SuperAdmin
-  permValue: *
+  permValue: \*
   permName: 所有权限

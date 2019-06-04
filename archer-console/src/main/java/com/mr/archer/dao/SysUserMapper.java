@@ -13,6 +13,6 @@ public interface SysUserMapper extends BaseMapper<SysUser> {
 
     List<SysUser> selectUserIncludeRoles(Pagination page, @Param("nick") String nick);
 
-    SysUser selectUserByToken(@Param("token") String token);
+    String selectUsernameByToken(@Param("token") String token);
 
 }

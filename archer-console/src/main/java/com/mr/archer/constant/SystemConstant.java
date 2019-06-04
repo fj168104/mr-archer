@@ -1,7 +1,5 @@
 package com.mr.archer.constant;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
-
 import static org.apache.commons.lang.StringUtils.EMPTY;
 
 /**
@@ -31,8 +29,8 @@ public class SystemConstant {
 	public static String DEFAULT_SUPER_ADMIN_PHONE="18800000000";
 	public static String SUPER_ADMIN_PHONE = DEFAULT_SUPER_ADMIN_PHONE;
 
-	public static String DEFAULT_SUPER_ADMIN_AVATOR="https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif";
-	public static String SUPER_ADMIN_AVATOR = DEFAULT_SUPER_ADMIN_AVATOR;
+	public static String DEFAULT_SUPER_ADMIN_AVATAR="https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif";
+	public static String SUPER_ADMIN_AVATAR = DEFAULT_SUPER_ADMIN_AVATAR;
 
 	public static String DEFAULT_SUPER_ADMIN_ROLE_NAME="超级管理员";
 	public static String SUPER_ADMIN_ROLE_NAME = DEFAULT_SUPER_ADMIN_ROLE_NAME;

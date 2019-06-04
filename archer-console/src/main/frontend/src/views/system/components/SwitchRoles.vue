@@ -1,12 +1,12 @@
 <template>
   <div>
     <div style="margin-bottom:15px;">
-      Your roles: {{ roles }}
+      Your roles: {{ roleValues.join(",") }}
     </div>
     Switch roles:
     <el-radio-group v-model="switchRoles">
-      <el-radio-button label="editor" />
       <el-radio-button label="admin" />
+      <el-radio-button label="editor" />
     </el-radio-group>
   </div>
 </template>
@@ -17,9 +17,14 @@ export default {
     roles() {
       return this.$store.getters.roles
     },
+
+    roleValues(){
+      return this.$store.getters.roles.map(role => role.name)
+    },
+
     switchRoles: {
       get() {
-        return this.roles[0]
+        return this.roleValues[0]
       },
       set(val) {
         this.$store.dispatch('user/changeRoles', val).then(() => {

@@ -1,5 +1,13 @@
 import request from '@/utils/request'
 
+//page query
+export function queryRoles(data) {
+  return request({
+    url: '/role/list',
+    method: 'post',
+    data
+  })
+}
 
 export function getRoles(data) {
   return request({
@@ -11,7 +19,7 @@ export function getRoles(data) {
 
 export function addRole(data) {
   return request({
-    url: '/role/add',
+    url: '/role/create',
     method: 'post',
     data
   })
@@ -25,9 +33,9 @@ export function updateRole(data) {
   })
 }
 
-export function deleteRole(id) {
+export function deleteRole(rid) {
   return request({
-    url: `/role/detete/${id}`,
+    url: `/role/delete/${rid}`,
     method: 'delete'
   })
 }

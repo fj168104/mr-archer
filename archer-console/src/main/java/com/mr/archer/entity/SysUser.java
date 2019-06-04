@@ -27,9 +27,9 @@ public class SysUser extends Model<SysUser> {
     //private String pwd;     // 已加密的登录密码
     //private String salt;    // 加密盐值
     private String mail;
-    private String avator;
+    private String avatar = "https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif";
     private String phone;
-    private Boolean lock;   // 是否锁定
+    private Integer lock;   // 是否锁定
 
     @TableField("create_by")
     private String createBy;
@@ -52,4 +52,7 @@ public class SysUser extends Model<SysUser> {
         return id;
     }
 
+    public Boolean locked(){
+        return lock == 1;
+    }
 }

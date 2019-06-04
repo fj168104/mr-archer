@@ -1,6 +1,6 @@
 package com.mr.archer.utils;
 
-import com.mr.archer.constant.SystemConstant;
+import static com.mr.archer.constant.SystemConstant.IS_STARTED;
 
 /**
  * Created by feng on 2019/5/21
@@ -8,6 +8,6 @@ import com.mr.archer.constant.SystemConstant;
 public class SystemUtil {
 
 	public static Boolean isStared(){
-		return SystemConstant.IS_STARTED;
+		return IS_STARTED;
 	}
 }

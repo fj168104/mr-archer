@@ -22,6 +22,7 @@ public class LoginUtil {
 		if(userService.isAdmin(username)){
 			return userService.checkLoginForAdmin(username, password);
 		}else{
+
 			//LDAP登陆地址, ldap为空时也均返回成功
 			String ldapUrl = SystemConstant.LDAP_URL;
 			if (StringUtils.isBlank(ldapUrl)) {

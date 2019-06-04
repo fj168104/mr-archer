@@ -1,9 +1,26 @@
 <template>
   <div class="app-container">
-    <el-button type="primary" @click="handleAddRole">新增角色</el-button>
-    <el-button type="warning" @click="syncPerm">同步权限</el-button>
+    <div class="filter-container">
 
-    <el-table :data="rolesList" style="width: 100%;margin-top:30px;" border>
+      <el-input v-model="listQuery.roleName" placeholder="角色名称" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter" />
+      <el-input v-model="listQuery.roleValue" placeholder="角色值" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter" />
+
+      <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">搜索</el-button>
+
+      <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleAddRole">新增角色</el-button>
+      <el-button class="filter-item" style="margin-left: 10px;" type="warning" icon="el-icon-edit" @click="syncPerm">同步权限</el-button>
+
+    </div>
+
+    <el-table
+      :key="tableKey"
+      v-loading="listLoading"
+      :data="rolesList"
+      border
+      fit
+      highlight-current-row
+      style="width: 100%;"
+    >
       <el-table-column align="center" label="角色ID" width="220">
         <template slot-scope="scope">
           {{ scope.row.roleValue }}
@@ -26,12 +43,18 @@
         </template>
       </el-table-column>
     </el-table>
+    <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getRoles" />
 
     <el-dialog :visible.sync="dialogVisible" :title="dialogType==='edit'?'编辑角色':'新增角色'">
       <el-form :model="role" label-width="80px" label-position="left">
         <el-form-item label="名称">
-          <el-input v-model="role.roleName" placeholder="Role Name" />
+          <el-input v-model="role.roleName" placeholder="角色名称" />
         </el-form-item>
+
+        <el-form-item label="值">
+          <el-input v-model="role.roleValue" placeholder="角色值" />
+        </el-form-item>
+
         <el-form-item label="描述">
           <el-input
             v-model="role.roleDesc"
@@ -61,11 +84,13 @@
 </template>
 
 <script>
+import waves from '@/directive/waves' // waves directive
 import path from 'path'
 import {doGenerateRoutes} from '@/store/modules/permission'
 import { deepClone } from '@/utils'
 import { constantRoutes, asyncRoutes } from '@/router'
-import { getRoles, addRole, deleteRole, updateRole, syncPerm } from '@/api/role'
+import { queryRoles, addRole, deleteRole, updateRole, syncPerm } from '@/api/role'
+import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 
 const defaultRole = {
   id: undefined,
@@ -77,8 +102,22 @@ const defaultRole = {
 }
 
 export default {
+  name: 'RoleTable',
+  components: { Pagination },
+  directives: { waves },
   data() {
     return {
+      tableKey: 0,
+      roleList: null,
+      total: 0,
+      listLoading: true,
+      listQuery: {
+        page: 1,
+        limit: 20,
+        roleName: '',
+        roleValue: ''
+      },
+
       role: Object.assign({}, defaultRole),
       routes: [],
       perms: [],
@@ -109,8 +148,14 @@ export default {
       this.routes = this.generateRoutes(routes)
     },
     async getRoles() {
-      const res = await getRoles()
-      this.rolesList = res.data
+      this.listLoading = true
+      await queryRoles(this.listQuery).then(response => {
+
+        this.rolesList = response.data.records
+        this.total = response.data.total
+        this.listLoading = false
+      })
+
       for (const role of this.rolesList) {
         if(role.perms){
           const accessRoutes = await doGenerateRoutes(role.perms)
@@ -119,6 +164,11 @@ export default {
           role.routes = []
         }
       }
+    },
+
+    handleFilter() {
+      this.listQuery.page = 1
+      this.getRoles()
     },
 
     async syncPerm(){
@@ -234,7 +284,7 @@ export default {
         type: 'warning'
       })
         .then(async() => {
-          await deleteRole(row.val)
+          await deleteRole(row.id)
           this.rolesList.splice($index, 1)
           this.$message({
             type: 'success',
@@ -278,9 +328,11 @@ export default {
           }
         }
       } else {
-        const { data } = await addRole(this.role)
-        this.role = data
-        this.rolesList.push(this.role)
+        addRole(this.role).then((res)=>{
+          this.role.id = res.data.id
+          this.rolesList.unshift(this.role)
+          }
+        )
       }
 
       const { roleDesc, roleValue, roleName } = this.role

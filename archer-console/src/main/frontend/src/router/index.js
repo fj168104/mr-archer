@@ -151,7 +151,7 @@ export const asyncRoutes = [
         }
       },
       {
-        path: 'permission',
+        path: 'page',
         component: () => import('@/views/system/page'),
         name: 'PagePermission',
         meta: {

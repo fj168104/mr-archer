@@ -42,7 +42,8 @@ export default {
     }
   },
   created() {
-    this.fetchData()
+//    this.fetchData()
+    //参考
   },
   methods: {
     fetchData() {

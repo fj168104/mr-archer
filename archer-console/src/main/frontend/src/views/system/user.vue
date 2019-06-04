@@ -31,7 +31,7 @@
       style="width: 100%;"
       @sort-change="sortChange"
     >
-      <el-table-column label="ID" prop="id" sortable="custom" align="center" width="80">
+      <el-table-column v-if="false" label="ID" prop="id" sortable="custom" align="center" width="80">
         <template slot-scope="scope">
           <span>{{ scope.row.id }}</span>
         </template>
@@ -39,31 +39,31 @@
 
       <el-table-column label="用户名" align="center" width="100">
         <template slot-scope="scope">
-          <span>{{ scope.row.author }}</span>
+          <span>{{ scope.row.username }}</span>
         </template>
       </el-table-column>
 
-      <el-table-column label="昵称"  align="center" width="100">
+      <el-table-column label="昵称"  align="center" width="150">
         <template slot-scope="scope">
-          <span>{{ scope.row.author }}</span>
+          <span>{{ scope.row.nick }}</span>
         </template>
       </el-table-column>
 
-      <el-table-column label="token"  align="center" width="350">
+      <el-table-column label="电话"  align="center" >
         <template slot-scope="scope">
-          <span>{{ scope.row.token }}</span>
+          <span>{{ scope.row.phone }}</span>
         </template>
       </el-table-column>
 
-      <el-table-column label="角色" align="center" >
+      <el-table-column label="角色" align="center" width="300">
         <template slot-scope="scope">
           <el-tag style="margin: 2px;" v-for="role in scope.row.roleList" :key="role.id">{{role.roleName}}</el-tag>
         </template>
       </el-table-column>
 
-      <el-table-column v-if="false" label="创建时间"  align="center" >
+      <el-table-column label="创建时间"  align="center" >
         <template slot-scope="scope">
-          <span>{{ scope.row.timestamp | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
+          <span>{{ scope.row.createTime | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
         </template>
       </el-table-column>
 
@@ -123,12 +123,8 @@
           <el-input v-model="temp.phone" />
         </el-form-item>
 
-        <el-form-item label="头像" prop="avator">
-          <el-input v-model="temp.avator" />
-        </el-form-item>
-
-        <el-form-item label="Token" prop="token" aria-disabled="true">
-          <el-input v-model="temp.token" />
+        <el-form-item label="头像" prop="avatar">
+          <el-input v-model="temp.avatar" />
         </el-form-item>
 
         <el-form-item label="状态" prop="lock">
@@ -181,7 +177,7 @@ const lockOptions = [
 ]
 
 export default {
-  name: 'ComplexTable',
+  name: 'UserTable',
   components: { Pagination },
   directives: { waves },
   filters: {
@@ -214,10 +210,10 @@ export default {
         username: '',
         nick: '',
         mail: '',
-        avator: '',
+        avatar: '',
         phone: '',
         lock: '',
-        token: undefined
+        roleList: {}
       },
       dialogFormVisible: false,
       dialogStatus: '',
@@ -268,7 +264,7 @@ export default {
       this.listLoading = true
       fetchUserList(this.listQuery).then(response => {
 
-        this.list = response.data.items
+        this.list = response.data.records
         this.total = response.data.total
         this.listLoading = false
       })
@@ -278,13 +274,14 @@ export default {
       this.getList()
     },
     handleModifyStatus(row, lock) {
+      row.lock = lock
       this.temp = Object.assign({}, row)
       updateUser(this.temp).then(() => {
         this.$message({
           message: '操作成功',
           type: 'success'
         })
-        row.lock = lock
+
       });
 
     },
@@ -308,10 +305,10 @@ export default {
         username: '',
         nick: '',
         mail: '',
-        avator: '',
+        avatar: '',
         phone: '',
         lock: '1',
-        token: undefined
+        roleList: {}
       }
     },
     handleCreate() {
@@ -325,17 +322,9 @@ export default {
     createData() {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
-          createUser(this.temp).then(() => {
-            //需要再次查询获取ID
-            let sQuery ={
-                page: 1,
-                limit: 20,
-                nick: undefined,
-                username: this.temp.username,
-                sort: '+id'
-            }
-            let res = fetchUserList(sQuery);
-            this.list.unshift(res.data.items[0])
+          createUser(this.temp).then((res) => {
+            this.temp.id = res.data.id
+            this.list.unshift(this.temp)
             this.dialogFormVisible = false
             this.$notify({
               title: 'Success',
@@ -349,7 +338,7 @@ export default {
     },
 
     hasAdminRole(row){
-      if(row && row.roleList){
+      if(row && row.roleList && row.roleList.length > 0){
         return row.roleList.some(role=>role.roleValue==="SuperAdmin")
       }
       return false
@@ -390,7 +379,7 @@ export default {
     //删除
     handleDelete(idx, row) {
       this.$confirm('您确定要永久删除该用户？', '提示', confirm).then(() => {
-        deleteUser({uid: row.id}).then(res => {
+        deleteUser(row.id).then(res => {
           this.list.splice(idx, 1)
           --this.total
           this.dialogFormVisible = false
@@ -423,7 +412,7 @@ export default {
       this.updateUserRolesData = {
         idx: idx,
         uid: row.id,
-        rids: row.roleList.map(role=>role.id)
+        rids: row.roleList.length > 0 ? row.roleList.map(role=>role.id):{}
       }
       // 显示弹窗
       this.editRolesDialogVisible = true

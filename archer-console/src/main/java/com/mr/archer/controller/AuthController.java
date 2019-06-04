@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import com.mr.archer.annotation.PermInfo;
 import com.mr.archer.constant.Codes;
 import com.mr.archer.entity.SysUser;
@@ -13,7 +14,9 @@ import com.mr.archer.service.SysRoleService;
 import com.mr.archer.service.SysUserService;
 import com.mr.archer.service.SysUserTokenService;
 import com.mr.archer.utils.LoginUtil;
+import com.mr.archer.vo.AuthVo;
 import com.mr.archer.vo.Json;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,15 +27,16 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
+import static com.mr.archer.constant.SystemConstant.*;
+
 /**
  *
  */
+@Slf4j
 @PermInfo(value = "登录模块")
 @RestController
 @RequestMapping("/auth")
 public class AuthController extends BaseController{
-
-    private static final Logger log = LoggerFactory.getLogger(AuthController.class);
 
     @Autowired
     private SysUserService userService;
@@ -51,7 +55,7 @@ public class AuthController extends BaseController{
      * 也可以在这里直接返回json，不过这样子就跟GlobalExceptionHandler中返回的json重复了。
      * @return
      */
-    @RequestMapping("/page/401")
+    @RequestMapping("/401")
     public Json page401() {
         throw new UnauthenticatedException();
     }
@@ -61,7 +65,7 @@ public class AuthController extends BaseController{
      *
      * @return
      */
-    @RequestMapping("/page/403")
+    @RequestMapping("/403")
     public Json page403() {
         throw new UnauthorizedException();
     }
@@ -70,7 +74,7 @@ public class AuthController extends BaseController{
      * 登录成功跳转到这里，直接返回json。但是实际情况是在login方法中登录成功后返回json了。
      * @return
      */
-    @RequestMapping("/page/index")
+    @RequestMapping("/index")
     public Json pageIndex() {
         return new Json("index",true,1,"index page",null);
     }
@@ -102,15 +106,18 @@ public class AuthController extends BaseController{
 
         try {
 
-            //登录
-            SysUser user = userService.selectOne(new EntityWrapper<SysUser>().eq("username", username));
-            if(Objects.isNull(user)) throw new UnknownAccountException();
-            if(LoginUtil.passportCheck(username, password)) throw new IncorrectCredentialsException();
-            if(user.getLock()) throw new LockedAccountException();
-            Map<String, String> tokenMap = generateToken(username);
+            if(!userService.isAdmin(username)){
+                //登录
+                SysUser user = userService.selectOne(new EntityWrapper<SysUser>().eq("username", username));
+                if(Objects.isNull(user)) throw new UnknownAccountException();
+                if(user.locked()) throw new LockedAccountException();
+            }
 
-            //返回登录用户的token给前台
+            if(!LoginUtil.passportCheck(username, password)) throw new IncorrectCredentialsException();
+
             //保存token
+            Map<String, String> tokenMap = generateToken(username);
+            //返回登录用户的token给前台
 
             return Json.succ(oper, tokenMap);
 
@@ -164,8 +171,13 @@ public class AuthController extends BaseController{
 
             return Json.fail(oper,Codes.UNAUTHEN);
         }else{
-            user.setRoles(roleService.getRolesByUserId(user.getId()));
-            user.setPerms(permService.getPermsByUserId(user.getId()));
+            if(userService.isAdmin(user.getUsername())){
+                user.setRoles(Sets.newHashSet(new AuthVo(SUPER_ADMIN_ROLE_NAME, SUPER_ADMIN_ROLE_VALUE)));
+                user.setPerms(Sets.newHashSet(new AuthVo(SUPER_ADMIN_PERM_NAME, SUPER_ADMIN_PERM_VALUE)));
+            }else {
+                user.setRoles(roleService.getRolesByUserId(user.getId()));
+                user.setPerms(permService.getPermsByUserId(user.getId()));
+            }
             //返回登录用户的信息给前台，含用户的所有角色和权限
 
             return Json.succ(oper, user);
