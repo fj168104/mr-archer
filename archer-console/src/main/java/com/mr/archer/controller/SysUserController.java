@@ -15,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
@@ -63,11 +64,15 @@ public class SysUserController extends BaseController{
 				));
 
 		//删除：原来绑定的角色
-		userRoleService.delete(new EntityWrapper<SysUserRole>()
-				.eq("user_id", uid)
-				.and()
-				.notIn("role_id", rids));
-
+        if(CollectionUtils.isEmpty(rids)){
+            userRoleService.delete(new EntityWrapper<SysUserRole>()
+                    .eq("user_id", uid));
+        }else {
+            userRoleService.delete(new EntityWrapper<SysUserRole>()
+                    .eq("user_id", uid)
+                    .and()
+                    .notIn("role_id", rids));
+        }
         return Json.succ(oper);
     }
 
@@ -102,7 +107,9 @@ public class SysUserController extends BaseController{
         Page<SysUser> page = userService.selectPage(PageUtils.getPageParam(json), queryParams);
 
         page.getRecords().forEach(user -> {
-            user.setRoleList(roleService.selectBatchIds(roleService.getRoleIdsByUserId(user.getId())));
+            if(!CollectionUtils.isEmpty(roleService.getRoleIdsByUserId(user.getId()))){
+                user.setRoleList(roleService.selectBatchIds(roleService.getRoleIdsByUserId(user.getId())));
+            }
             user.setRoles(roleService.getRolesByUserId(user.getId()));
             user.setPerms(permService.getPermsByUserId(user.getId()));
         });
@@ -168,7 +175,7 @@ public class SysUserController extends BaseController{
                 .setUpdateBy(getCurrentUsername())
                 .setCreateTime(new Date()));
         user = userService.selectOne(new EntityWrapper<SysUser>().eq("username", user.getUsername()));
-        return Json.succ(oper, user.getId());
+        return Json.succ(oper, user);
     }
 
     private void checkUsernameForCreate(String username){

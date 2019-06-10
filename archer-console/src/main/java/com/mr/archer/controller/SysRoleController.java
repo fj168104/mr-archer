@@ -111,7 +111,7 @@ public class SysRoleController extends BaseController {
 		String result = updateRolePerm(roleObject.getJSONArray("routes"), role, Sets.newHashSet());
 
 		if (StringUtils.isBlank(result)) {
-			return Json.succ(oper);
+			return Json.succ(oper, role);
 		} else {
 			return Json.fail(oper, result);
 		}

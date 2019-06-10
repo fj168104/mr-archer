@@ -149,7 +149,7 @@
       <div>
         <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
         <div style="margin: 15px 0;"></div>
-        <el-checkbox-group v-model="updateUserRolesData.rids">
+        <el-checkbox-group v-model="updateUserRolesData.rids" @change="handleCheckedRolesChange">
           <el-checkbox class="role-checkbox" v-for="role in roleOptions" :label="role.id" :key="role.id">
             {{role.roleValue}}
           </el-checkbox>
@@ -407,12 +407,13 @@ export default {
 
     //更新用户的角色
     handleUpdateUserRoles(idx, row) {
-
+      this.isIndeterminate = row.roleList.length >0 && row.roleList.length < this.roleOptions.length
+      this.checkAll = row.roleList.length === this.roleOptions.length
       // 显示用户的角色
       this.updateUserRolesData = {
         idx: idx,
         uid: row.id,
-        rids: row.roleList.length > 0 ? row.roleList.map(role=>role.id):{}
+        rids: row.roleList.length > 0 ? row.roleList.map(role=>role.id):[]
       }
       // 显示弹窗
       this.editRolesDialogVisible = true
@@ -423,6 +424,12 @@ export default {
       let allRids = this.roleOptions.map(role => role.id)
       this.updateUserRolesData.rids = val ? allRids : [];
       this.isIndeterminate = false;
+    },
+
+    handleCheckedRolesChange(value){
+      let checkedCount = value.length
+      this.checkAll = checkedCount === this.roleOptions.length;
+      this.isIndeterminate = checkedCount > 0 && checkedCount < this.roleOptions.length;
     },
 
     checkUpdateUserRolesData() {
@@ -439,6 +446,7 @@ export default {
     },
 
     invokeUpdateUserRolesApi(){
+      console.info(JSON.stringify(this.updateUserRolesData))
       updateUserRoles(this.updateUserRolesData).then(res => {
         let newRoles = this.updateUserRolesData.rids.map(rid=>{
           let roleName = this.roleMap.get(rid);
@@ -463,3 +471,10 @@ export default {
   }
 }
 </script>
+
+<style rel="stylesheet/scss" lang="scss" scoped>
+  .role-checkbox{
+    margin-left: 0px;
+    margin-right: 15px;
+  }
+</style>
