@@ -24,7 +24,8 @@ export default {
   },
   created() {
 //    if (!this.roles.includes('admin')) {
-    if (!this.roles.some(r => r.val === 'SuperAdmin' || r.val === 'admin')) {
+    console.info(JSON.stringify(this.roles))
+    if (!this.roles.includes('SuperAdmin') && !this.roles.includes('admin')) {
       this.currentRole = 'editorDashboard'
     }
   }

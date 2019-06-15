@@ -30,10 +30,6 @@
             <artifactId>junit</artifactId>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>com.dianping.cat</groupId>
-            <artifactId>cat-client</artifactId>
-        </dependency>
 
         <dependency>
             <groupId>com.baomidou</groupId>
@@ -52,6 +48,10 @@
             <version>${druid.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+        </dependency>
         <!-- https://mvnrepository.com/artifact/org.apache.velocity/velocity -->
         <dependency>
             <groupId>org.apache.velocity</groupId>
