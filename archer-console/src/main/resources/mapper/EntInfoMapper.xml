@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mr.archer.dao.EntInfoMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.mr.archer.entity.EntInfo">
+        <id column="id" property="id" />
+        <result column="businessno" property="businessno" />
+        <result column="regbegindate" property="regbegindate" />
+        <result column="regenddate" property="regenddate" />
+        <result column="entkind" property="entkind" />
+        <result column="industry" property="industry" />
+        <result column="scope" property="scope" />
+        <result column="workers" property="workers" />
+        <result column="scale" property="scale" />
+        <result column="stock" property="stock" />
+        <result column="funddate" property="funddate" />
+        <result column="regcurrency" property="regcurrency" />
+        <result column="regcapital" property="regcapital" />
+        <result column="realcurrency" property="realcurrency" />
+        <result column="realcapital" property="realcapital" />
+        <result column="regaddress" property="regaddress" />
+        <result column="regpostcode" property="regpostcode" />
+        <result column="country" property="country" />
+        <result column="province" property="province" />
+        <result column="office" property="office" />
+        <result column="website" property="website" />
+        <result column="email" property="email" />
+        <result column="tel" property="tel" />
+        <result column="fax" property="fax" />
+        <result column="financetel" property="financetel" />
+        <result column="statetaxno" property="statetaxno" />
+        <result column="localtaxno" property="localtaxno" />
+        <result column="financereport" property="financereport" />
+        <result column="basebank" property="basebank" />
+        <result column="baseaccount" property="baseaccount" />
+        <result column="mybank" property="mybank" />
+        <result column="myaccount" property="myaccount" />
+        <result column="otherbank" property="otherbank" />
+        <result column="otheraccount" property="otheraccount" />
+        <result column="firstaccountdate" property="firstaccountdate" />
+        <result column="firstloandate" property="firstloandate" />
+        <result column="istrade" property="istrade" />
+        <result column="isguaranty" property="isguaranty" />
+        <result column="issmall" property="issmall" />
+        <result column="creditmodel" property="creditmodel" />
+        <result column="creditlevel" property="creditlevel" />
+        <result column="createuser" property="createuser" />
+        <result column="createtime" property="createtime" />
+        <result column="createorg" property="createorg" />
+        <result column="updateuser" property="updateuser" />
+        <result column="updatetime" property="updatetime" />
+        <result column="updateorg" property="updateorg" />
+    </resultMap>
+
+</mapper>

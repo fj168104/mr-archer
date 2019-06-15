@@ -76,7 +76,12 @@
             <artifactId>commons-lang3</artifactId>
             <version>${commons-lang3}</version>
         </dependency>
-
+        <!-- https://mvnrepository.com/artifact/com.google.guava/guava/23.0 -->
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>23.0</version>
+        </dependency>
 
     </dependencies>
 

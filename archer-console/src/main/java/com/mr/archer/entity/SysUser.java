@@ -30,6 +30,7 @@ public class SysUser extends Model<SysUser> {
     private String avatar = "https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif";
     private String phone;
     private Integer lock;   // 是否锁定
+    private String orgid;
 
     @TableField("create_by")
     private String createBy;
@@ -51,7 +52,7 @@ public class SysUser extends Model<SysUser> {
     protected Serializable pkVal() {
         return id;
     }
-
+    
     public Boolean locked(){
         return lock == 1;
     }

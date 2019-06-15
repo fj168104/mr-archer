@@ -1,6 +1,8 @@
 package com.mr.archer.controller;
 
 import com.mr.archer.constant.SystemConstant;
+import com.mr.archer.entity.SysUser;
+import com.mr.archer.service.SysUserService;
 import com.mr.archer.utils.RequestHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -13,6 +15,9 @@ import javax.servlet.http.HttpServletResponse;
 
 
 public class BaseController {
+
+	@Autowired
+	protected SysUserService sysUserService;
 
 	@Autowired
 	protected HttpServletRequest request;
@@ -30,6 +35,10 @@ public class BaseController {
 
 	public String getToken() {
 		return getCookieParam(SystemConstant.USER_TOKEN);
+	}
+
+	public SysUser getCurUser() {
+		return sysUserService.selectUserByToken(getToken());
 	}
 
 	public void removeToken() {

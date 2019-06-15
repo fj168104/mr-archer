@@ -20,13 +20,13 @@ public class CodeGenerator {
 	 * MySQL 生成演示
 	 * </p>
 	 */
-	private static String tableName = "sys_user_token";
-	private static String entityName = "SysUserToken";
-	private static String javaOutputPath = "D:\\workspace\\archer\\archer-console\\src\\main\\java";
-	private static String xmlOutputPath = "D:\\workspace\\archer\\archer-console\\src\\main\\resources";
-	private static String jdbcUrl = "jdbc:mysql://192.168.25.117:3306/archer?characterEncoding=UTF-8&useSSL=false";
+	private static String tableName = "ent_info";
+	private static String entityName = "EntInfo";
+	private static String javaOutputPath = "E:\\GitHub\\mr-archer-20190610\\archer-console\\src\\main\\java";
+	private static String xmlOutputPath = "E:\\GitHub\\mr-archer-20190610\\archer-console\\src\\main\\resources";
+	private static String jdbcUrl = "jdbc:mysql://47.101.152.45:3306/archer?characterEncoding=UTF-8&useSSL=false";
 	private static String dbUser = "root";
-	private static String dbPassword = "root123";
+	private static String dbPassword = "root1234";
 
 
 
