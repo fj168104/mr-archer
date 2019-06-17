@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mr.archer.dao.CustomerInfoMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.mr.archer.entity.CustomerInfo">
+        <id column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="type" property="type" />
+        <result column="certtype" property="certtype" />
+        <result column="certid" property="certid" />
+        <result column="createuser" property="createuser" />
+        <result column="createtime" property="createtime" />
+        <result column="createorg" property="createorg" />
+        <result column="updateuser" property="updateuser" />
+        <result column="updatetime" property="updatetime" />
+        <result column="updateorg" property="updateorg" />
+    </resultMap>
+
+    <select id="selectCustomerListByUser" resultType="com.mr.archer.entity.CustomerInfo">
+        select
+        ci.*,
+        cb.mainflag as mainflag,
+        cb.modifyflag as modifyflag,
+        cb.viewflag as viewflag,
+        cb.applyflag as applyflag,
+        su1.nick as createusername,
+        so1.name as createorgname
+        from customer_info ci
+        left join customer_belong cb on ci.id = cb.customerid
+        left join sys_user su1 on ci.createuser = su1.id
+        left join sys_org so1 on ci.createorg = so1.id
+        where cb.userid = #{userid}
+        and cb.viewflag = '1'
+        <if test="name != null and name != ''">
+            and ci.`name` like concat('%',#{name},'%')
+        </if>
+        <if test="certid != null and certid != ''">
+            and ci.certid = #{certid}
+        </if>
+    </select>
+
+</mapper>

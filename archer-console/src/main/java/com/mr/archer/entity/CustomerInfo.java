@@ -1,6 +1,7 @@
 package com.mr.archer.entity;
 
 import com.baomidou.mybatisplus.activerecord.Model;
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.baomidou.mybatisplus.enums.IdType;
@@ -30,96 +31,24 @@ public class CustomerInfo extends Model<CustomerInfo> {
     private String updatetime;
     private String updateorg;
 
+    @TableField(exist=false)
+    private String createusername;
+    @TableField(exist=false)
+    private String createorgname;
+
+    @TableField(exist=false)
+    private String mainflag;
+    @TableField(exist=false)
+    private String modifyflag;
+    @TableField(exist=false)
+    private String viewflag;
+    @TableField(exist=false)
+    private String applyflag;
+
     @Override
     protected Serializable pkVal() {
         return id;
     }
 
-    public String getId() {
-        return id;
-    }
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public String getCerttype() {
-        return certtype;
-    }
-
-    public void setCerttype(String certtype) {
-        this.certtype = certtype;
-    }
-
-    public String getCertid() {
-        return certid;
-    }
-
-    public void setCertid(String certid) {
-        this.certid = certid;
-    }
-
-    public String getCreateuser() {
-        return createuser;
-    }
-
-    public void setCreateuser(String createuser) {
-        this.createuser = createuser;
-    }
-
-    public String getCreatetime() {
-        return createtime;
-    }
-
-    public void setCreatetime(String createtime) {
-        this.createtime = createtime;
-    }
-
-    public String getCreateorg() {
-        return createorg;
-    }
-
-    public void setCreateorg(String createorg) {
-        this.createorg = createorg;
-    }
-
-    public String getUpdateuser() {
-        return updateuser;
-    }
-
-    public void setUpdateuser(String updateuser) {
-        this.updateuser = updateuser;
-    }
-
-    public String getUpdatetime() {
-        return updatetime;
-    }
-
-    public void setUpdatetime(String updatetime) {
-        this.updatetime = updatetime;
-    }
-
-    public String getUpdateorg() {
-        return updateorg;
-    }
-
-    public void setUpdateorg(String updateorg) {
-        this.updateorg = updateorg;
-    }
 }

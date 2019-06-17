@@ -63,9 +63,37 @@
         </template>
       </el-table-column>
 
+      <el-table-column label="客户主办权"  align="center">
+        <template slot-scope="scope">
+          <!-- <span>{{ scope.row.mainflag | showCodeName(codemap.IsNot)}}</span> -->
+          <i class="el-icon-check" :v-if="scope.row.mainflag === '1'"></i>
+        </template>
+      </el-table-column>
+
+      <el-table-column label="信息维护权"  align="center">
+        <template slot-scope="scope">
+          <!-- <span>{{ scope.row.modifyflag | showCodeName(codemap.IsNot)}}</span> -->
+          <i class="el-icon-check" :v-if="scope.row.modifyflag === '1'"></i>
+        </template>
+      </el-table-column>
+
+      <el-table-column label="信息查看权"  align="center">
+        <template slot-scope="scope">
+          <!-- <span>{{ scope.row.viewflag | showCodeName(codemap.IsNot)}}</span> -->
+          <i class="el-icon-check" :v-if="scope.row.viewflag === '1'"></i>
+        </template>
+      </el-table-column>
+
+      <el-table-column label="业务申办权"  align="center">
+        <template slot-scope="scope">
+          <!-- <span>{{ scope.row.applyflag | showCodeName(codemap.IsNot)}}</span> -->
+          <i class="el-icon-check" :v-if="scope.row.applyflag === '1'"></i>
+        </template>
+      </el-table-column>
+
       <el-table-column label="创建人"  align="center" width="130">
         <template slot-scope="scope">
-          <span>{{ scope.row.createuser }}</span>
+          <span>{{ scope.row.createusername }}</span>
         </template>
       </el-table-column>
 
@@ -77,7 +105,7 @@
 
       <el-table-column label="创建机构"  align="center" width="200">
         <template slot-scope="scope">
-          <span>{{ scope.row.createorg }}</span>
+          <span>{{ scope.row.createorgname }}</span>
         </template>
       </el-table-column>
 
@@ -187,7 +215,7 @@ export default {
     }
   },
   created() {
-    queryCodeList({codelist:['EntCertType']}).then(response => {
+    queryCodeList({codelist:['EntCertType','IsNot']}).then(response => {
       this.codemap = response.data
       this.getList()
     }).catch(() => {

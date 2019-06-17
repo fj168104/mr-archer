@@ -10,7 +10,7 @@ import com.mr.archer.entity.CustomerInfo;
 import com.mr.archer.entity.EntInfo;
 import com.mr.archer.entity.EntStock;
 import com.mr.archer.entity.SysUser;
-import com.mr.archer.service.CustXwService;
+import com.mr.archer.service.CustomerInfoService;
 import com.mr.archer.service.EntInfoService;
 import com.mr.archer.service.EntStockService;
 import com.mr.archer.service.SysUserService;
@@ -26,25 +26,25 @@ import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
-@RequestMapping("/cust/xw")
-public class CustXwController extends BaseController{
+@RequestMapping("/cust")
+public class CustomerInfoController extends BaseController{
 
     @Autowired
     private SysUserService userService;
     @Autowired
-    private CustXwService custXwService;
+    private CustomerInfoService customerInfoService;
     @Autowired
     private EntInfoService entInfoService;
     @Autowired
     private EntStockService entStockService;
 
     @PermInfo("查询所有小微客户信息")
-    @PostMapping("/list")
+    @PostMapping("/xw/list")
     public Json query(@RequestBody String body) {
         String oper = "query cust xw";
         log.info("{}, body: {}", oper, body);
         JSONObject json = JSON.parseObject(body);
-        Wrapper<CustomerInfo> queryParams = new EntityWrapper<>();
+        /*Wrapper<CustomerInfo> queryParams = new EntityWrapper<>();
 
         JSONObject filterJson = json.getJSONObject("filters");
         String sName = filterJson.getString("name");
@@ -58,7 +58,15 @@ public class CustXwController extends BaseController{
             queryParams.eq("certid", sCertId);
         }
 
-        Page<CustomerInfo> page = custXwService.selectPage(PageUtils.getPageParam(json), queryParams);
+        Page<CustomerInfo> page = customerInfoService.selectPage(PageUtils.getPageParam(json), queryParams);*/
+
+        SysUser curUser = getCurUser();
+        String sCurUserId = String.valueOf(curUser.getId());
+        JSONObject filterJson = json.getJSONObject("filters");
+        String sName = filterJson.getString("name");
+        String sCertId = filterJson.getString("certid");
+
+        Page<CustomerInfo> page = customerInfoService.selectCustomerListByUser(PageUtils.getPageParam(json), sCurUserId, sName, sCertId);
         Json result = Json.succ(oper).data("data", page);
 
         return result;
@@ -66,7 +74,7 @@ public class CustXwController extends BaseController{
 
     @PermInfo("新增小微客户信息")
     @Transactional
-    @PostMapping("/create")
+    @PostMapping("/xw/create")
     public Json createData(@RequestBody String body) {
         String oper = "create cust xw";
         log.info("{}, body: {}", oper, body);
@@ -83,7 +91,7 @@ public class CustXwController extends BaseController{
         cust.setUpdateuser(sCurUserId);
         cust.setUpdatetime(sCurTime);
         cust.setUpdateorg(sCurUserOrg);
-        custXwService.insert(cust);
+        customerInfoService.insert(cust);
 
         // 新增客户基本信息数据
         EntInfo entInfo = new EntInfo();
@@ -101,10 +109,10 @@ public class CustXwController extends BaseController{
 
     @PermInfo("删除小微客户信息")
     @Transactional
-    @DeleteMapping("/delete/{uid}")
+    @DeleteMapping("/xw/delete/{uid}")
     public Json deleteData(@PathVariable String uid) {
         String oper = "delete cust xw";
-        custXwService.deleteById(uid);
+        customerInfoService.deleteById(uid);
         // 删除关联的客户基本信息
         entInfoService.deleteById(uid);
         // 删除关联的客户股东信息

@@ -9,6 +9,7 @@ const custRouter = {
   alwaysShow: true,
   name: 'cust',
   meta: {
+    perm: 'm:sys',
     title: '客户管理',
     icon: 'peoples'
   },
@@ -17,7 +18,10 @@ const custRouter = {
       path: '/cust/xw/list',
       component: () => import('@/views/cust/xw/list'),
       name: 'xwlist',
-      meta: { title: '小微客户列表' }
+      meta: { 
+        perm: 'm:sys',
+        title: '小微客户列表'
+      }
     }
   ]
 }
