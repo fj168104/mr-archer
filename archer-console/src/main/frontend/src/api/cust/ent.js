@@ -37,6 +37,18 @@ export function queryEntStockList(data) {
 }
 
 /**
+ * 查询单个股东记录
+ * @param data
+ */
+export function queryEntStock(data) {
+  return request({
+    url: '/cust/entstock/query',
+    method: 'post',
+    data
+  })
+}
+
+/**
  * 新增股东记录
  * @param data
  */

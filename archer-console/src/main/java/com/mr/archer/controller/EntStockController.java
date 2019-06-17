@@ -47,8 +47,11 @@ public class EntStockController extends BaseController {
 
     Wrapper<EntStock> queryParams = new EntityWrapper<>();
 
-    String sCustomerId = json.getString("customerid");
-    queryParams.eq("customerid", sCustomerId);
+    JSONObject filterJson = json.getJSONObject("filters");
+    String sName = filterJson.getString("name");
+    if (StringUtils.isNotBlank(sName)) {
+      queryParams.eq("name", sName);
+    }
     Page<EntStock> page = entStockService.selectPage(PageUtils.getPageParam(json), queryParams);
 
     return Json.succ(oper).data("data", page);
@@ -72,6 +75,37 @@ public class EntStockController extends BaseController {
     stock.setUpdatetime(sCurTime);
     stock.setUpdateorg(sCurUserOrg);
     entStockService.insert(stock);
+
+    return Json.succ(oper, stock);
+  }
+
+  @PermInfo("查询单个股东信息")
+  @PostMapping("/query")
+  public Json queryData(@RequestBody String body) {
+    String oper = "query cust entstock";
+    log.info("{}, body: {}", oper, body);
+    JSONObject json = JSON.parseObject(body);
+
+    String sId = json.getString("id");
+    EntStock entStock = entStockService.selectById(sId);
+
+    return Json.succ(oper, entStock);
+  }
+
+  @PermInfo("更新客户的股东信息")
+  @PostMapping("/update")
+  public Json updateData(@RequestBody String body) {
+    String oper = "update cust entstock";
+    log.info("{}, body: {}", oper, body);
+    EntStock stock = JSON.parseObject(body, EntStock.class);
+    SysUser curUser = getCurUser();
+    String sCurUserId = String.valueOf(curUser.getId());
+    String sCurUserOrg = curUser.getOrgid();
+    String sCurTime = DateUtils.getNowTime();
+    stock.setUpdateuser(sCurUserId);
+    stock.setUpdatetime(sCurTime);
+    stock.setUpdateorg(sCurUserOrg);
+    entStockService.updateById(stock);
 
     return Json.succ(oper, stock);
   }

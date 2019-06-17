@@ -10,10 +10,10 @@ import com.mr.archer.service.SysUserService;
 import com.mr.archer.vo.Json;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * <p>
@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @since 2019-06-14
  */
 @Slf4j
-@Controller
+@RestController
 @RequestMapping("/cust/entinfo")
 public class EntInfoController extends BaseController {
 

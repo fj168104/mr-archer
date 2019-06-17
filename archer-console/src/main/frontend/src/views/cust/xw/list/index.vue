@@ -45,7 +45,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column label="客户名称" align="center" width="300">
+      <el-table-column label="客户名称" width="300">
         <template slot-scope="scope">
           <span @click="gotoView(scope.row)">{{ scope.row.name }}</span>
         </template>
@@ -53,23 +53,35 @@
 
       <el-table-column label="证件类型"  align="center" width="150">
         <template slot-scope="scope">
-          <span>{{ scope.row.certtype }}</span>
+          <span>{{ scope.row.certtype | showCodeName(codemap.EntCertType)}}</span>
         </template>
       </el-table-column>
 
-      <el-table-column label="证件号码"  align="center" >
+      <el-table-column label="证件号码" width="250">
         <template slot-scope="scope">
           <span>{{ scope.row.certid }}</span>
         </template>
       </el-table-column>
 
-      <el-table-column label="创建时间"  align="center" >
+      <el-table-column label="创建人"  align="center" width="130">
+        <template slot-scope="scope">
+          <span>{{ scope.row.createuser }}</span>
+        </template>
+      </el-table-column>
+
+      <el-table-column label="创建时间"  align="center" width="180">
         <template slot-scope="scope">
           <span>{{ scope.row.createtime | parseTime('{y}-{m}-{d} {h}:{i}:{s}') }}</span>
         </template>
       </el-table-column>
 
-      <el-table-column label="操作" align="center" width="230" class-name="small-padding fixed-width">
+      <el-table-column label="创建机构"  align="center" width="200">
+        <template slot-scope="scope">
+          <span>{{ scope.row.createorg }}</span>
+        </template>
+      </el-table-column>
+
+      <el-table-column label="操作" align="center" width="130" class-name="small-padding fixed-width" fixed="right">
 
         <template slot-scope="scope">
           <el-tooltip content="详情" placement="top">
@@ -96,7 +108,7 @@
 
         <el-form-item label="证件类型" prop="certtype">
           <el-select v-model="newData.certtype" class="filter-item" placeholder="请选择">
-            <el-option v-for="item in certTypeOptions" :key="item.key" :label="item.name" :value="item.key" />
+            <el-option v-for="item in codemap.EntCertType" :key="item.value" :label="item.label" :value="item.value" />
           </el-select>
         </el-form-item>
 
@@ -117,8 +129,8 @@
     </el-dialog>
     <!-- 新增客户窗口 end -->
 
-    <el-dialog :title="'客户详情'" :visible.sync="viewDataDialogVisible" width="100%" :v-if="viewDataDialogVisible">
-      <ent-view :curcustomerid="curcustomerid"></ent-view>
+    <el-dialog :visible.sync="viewDataDialogVisible" :fullscreen="true" :v-if="viewDataDialogVisible" :show-close="false">
+      <ent-view :curcustomerid="curcustomerid" :curcustomername="curcustomername" @closeView="closeView"></ent-view>
     </el-dialog>
   </div>
 </template>
@@ -128,7 +140,8 @@ import waves from '@/directive/waves' // waves directive
 import { parseTime } from '@/utils'
 import { queryDataList, createData, deleteData } from '@/api/cust/xw'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
-import EntView from '@/views/cust/ent/entview' // secondary package based on el-pagination
+import EntView from '@/views/cust/ent/entview'
+import { queryCodeList } from '@/api/syscode'
 
 
 const certTypeOptions = [
@@ -155,6 +168,7 @@ export default {
         },
         list: null
       },
+      codemap : {},
       certTypeOptions,
       newData: {
         name: '',
@@ -163,7 +177,8 @@ export default {
       },
       newDataDialogVisible: false,
       viewDataDialogVisible: false,
-      curcustomerid:'',
+      curcustomerid: '',
+      curcustomername: '',
       rules: {
         name: [{ required: true, message: '请输入客户名称', trigger: 'blur' }],
         certtype: [{ required: true, message: '请输入证件类型', trigger: 'blur' }],
@@ -172,7 +187,12 @@ export default {
     }
   },
   created() {
-    this.getList()
+    queryCodeList({codelist:['EntCertType']}).then(response => {
+      this.codemap = response.data
+      this.getList()
+    }).catch(() => {
+      this.$message.info("获取数据失败！")
+    })
   },
   methods: {
     getList() {
@@ -233,7 +253,11 @@ export default {
     },
     viewData(row) {
       this.curcustomerid = row.id;
+      this.curcustomername = row.name;
       this.viewDataDialogVisible = true;
+    },
+    closeView(){
+      this.viewDataDialogVisible = false;
     }
   }
 }
