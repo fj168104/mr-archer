@@ -1,5 +1,6 @@
 package com.mr.archer.service.impl;
 
+import com.baomidou.mybatisplus.plugins.Page;
 import com.mr.archer.entity.EntInfo;
 import com.mr.archer.dao.EntInfoMapper;
 import com.mr.archer.service.EntInfoService;
@@ -17,4 +18,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class EntInfoServiceImpl extends ServiceImpl<EntInfoMapper, EntInfo> implements EntInfoService {
 
+  public EntInfo selectEntInfoById(String id) {
+    return baseMapper.selectEntInfoById(id);
+  }
 }

@@ -63,28 +63,28 @@
         </template>
       </el-table-column>
 
-      <el-table-column label="客户主办权"  align="center">
+      <el-table-column label="客户主办权"  align="center" width="100">
         <template slot-scope="scope">
           <!-- <span>{{ scope.row.mainflag | showCodeName(codemap.IsNot)}}</span> -->
           <i class="el-icon-check" :v-if="scope.row.mainflag === '1'"></i>
         </template>
       </el-table-column>
 
-      <el-table-column label="信息维护权"  align="center">
+      <el-table-column label="信息维护权"  align="center" width="100">
         <template slot-scope="scope">
           <!-- <span>{{ scope.row.modifyflag | showCodeName(codemap.IsNot)}}</span> -->
           <i class="el-icon-check" :v-if="scope.row.modifyflag === '1'"></i>
         </template>
       </el-table-column>
 
-      <el-table-column label="信息查看权"  align="center">
+      <el-table-column label="信息查看权"  align="center" width="100">
         <template slot-scope="scope">
           <!-- <span>{{ scope.row.viewflag | showCodeName(codemap.IsNot)}}</span> -->
           <i class="el-icon-check" :v-if="scope.row.viewflag === '1'"></i>
         </template>
       </el-table-column>
 
-      <el-table-column label="业务申办权"  align="center">
+      <el-table-column label="业务申办权"  align="center" width="100">
         <template slot-scope="scope">
           <!-- <span>{{ scope.row.applyflag | showCodeName(codemap.IsNot)}}</span> -->
           <i class="el-icon-check" :v-if="scope.row.applyflag === '1'"></i>
@@ -157,8 +157,14 @@
     </el-dialog>
     <!-- 新增客户窗口 end -->
 
-    <el-dialog :visible.sync="viewDataDialogVisible" :fullscreen="true" :v-if="viewDataDialogVisible" :show-close="false">
-      <ent-view :curcustomerid="curcustomerid" :curcustomername="curcustomername" @closeView="closeView"></ent-view>
+    <el-dialog top="5vh" :visible.sync="viewDataDialogVisible" :fullscreen="true" :v-if="viewDataDialogVisible" :show-close="false">
+      <template slot="title">
+        <div>
+          <span style="font-weight: bold;font-size: 20px;">客户详情-{{curcustomername}}</span>
+          <el-button type="primary" style="float: right;" @click="closeView()">返回</el-button>
+        </div>
+      </template>
+      <ent-view :curcustomerid="curcustomerid" @closeView="closeView"></ent-view>
     </el-dialog>
   </div>
 </template>

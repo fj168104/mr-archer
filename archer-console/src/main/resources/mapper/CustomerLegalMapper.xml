@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mr.archer.dao.CustomerLegalMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.mr.archer.entity.CustomerLegal">
+        <id column="id" property="id" />
+        <result column="customerid" property="customerid" />
+        <result column="name" property="name" />
+        <result column="result" property="result" />
+        <result column="currency" property="currency" />
+        <result column="money" property="money" />
+        <result column="occurdate" property="occurdate" />
+        <result column="reason" property="reason" />
+        <result column="status" property="status" />
+        <result column="remark" property="remark" />
+        <result column="createuser" property="createuser" />
+        <result column="createtime" property="createtime" />
+        <result column="createorg" property="createorg" />
+        <result column="updateuser" property="updateuser" />
+        <result column="updatetime" property="updatetime" />
+        <result column="updateorg" property="updateorg" />
+    </resultMap>
+
+</mapper>

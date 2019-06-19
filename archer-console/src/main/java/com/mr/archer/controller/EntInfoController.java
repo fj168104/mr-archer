@@ -40,12 +40,9 @@ public class EntInfoController extends BaseController {
     log.info("{}, body: {}", oper, body);
     JSONObject json = JSON.parseObject(body);
     String sCustomerId = json.getString("id");
-    EntInfo entInfo = entInfoService.selectById(sCustomerId);
-    // JSONObject resultJson = (JSONObject)JSON.toJSON(entInfo);
+    EntInfo entInfo = entInfoService.selectEntInfoById(sCustomerId);
 
-    // return Json.succ(oper).data("data", resultJson);
     Json resutl = Json.succ(oper, entInfo);
-    // Json resutl = Json.succ(oper).data("data", resultJson);
     return resutl;
   }
 

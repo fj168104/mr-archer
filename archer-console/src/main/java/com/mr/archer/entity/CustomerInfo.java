@@ -24,6 +24,9 @@ public class CustomerInfo extends Model<CustomerInfo> {
     private String type;
     private String certtype;
     private String certid;
+    private String mfcustomerid;
+    private String status;
+    private String groupid;
     private String createuser;
     private String createtime;
     private String createorg;

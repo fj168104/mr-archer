@@ -13,9 +13,9 @@ body {
   font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif;
 }
 
-label {
-  font-weight: 700;
-}
+// label {
+//   font-weight: 700;
+// }
 
 html {
   height: 100%;
@@ -188,4 +188,14 @@ aside {
 
 .multiselect--active {
   z-index: 1000 !important;
+}
+
+.el-dialog__header {
+  border: solid #c0c4cc;
+  border-width: 0 0 1px 0;
+}
+
+.el-aside {
+  border: solid #c0c4cc;
+  border-width: 0 1px 0 0;
 }

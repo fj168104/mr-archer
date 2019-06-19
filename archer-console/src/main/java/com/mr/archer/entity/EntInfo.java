@@ -1,6 +1,7 @@
 package com.mr.archer.entity;
 
 import com.baomidou.mybatisplus.activerecord.Model;
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.baomidou.mybatisplus.enums.IdType;
@@ -213,6 +214,26 @@ public class EntInfo extends Model<EntInfo> {
      */
     private String updateorg;
 
+    /**
+     * 客户名称
+     */
+    @TableField(exist=false)
+    private String name;
+    /**
+     * 客户类型
+     */
+    @TableField(exist=false)
+    private String type;
+    /**
+     * 证件类型
+     */
+    @TableField(exist=false)
+    private String certtype;
+    /**
+     * 证件号码
+     */
+    @TableField(exist=false)
+    private String certid;
 
     @Override
     protected Serializable pkVal() {

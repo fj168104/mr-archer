@@ -38,7 +38,7 @@ public class EntStockController extends BaseController {
   @Autowired
   private EntStockService entStockService;
 
-  @PermInfo("查询所有客户的股东信息")
+  @PermInfo("查询单个客户的股东列表信息")
   @PostMapping("/list")
   public Json query(@RequestBody String body) {
     String oper = "query cust entstock";
@@ -48,9 +48,11 @@ public class EntStockController extends BaseController {
     Wrapper<EntStock> queryParams = new EntityWrapper<>();
 
     JSONObject filterJson = json.getJSONObject("filters");
+    String sCustomerId = filterJson.getString("customerid");
+    queryParams.eq("customerid", sCustomerId);
     String sName = filterJson.getString("name");
     if (StringUtils.isNotBlank(sName)) {
-      queryParams.eq("name", sName);
+      queryParams.like("name", sName);
     }
     Page<EntStock> page = entStockService.selectPage(PageUtils.getPageParam(json), queryParams);
 
@@ -62,21 +64,21 @@ public class EntStockController extends BaseController {
   public Json createData(@RequestBody String body) {
     String oper = "create cust entstock";
     log.info("{}, body: {}", oper, body);
-    EntStock stock = JSON.parseObject(body, EntStock.class);
+    EntStock newData = JSON.parseObject(body, EntStock.class);
     SysUser curUser = getCurUser();
     String sCurUserId = String.valueOf(curUser.getId());
     String sCurUserOrg = curUser.getOrgid();
     String sCurTime = DateUtils.getNowTime();
-    stock.setId(KeyUtils.getKey());
-    stock.setCreateuser(sCurUserId);
-    stock.setCreatetime(sCurTime);
-    stock.setCreateorg(sCurUserOrg);
-    stock.setUpdateuser(sCurUserId);
-    stock.setUpdatetime(sCurTime);
-    stock.setUpdateorg(sCurUserOrg);
-    entStockService.insert(stock);
+    newData.setId(KeyUtils.getKey());
+    newData.setCreateuser(sCurUserId);
+    newData.setCreatetime(sCurTime);
+    newData.setCreateorg(sCurUserOrg);
+    newData.setUpdateuser(sCurUserId);
+    newData.setUpdatetime(sCurTime);
+    newData.setUpdateorg(sCurUserOrg);
+    entStockService.insert(newData);
 
-    return Json.succ(oper, stock);
+    return Json.succ(oper, newData);
   }
 
   @PermInfo("查询单个股东信息")
@@ -87,9 +89,9 @@ public class EntStockController extends BaseController {
     JSONObject json = JSON.parseObject(body);
 
     String sId = json.getString("id");
-    EntStock entStock = entStockService.selectById(sId);
+    EntStock data = entStockService.selectById(sId);
 
-    return Json.succ(oper, entStock);
+    return Json.succ(oper, data);
   }
 
   @PermInfo("更新客户的股东信息")
@@ -97,17 +99,17 @@ public class EntStockController extends BaseController {
   public Json updateData(@RequestBody String body) {
     String oper = "update cust entstock";
     log.info("{}, body: {}", oper, body);
-    EntStock stock = JSON.parseObject(body, EntStock.class);
+    EntStock data = JSON.parseObject(body, EntStock.class);
     SysUser curUser = getCurUser();
     String sCurUserId = String.valueOf(curUser.getId());
     String sCurUserOrg = curUser.getOrgid();
     String sCurTime = DateUtils.getNowTime();
-    stock.setUpdateuser(sCurUserId);
-    stock.setUpdatetime(sCurTime);
-    stock.setUpdateorg(sCurUserOrg);
-    entStockService.updateById(stock);
+    data.setUpdateuser(sCurUserId);
+    data.setUpdatetime(sCurTime);
+    data.setUpdateorg(sCurUserOrg);
+    entStockService.updateById(data);
 
-    return Json.succ(oper, stock);
+    return Json.succ(oper, data);
   }
 
   @PermInfo("删除客户的股东信息")

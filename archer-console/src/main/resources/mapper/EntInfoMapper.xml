@@ -53,4 +53,15 @@
         <result column="updateorg" property="updateorg" />
     </resultMap>
 
+    <select id="selectEntInfoById" resultType="com.mr.archer.entity.EntInfo">
+        select
+        ei.*,
+        ci.name as name,
+        ci.type as type,
+        ci.certtype as certtype,
+        ci.certid as certid
+        from ent_info ei
+        left join customer_info ci on ci.id = ei.id
+        where ei.id = #{id}
+    </select>
 </mapper>

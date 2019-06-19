@@ -6,14 +6,8 @@ import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.mr.archer.annotation.PermInfo;
-import com.mr.archer.entity.CustomerInfo;
-import com.mr.archer.entity.EntInfo;
-import com.mr.archer.entity.EntStock;
-import com.mr.archer.entity.SysUser;
-import com.mr.archer.service.CustomerInfoService;
-import com.mr.archer.service.EntInfoService;
-import com.mr.archer.service.EntStockService;
-import com.mr.archer.service.SysUserService;
+import com.mr.archer.entity.*;
+import com.mr.archer.service.*;
 import com.mr.archer.utils.DateUtils;
 import com.mr.archer.utils.KeyUtils;
 import com.mr.archer.utils.PageUtils;
@@ -36,7 +30,19 @@ public class CustomerInfoController extends BaseController{
     @Autowired
     private EntInfoService entInfoService;
     @Autowired
+    private EntManagerService entManagerService;
+    @Autowired
+    private EntMemberService entMemberService;
+    @Autowired
     private EntStockService entStockService;
+    @Autowired
+    private EntInvestService entInvestService;
+    @Autowired
+    private EntRelateService entRelateService;
+    @Autowired
+    private CustomerLegalService customerLegalService;
+    @Autowired
+    private CustomerBelongService customerBelongService;
 
     @PermInfo("查询所有小微客户信息")
     @PostMapping("/xw/list")
@@ -93,7 +99,7 @@ public class CustomerInfoController extends BaseController{
         cust.setUpdateorg(sCurUserOrg);
         customerInfoService.insert(cust);
 
-        // 新增客户基本信息数据
+        // 新增客户基本信息
         EntInfo entInfo = new EntInfo();
         entInfo.setId(sCustomerId);
         entInfo.setCreateuser(sCurUserId);
@@ -103,6 +109,23 @@ public class CustomerInfoController extends BaseController{
         entInfo.setUpdatetime(sCurTime);
         entInfo.setUpdateorg(sCurUserOrg);
         entInfoService.insert(entInfo);
+
+        // 新增客户所属信息
+        CustomerBelong custBelong = new CustomerBelong();
+        custBelong.setId(KeyUtils.getKey("CB"));
+        custBelong.setCustomerid(sCustomerId);
+        custBelong.setUserid(sCurUserId);
+        custBelong.setMainflag("1");
+        custBelong.setModifyflag("1");
+        custBelong.setViewflag("1");
+        custBelong.setApplyflag("1");
+        custBelong.setCreateuser(sCurUserId);
+        custBelong.setCreatetime(sCurTime);
+        custBelong.setCreateorg(sCurUserOrg);
+        custBelong.setUpdateuser(sCurUserId);
+        custBelong.setUpdatetime(sCurTime);
+        custBelong.setUpdateorg(sCurUserOrg);
+        customerBelongService.insert(custBelong);
 
         return Json.succ(oper, cust);
     }
@@ -115,10 +138,34 @@ public class CustomerInfoController extends BaseController{
         customerInfoService.deleteById(uid);
         // 删除关联的客户基本信息
         entInfoService.deleteById(uid);
+        // 删除关联的客户高管信息
+        Wrapper<EntManager> emParams = new EntityWrapper<>();
+        emParams.eq("customerid", uid);
+        entManagerService.delete(emParams);
+        // 删除关联的法人家族成员信息
+        Wrapper<EntMember> embParams = new EntityWrapper<>();
+        embParams.eq("customerid", uid);
+        entMemberService.delete(embParams);
         // 删除关联的客户股东信息
         Wrapper<EntStock> esParams = new EntityWrapper<>();
         esParams.eq("customerid", uid);
         entStockService.delete(esParams);
+        // 删除关联的对外股权投资信息
+        Wrapper<EntInvest> eiParams = new EntityWrapper<>();
+        eiParams.eq("customerid", uid);
+        entInvestService.delete(eiParams);
+        // 删除关联的上下游关联方信息
+        Wrapper<EntRelate> erParams = new EntityWrapper<>();
+        erParams.eq("customerid", uid);
+        entRelateService.delete(erParams);
+        // 删除关联的客户涉诉信息
+        Wrapper<CustomerLegal> clParams = new EntityWrapper<>();
+        clParams.eq("customerid", uid);
+        customerLegalService.delete(clParams);
+        // 删除关联的客户权限信息
+        Wrapper<CustomerBelong> cbParams = new EntityWrapper<>();
+        esParams.eq("customerid", uid);
+        customerBelongService.delete(cbParams);
 
         return Json.succ(oper);
     }

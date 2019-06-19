@@ -2,8 +2,8 @@
   <div class="app-container">
     <div class="filter-container">
       <el-form :inline="true" class="demo-form-inline">
-        <el-form-item label="客户姓名">
-          <el-input v-model="listQuery.filters.name" placeholder="客户姓名" @keyup.enter.native="handleFilter"></el-input>
+        <el-form-item label="股东名称">
+          <el-input v-model="listQuery.filters.name" placeholder="股东名称" @keyup.enter.native="handleFilter"></el-input>
         </el-form-item>
         <el-form-item>
           <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
@@ -91,11 +91,11 @@
         </template>
       </el-table-column>
 
-      <el-table-column label="创建人"  align="center" width="200">
+      <!-- <el-table-column label="创建人"  align="center" width="200">
         <template slot-scope="scope">
           <span>{{ scope.row.createuser }}</span>
         </template>
-      </el-table-column>
+      </el-table-column> -->
 
       <el-table-column label="创建时间"  align="center" width="180">
         <template slot-scope="scope">
@@ -103,11 +103,11 @@
         </template>
       </el-table-column>
 
-      <el-table-column label="创建机构"  align="center" width="200">
+      <!-- <el-table-column label="创建机构"  align="center" width="200">
         <template slot-scope="scope">
           <span>{{ scope.row.createorg }}</span>
         </template>
-      </el-table-column>
+      </el-table-column> -->
 
       <el-table-column label="操作" align="center" width="120" class-name="small-padding fixed-width" fixed="right">
 
@@ -135,7 +135,7 @@
 <script>
 import waves from '@/directive/waves' // waves directive
 import { parseTime } from '@/utils'
-import { queryEntStockList, deleteEntStock } from '@/api/cust/ent'
+import { queryEntStockList, deleteEntStock } from '@/api/cust/entstock'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 import EntStock from '@/views/cust/ent/entstock'
 import { queryCodeList } from '@/api/syscode'

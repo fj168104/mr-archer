@@ -1,15 +1,15 @@
 <template>
   <div class="app-container">
 
-    <el-form ref="dataInfoForm" v-loading="dataLoading" :rules="rules" :model="datainfo" label-position="left" label-width="100px">
+    <el-form ref="dataInfoForm" v-loading="dataLoading" :rules="rules" :model="datainfo" label-position="left" label-width="160px">
 
         <el-row>
-          <el-col :span="8">
+          <el-col :span="10">
             <el-form-item label="股东名称" prop="name">
               <el-input v-model="datainfo.name"/>
             </el-form-item>
           </el-col>
-          <el-col :span="8" :offset="4">
+          <el-col :span="10" :offset="2">
             <el-form-item label="企业类型" prop="entkind">
               <el-input v-model="datainfo.entkind"/>
             </el-form-item>
@@ -17,7 +17,7 @@
         </el-row>
 
         <el-row>
-          <el-col :span="8">
+          <el-col :span="10">
             <el-form-item label="证件类型" prop="certtype">
               <el-select v-model="datainfo.certtype" placeholder="">
                 <el-option-group
@@ -34,7 +34,7 @@
               </el-select>
             </el-form-item>
           </el-col>
-          <el-col :span="8" :offset="4">
+          <el-col :span="10" :offset="2">
             <el-form-item label="证件编号" prop="certid">
               <el-input v-model="datainfo.certid"/>
             </el-form-item>
@@ -42,12 +42,12 @@
         </el-row>
 
         <el-row>
-          <el-col :span="8">
+          <el-col :span="10">
             <el-form-item label="出资方式" prop="type">
               <el-input v-model="datainfo.type"/>
             </el-form-item>
           </el-col>
-          <el-col :span="8" :offset="4">
+          <el-col :span="10" :offset="2">
             <el-form-item label="出资币种" prop="currency">
               <el-select v-model="datainfo.currency" placeholder="">
                 <el-option
@@ -62,12 +62,12 @@
         </el-row>
 
         <el-row>
-          <el-col :span="8">
+          <el-col :span="10">
             <el-form-item label="应出资金额" prop="money">
               <el-input v-model="datainfo.money"/>
             </el-form-item>
           </el-col>
-          <el-col :span="8" :offset="4">
+          <el-col :span="10" :offset="2">
             <el-form-item label="实际投资金额" prop="realmoney">
               <el-input v-model="datainfo.realmoney"/>
             </el-form-item>
@@ -75,12 +75,12 @@
         </el-row>
 
         <el-row>
-          <el-col :span="8">
+          <el-col :span="10">
             <el-form-item label="出资比例(%)" prop="percent">
               <el-input v-model="datainfo.percent"/>
             </el-form-item>
           </el-col>
-          <el-col :span="8" :offset="4">
+          <el-col :span="10" :offset="2">
             <el-form-item label="投资日期" prop="occurdate">
               <el-date-picker
                 v-model="datainfo.occurdate"
@@ -92,7 +92,7 @@
         </el-row>
 
         <el-row>
-          <el-col :span="8">
+          <el-col :span="10">
             <el-form-item label="是否有效" prop="scope">
               <el-select v-model="datainfo.status" placeholder="">
                 <el-option
@@ -118,7 +118,7 @@
 
 <script>
 import waves from '@/directive/waves' // waves directive
-import { queryEntStock,createEntStock,updateEntStock } from '@/api/cust/ent'
+import { queryEntStock,createEntStock,updateEntStock } from '@/api/cust/entstock'
 import { queryCodeList } from '@/api/syscode'
 
 

@@ -7,3 +7,10 @@ export function queryCodeList(data) {
     data
   })
 }
+
+export function queryIndustryList() {
+  return request({
+    url: '/sysindustry/list',
+    method: 'post'
+  })
+}

@@ -1,7 +1,11 @@
 package com.mr.archer.dao;
 
-import com.mr.archer.entity.EntInfo;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
+import com.baomidou.mybatisplus.plugins.pagination.Pagination;
+import com.mr.archer.entity.EntInfo;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,4 +17,5 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
  */
 public interface EntInfoMapper extends BaseMapper<EntInfo> {
 
+  EntInfo selectEntInfoById(@Param("id") String id);
 }

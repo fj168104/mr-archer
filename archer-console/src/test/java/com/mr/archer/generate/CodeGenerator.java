@@ -20,8 +20,8 @@ public class CodeGenerator {
 	 * MySQL 生成演示
 	 * </p>
 	 */
-	private static String tableName = "ent_info";
-	private static String entityName = "EntInfo";
+	private static String tableName = "customer_legal";
+	private static String entityName = "CustomerLegal";
 	private static String javaOutputPath = "E:\\GitHub\\mr-archer-20190610\\archer-console\\src\\main\\java";
 	private static String xmlOutputPath = "E:\\GitHub\\mr-archer-20190610\\archer-console\\src\\main\\resources";
 	private static String jdbcUrl = "jdbc:mysql://47.101.152.45:3306/archer?characterEncoding=UTF-8&useSSL=false";
