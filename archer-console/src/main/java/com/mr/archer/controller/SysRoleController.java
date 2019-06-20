@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
+
 /**
  *
  */
@@ -42,8 +43,6 @@ public class SysRoleController extends BaseController {
 	private SysUserRoleService userRoleService;
 	@Autowired
 	private SysRolePermService rolePermService;
-	@Autowired
-	private SysUserService userService;
 
 	@PostMapping("/role/list")
 	public Json query(@RequestBody String body) {
@@ -90,8 +89,8 @@ public class SysRoleController extends BaseController {
 		role.setRoleValue(roleObject.getString("roleValue"));
 		role.setRoleDesc(roleObject.getString("roleDesc"));
 		role.setCreateTime(new Date());
-		role.setCreateBy(userService.selectUsernameByToken(getToken()));
-		role.setUpdateBy(userService.selectUsernameByToken(getToken()));
+		role.setCreateBy(getUsername());
+		role.setUpdateBy(getUsername());
 		role.setUpdateTime(new Date());
 
 		if (StringUtils.isBlank(role.getRoleValue())) {
@@ -159,7 +158,7 @@ public class SysRoleController extends BaseController {
 		role.setRoleName(roleObject.getString("roleName"));
 		role.setRoleValue(roleObject.getString("roleValue"));
 		role.setRoleDesc(roleObject.getString("roleDesc"));
-		role.setUpdateBy(userService.selectUsernameByToken(getToken()));
+		role.setUpdateBy(getUsername());
 		role.setUpdateTime(new Date());
 		roleService.updateById(role);
 
@@ -198,7 +197,7 @@ public class SysRoleController extends BaseController {
 				rolePerm.setRoleId(role.getId());
 				rolePerm.setPermId(sysPerm.getId());
 				rolePerm.setCreateTime(new Date());
-				rolePerm.setCreateBy(userService.selectUsernameByToken(getToken()));
+				rolePerm.setCreateBy(getUsername());
 				boolean success = rolePermService.insert(rolePerm);
 				if (!success) return "DB operate fail";
 			}
