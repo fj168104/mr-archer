@@ -1,5 +1,7 @@
 package com.mr.archer.utils;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -12,6 +14,16 @@ import static org.apache.commons.lang3.StringUtils.EMPTY;
  */
 public class RequestHelper {
 
+	//
+	private static String username;
+
+	public static String getUsername() {
+		return username;
+	}
+
+	public static void setUsername(String username) {
+		RequestHelper.username = username;
+	}
 
 	public static String getHeaderParam(HttpServletRequest request, String key) {
 		return request.getHeader(key);
@@ -36,5 +48,6 @@ public class RequestHelper {
 		newCookie.setPath("/");
 		response.addCookie(newCookie);
 	}
+
 
 }

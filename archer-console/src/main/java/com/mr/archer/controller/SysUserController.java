@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 @Slf4j
 @PermInfo(value = "系统用户模块")
@@ -58,9 +57,9 @@ public class SysUserController extends BaseController{
                 .and()
                 .eq("user_id", uid)) == 0)
                 .forEach(roleId -> userRoleService.insert(new SysUserRole(uid, roleId)
-						.setCreateBy(userService.selectUsernameByToken(getToken()))
+						.setCreateBy(getUsername())
 						.setCreateTime(new Date())
-						.setUpdateBy(userService.selectUsernameByToken(getToken()))
+						.setUpdateBy(getUsername())
 				));
 
 		//删除：原来绑定的角色
@@ -190,6 +189,6 @@ public class SysUserController extends BaseController{
 
     }
     private String getCurrentUsername(){
-        return userService.selectUsernameByToken(getToken());
+        return getUsername();
     }
 }
