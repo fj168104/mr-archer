@@ -32,8 +32,6 @@ public class SysPermController extends BaseController {
 	private SysUserRoleService userRoleService;
 	@Autowired
 	private SysRolePermService rolePermService;
-	@Autowired
-	private SysUserService userService;
 
 
 	@PostMapping("/sync")
@@ -65,14 +63,14 @@ public class SysPermController extends BaseController {
 				p.setPermName(title);
 				p.setParent(parentId);
 				if (permArray.getJSONObject(i).containsKey("children")) p.setLeaf(false);
-				p.setCreateBy(userService.selectUsernameByToken(getToken()));
+				p.setCreateBy(getUsername());
 				p.setCreateTime(new Date());
 				permService.insert(p);
 
 			} else {
 				sysPerm.setParent(parentId);
 				sysPerm.setPermName(title);
-				sysPerm.setUpdateBy(userService.selectUsernameByToken(getToken()));
+				sysPerm.setUpdateBy(getUsername());
 				sysPerm.setUpdateTime(new Date());
 				permService.updateById(sysPerm);
 			}

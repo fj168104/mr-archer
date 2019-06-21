@@ -37,6 +37,10 @@ public class BaseController {
 		return getCookieParam(SystemConstant.USER_TOKEN);
 	}
 
+	public String getUsername(){
+		return RequestHelper.getUsername();
+	}
+
 	public SysUser getCurUser() {
 		return sysUserService.selectUserByToken(getToken());
 	}
