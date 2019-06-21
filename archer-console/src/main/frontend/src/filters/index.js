@@ -56,7 +56,13 @@ export function numberFormatter(num, digits) {
  * @param {number} num
  */
 export function toThousandFilter(num) {
-  return (+num || 0).toString().replace(/^-?\d+/g, m => m.replace(/(?=(?!\b)(\d{3})+$)/g, ','))
+  if (num === 0) {
+    return 0;
+  } else if (!num) {
+    return ''
+  } else {
+    return (+num || 0).toString().replace(/^-?\d+/g, m => m.replace(/(?=(?!\b)(\d{3})+$)/g, ','))
+  }
 }
 
 /**
@@ -65,4 +71,23 @@ export function toThousandFilter(num) {
  */
 export function uppercaseFirst(string) {
   return string.charAt(0).toUpperCase() + string.slice(1)
+}
+
+/**
+ * 代码值转代码名称
+ * @param {String} value 
+ * @param {Array} codemap 
+ */
+export function showCodeName (value, codemap) {
+  let showName = value;
+  if (codemap) {
+    for (let i=0;i<codemap.length;i++) {
+      let code = codemap[i];
+      if (value === code.value) {
+        showName = code.label
+        break
+      }
+    }
+  }
+  return showName
 }

@@ -86,3 +86,41 @@ export function isArray(arg) {
   }
   return Array.isArray(arg)
 }
+
+/**
+ * 判断是否超过最大长度
+ * @param src
+ * @param {number} maxlegnth
+ * @returns {Boolean}
+ */
+export function maxLength(src, maxlegnth) {
+  if (typeof src === 'undefined') {
+    return true;
+  }
+  var realLength = 0, len = str.length, charCode = -1;
+  for (var i = 0; i < len; i++) {
+      charCode = str.charCodeAt(i);
+      if (charCode >= 0 && charCode <= 128) 
+        realLength += 1;
+      else
+        realLength += 2;
+  }
+  return maxlegnth >= realLength;
+}
+
+/**
+ * 返回字符文本的长度：中文2，英文1
+ * @param src
+ * @returns {number}
+ */
+export function getTextLength(src) {
+  var realLength = 0, len = str.length, charCode = -1;
+  for (var i = 0; i < len; i++) {
+      charCode = str.charCodeAt(i);
+      if (charCode >= 0 && charCode <= 128) 
+        realLength += 1;
+      else
+        realLength += 2;
+  }
+  return realLength;
+}

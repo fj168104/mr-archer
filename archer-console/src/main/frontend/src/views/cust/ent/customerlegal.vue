@@ -24,7 +24,7 @@
         <el-row>
           <el-col :span="10">
             <el-form-item label="币种" prop="currency">
-              <el-select v-model="datainfo.currency" placeholder="">
+              <el-select v-model="datainfo.currency" clearable placeholder="">
                 <el-option
                   v-for="item in codemap.Currency"
                   :key="item.value"
@@ -35,7 +35,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="10" :offset="2">
-            <el-form-item label="判决执行金额" prop="money">
+            <el-form-item label="判决执行金额（元）" prop="money">
               <el-input v-model="datainfo.money"/>
             </el-form-item>
           </el-col>
@@ -68,7 +68,7 @@
         <el-row>
           <el-col :span="10">
             <el-form-item label="是否有效" prop="status">
-              <el-select v-model="datainfo.status" placeholder="">
+              <el-select v-model="datainfo.status" clearable placeholder="">
                 <el-option
                   v-for="item in codemap.IsNot"
                   :key="item.value"
@@ -119,6 +119,8 @@ export default {
         currency: [{ required: true, message: '请输入币种', trigger: 'blur' }],
         money: [{ required: true, message: '请输入判决执行金额', trigger: 'blur' }],
         occurdate: [{ required: true, message: '请输入判决执行日期', trigger: 'blur' }],
+        result: [{ required: true, message: '请输入执行结果', trigger: 'blur' }],
+        reason: [{ required: true, message: '请输入被起诉原因', trigger: 'blur' }],
         status: [{ required: true, message: '请输入是否有效', trigger: 'blur' }]
       }
     }

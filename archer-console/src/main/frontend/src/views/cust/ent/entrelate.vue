@@ -5,8 +5,13 @@
 
         <el-row>
           <el-col :span="10">
+            <el-form-item label="关联方名称" prop="name">
+              <el-input v-model="datainfo.name"/>
+            </el-form-item>
+          </el-col>
+          <el-col :span="10" :offset="2">
             <el-form-item label="关联方客户类型" prop="enttype">
-              <el-select v-model="datainfo.enttype" placeholder="">
+              <el-select v-model="datainfo.enttype" clearable placeholder="">
                 <el-option
                   v-for="item in codemap.EntScale"
                   :key="item.value"
@@ -16,17 +21,12 @@
               </el-select>
             </el-form-item>
           </el-col>
-          <el-col :span="10" :offset="2">
-            <el-form-item label="关联方名称" prop="name">
-              <el-input v-model="datainfo.name"/>
-            </el-form-item>
-          </el-col>
         </el-row>
 
         <el-row>
           <el-col :span="10">
             <el-form-item label="关联方证件类型" prop="certtype">
-              <el-select v-model="datainfo.certtype" placeholder="">
+              <el-select v-model="datainfo.certtype" clearable placeholder="">
                 <el-option
                   v-for="item in codemap.EntCertType"
                   :key="item.value"
@@ -46,7 +46,7 @@
         <el-row>
           <el-col :span="10">
             <el-form-item label="关联关系" prop="type">
-              <el-select v-model="datainfo.type" placeholder="">
+              <el-select v-model="datainfo.type" clearable placeholder="">
                 <el-option
                   v-for="item in codemap.PartnerRelationType"
                   :key="item.value"
@@ -70,7 +70,7 @@
 
         <el-row>
           <el-col :span="20">
-            <el-form-item label="供应（销售）产品" prop="product">
+            <el-form-item label="供应/销售产品" prop="product">
               <el-input type="textarea" :rows="3" v-model="datainfo.product"/>
             </el-form-item>
           </el-col>
@@ -78,8 +78,8 @@
 
         <el-row>
           <el-col :span="10">
-            <el-form-item label="供应（销售）额币种" prop="currency">
-              <el-select v-model="datainfo.currency" placeholder="">
+            <el-form-item label="供应/销售额币种" prop="currency">
+              <el-select v-model="datainfo.currency" clearable placeholder="">
                 <el-option
                   v-for="item in codemap.Currency"
                   :key="item.value"
@@ -90,7 +90,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="10" :offset="2">
-            <el-form-item label="供应（销售）额" prop="money">
+            <el-form-item label="供应/销售额（元）" prop="money">
               <el-input v-model="datainfo.money"/>
             </el-form-item>
           </el-col>
@@ -98,7 +98,7 @@
 
         <el-row>
           <el-col :span="10">
-            <el-form-item label="供应（销售）比例" prop="percent">
+            <el-form-item label="供应/销售比例（%）" prop="percent">
               <el-input v-model="datainfo.percent"/>
             </el-form-item>
           </el-col>
@@ -120,7 +120,7 @@
         <el-row>
           <el-col :span="10">
             <el-form-item label="是否有效" prop="isinuse">
-              <el-select v-model="datainfo.isinuse" placeholder="">
+              <el-select v-model="datainfo.isinuse" clearable placeholder="">
                 <el-option
                   v-for="item in codemap.IsNot"
                   :key="item.value"

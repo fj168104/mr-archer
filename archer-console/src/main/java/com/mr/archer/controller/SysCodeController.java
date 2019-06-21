@@ -53,6 +53,10 @@ public class SysCodeController extends BaseController {
       queryParams.setSqlSelect("opt,name");
       List<SysCode> curCodeList = sysCodeService.selectList(queryParams);
       JSONArray aSelectCode = new JSONArray();
+      /*JSONObject oEmptyCodeJson = new JSONObject();
+      oEmptyCodeJson.put("value", "");
+      oEmptyCodeJson.put("label", "");
+      aSelectCode.add(oEmptyCodeJson);*/
       for (SysCode code : curCodeList) {
         JSONObject oCodeJson = new JSONObject();
         oCodeJson.put("value", code.getOpt());

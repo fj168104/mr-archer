@@ -1,30 +1,16 @@
 <template>
   <div class="app-container">
-    <!-- <div class="filter-container">
-      <el-input v-model="listQuery.filters.name" placeholder="客户姓名" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter" />
-      <el-input v-model="listQuery.filters.certid" placeholder="证件号码" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter" />
-
-      <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
-        搜索
-      </el-button>
-      <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
-        新增客户
-      </el-button>
-    </div> -->
     <div class="filter-container">
       <el-form :inline="true" class="demo-form-inline">
-        <el-form-item label="客户姓名">
-          <el-input v-model="listQuery.filters.name" placeholder="客户姓名" @keyup.enter.native="handleFilter"></el-input>
-        </el-form-item>
-        <el-form-item label="证件号码">
-          <el-input v-model="listQuery.filters.certid" placeholder="证件号码" @keyup.enter.native="handleFilter"></el-input>
+        <el-form-item label="名称">
+          <el-input v-model="listQuery.filters.name" placeholder="名称" @keyup.enter.native="handleFilter"></el-input>
         </el-form-item>
         <el-form-item>
           <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
               搜索
           </el-button>
           <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
-              新增客户
+              新增
           </el-button>
         </el-form-item>
       </el-form>
@@ -39,73 +25,39 @@
       highlight-current-row
       style="width: 100%;"
     >
-      <el-table-column label="ID" prop="id" align="center" width="250">
+      <el-table-column label="ID" prop="id" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.id }}</span>
         </template>
       </el-table-column>
 
-      <el-table-column label="客户名称" width="300">
+      <el-table-column label="名称">
         <template slot-scope="scope">
           <a @click="viewData(scope.row)">{{ scope.row.name }}</a>
         </template>
       </el-table-column>
 
-      <el-table-column label="证件类型"  align="center" width="150">
+      <el-table-column label="财报数据类型">
         <template slot-scope="scope">
-          <span>{{ scope.row.certtype | showCodeName(codemap.EntCertType)}}</span>
+          <span>{{ scope.row.findatatype | showCodeName(codemap.FinDataType)}}</span>
         </template>
       </el-table-column>
 
-      <el-table-column label="证件号码" width="250">
+      <el-table-column label="分栏数">
         <template slot-scope="scope">
-          <span>{{ scope.row.certid }}</span>
+          <span>{{ scope.row.cols }}</span>
         </template>
       </el-table-column>
 
-      <el-table-column label="客户主办权"  align="center" width="100">
+      <el-table-column label="描述">
         <template slot-scope="scope">
-          <!-- <span>{{ scope.row.mainflag | showCodeName(codemap.IsNot)}}</span> -->
-          <i class="el-icon-check" :v-if="scope.row.mainflag === '1'"></i>
+          <span>{{ scope.row.configdesc }}</span>
         </template>
       </el-table-column>
 
-      <el-table-column label="信息维护权"  align="center" width="100">
-        <template slot-scope="scope">
-          <!-- <span>{{ scope.row.modifyflag | showCodeName(codemap.IsNot)}}</span> -->
-          <i class="el-icon-check" :v-if="scope.row.modifyflag === '1'"></i>
-        </template>
-      </el-table-column>
-
-      <el-table-column label="信息查看权"  align="center" width="100">
-        <template slot-scope="scope">
-          <!-- <span>{{ scope.row.viewflag | showCodeName(codemap.IsNot)}}</span> -->
-          <i class="el-icon-check" :v-if="scope.row.viewflag === '1'"></i>
-        </template>
-      </el-table-column>
-
-      <el-table-column label="业务申办权"  align="center" width="100">
-        <template slot-scope="scope">
-          <!-- <span>{{ scope.row.applyflag | showCodeName(codemap.IsNot)}}</span> -->
-          <i class="el-icon-check" :v-if="scope.row.applyflag === '1'"></i>
-        </template>
-      </el-table-column>
-
-      <el-table-column label="创建人"  align="center" width="130">
-        <template slot-scope="scope">
-          <span>{{ scope.row.createusername }}</span>
-        </template>
-      </el-table-column>
-
-      <el-table-column label="创建时间"  align="center" width="180">
+      <el-table-column label="创建时间"  align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.createtime | parseTime('{y}-{m}-{d} {h}:{i}:{s}') }}</span>
-        </template>
-      </el-table-column>
-
-      <el-table-column label="创建机构"  align="center" width="200">
-        <template slot-scope="scope">
-          <span>{{ scope.row.createorgname }}</span>
         </template>
       </el-table-column>
 
@@ -126,22 +78,31 @@
 
     <pagination v-show="listQuery.total>0" :total="listQuery.total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
 
-    <!-- 新增客户窗口 start-->
+    <!-- 新增窗口 start-->
     <el-dialog :title="'新增'" :visible.sync="newDataDialogVisible">
-      <el-form ref="newDataForm" :rules="rules" :model="newData" label-position="left" label-width="100px" style="width: 50%; margin-left:50px;">
+      <el-form ref="newDataForm" :rules="rules" :model="newData" label-position="left" label-width="160px" style="width: 50%; margin-left:50px;">
 
-        <el-form-item label="客户名称" prop="name">
+        <el-form-item label="名称" prop="name">
           <el-input v-model="newData.name" />
         </el-form-item>
-
-        <el-form-item label="证件类型" prop="certtype">
-          <el-select v-model="newData.certtype" class="filter-item" placeholder="请选择">
-            <el-option v-for="item in codemap.EntCertType" :key="item.value" :label="item.label" :value="item.value" />
+        
+        <el-form-item label="财报数据类型" prop="findatatype">
+          <el-select v-model="newData.findatatype" clearable placeholder="">
+            <el-option
+              v-for="item in codemap.FinDataType"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
           </el-select>
         </el-form-item>
-
-        <el-form-item label="证件号码" prop="certid">
-          <el-input v-model="newData.certid" />
+        
+        <el-form-item label="分栏数" prop="cols">
+          <el-input v-model="newData.cols" />
+        </el-form-item>
+        
+        <el-form-item label="描述" prop="configdesc">
+          <el-input type="textarea" :row="3" v-model="newData.configdesc" />
         </el-form-item>
 
         <el-form-item>
@@ -155,37 +116,33 @@
 
       </el-form>
     </el-dialog>
-    <!-- 新增客户窗口 end -->
+    <!-- 新增窗口 end -->
 
+    <!-- 详情窗口 start-->
     <el-dialog top="5vh" :visible.sync="viewDataDialogVisible" :fullscreen="true" :v-if="viewDataDialogVisible" :show-close="false">
       <template slot="title">
         <div>
-          <span style="font-weight: bold;font-size: 20px;">客户详情-{{curcustomername}}</span>
+          <span style="font-weight: bold;font-size: 20px;">详情-{{curname}}</span>
           <el-button type="primary" style="float: right;" @click="closeView()">返回</el-button>
         </div>
       </template>
-      <ent-view :curcustomerid="curcustomerid" @closeView="closeView"></ent-view>
+      <fin-config-view :curid="curid" :curcols="curcols" @closeView="closeView"></fin-config-view>
     </el-dialog>
+    <!-- 详情窗口 end-->
   </div>
 </template>
 
 <script>
 import waves from '@/directive/waves' // waves directive
 import { parseTime } from '@/utils'
-import { queryDataList, createData, deleteData } from '@/api/cust/xw'
+import { queryFinConfigList, createFinConfig, deleteFinConfig } from '@/api/fin/finconfig'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
-import EntView from '@/views/cust/ent/entview'
+import FinConfigView from '@/views/fin/config/finconfigview'
 import { queryCodeList } from '@/api/syscode'
 
-
-const certTypeOptions = [
-  { key: '0', name: '统一社会信用证代码' },
-  { key: '1', name: '营业执照' }
-]
-
 export default {
-  name: 'CustXwList',
-  components: { Pagination,EntView },
+  name: 'FinConfigList',
+  components: { Pagination,FinConfigView },
   directives: { waves },
   filters: {},
   data() {
@@ -197,31 +154,31 @@ export default {
         total: 0,
         limit: 10,
         filters:{
-          name: '',
-          certid:''
+          name: ''
         },
         list: null
       },
       codemap : {},
-      certTypeOptions,
       newData: {
         name: '',
-        certtype: '',
-        certid: ''
+        findatatype: '',
+        cols: '',
+        configdesc: ''
       },
       newDataDialogVisible: false,
       viewDataDialogVisible: false,
-      curcustomerid: '',
-      curcustomername: '',
+      curid: '',
+      curcols: 0,
+      curname: '',
       rules: {
-        name: [{ required: true, message: '请输入客户名称', trigger: 'blur' }],
-        certtype: [{ required: true, message: '请输入证件类型', trigger: 'blur' }],
-        certid: [{ required: true, message: '请输入证件号码', trigger: 'blur' }]
+        name: [{ required: true, message: '请输入名称', trigger: 'blur' }],
+        findatatype: [{ required: true, message: '请输入财报数据类型', trigger: 'blur' }],
+        cols: [{ required: true, message: '请输入分栏数', trigger: 'blur' }]
       }
     }
   },
   created() {
-    queryCodeList({codelist:['EntCertType','IsNot']}).then(response => {
+    queryCodeList({codelist:['FinDataType']}).then(response => {
       this.codemap = response.data
       this.getList()
     }).catch(() => {
@@ -231,7 +188,7 @@ export default {
   methods: {
     getList() {
       this.listQuery.listLoading = true
-      queryDataList(this.listQuery).then(response => {
+      queryFinConfigList(this.listQuery).then(response => {
         this.listQuery.list = response.data.records
         this.listQuery.total = response.data.total
         this.listQuery.listLoading = false
@@ -247,8 +204,9 @@ export default {
     resetNewData() {
       this.newData = {
         name: '',
-        certtype: '',
-        certid: ''
+        findatatype: '',
+        cols: '',
+        configdesc: ''
       }
     },
     handleCreate() {
@@ -261,7 +219,7 @@ export default {
     createData() {
       this.$refs['newDataForm'].validate((valid) => {
         if (valid) {
-          createData(this.newData).then((res) => {
+          createFinConfig(this.newData).then((res) => {
             this.newDataDialogVisible = false
             this.getList()
             this.$notify({
@@ -276,8 +234,8 @@ export default {
     },
     //删除
     handleDelete(idx, row) {
-      this.$confirm('您确定要永久删除该客户？', '提示', confirm).then(() => {
-        deleteData(row.id).then(res => {
+      this.$confirm('您确定要永久删除该信息？', '提示', confirm).then(() => {
+        deleteFinConfig(row.id).then(res => {
           this.$message.success("删除成功")
           this.getList()
         })
@@ -286,8 +244,9 @@ export default {
       });
     },
     viewData(row) {
-      this.curcustomerid = row.id;
-      this.curcustomername = row.name;
+      this.curid = row.id;
+      this.curcols = row.cols;
+      this.curname = row.name;
       this.viewDataDialogVisible = true;
     },
     closeView(){

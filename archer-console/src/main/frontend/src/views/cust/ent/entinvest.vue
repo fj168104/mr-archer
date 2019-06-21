@@ -5,8 +5,13 @@
 
         <el-row>
           <el-col :span="10">
+            <el-form-item label="投向企业名称" prop="name">
+              <el-input v-model="datainfo.name"/>
+            </el-form-item>
+          </el-col>
+          <el-col :span="10" :offset="2">
             <el-form-item label="投向企业客户类型" prop="enttype">
-              <el-select v-model="datainfo.enttype" placeholder="">
+              <el-select v-model="datainfo.enttype" clearable placeholder="">
                 <el-option
                   v-for="item in codemap.EntScale"
                   :key="item.value"
@@ -16,17 +21,12 @@
               </el-select>
             </el-form-item>
           </el-col>
-          <el-col :span="10" :offset="2">
-            <el-form-item label="投向企业名称" prop="name">
-              <el-input v-model="datainfo.name"/>
-            </el-form-item>
-          </el-col>
         </el-row>
 
         <el-row>
           <el-col :span="10">
             <el-form-item label="投向企业证件类型" prop="certtype">
-              <el-select v-model="datainfo.certtype" placeholder="">
+              <el-select v-model="datainfo.certtype" clearable placeholder="">
                 <el-option
                   v-for="item in codemap.EntCertType"
                   :key="item.value"
@@ -46,7 +46,7 @@
         <el-row>
           <el-col :span="10">
             <el-form-item label="投资方式" prop="type">
-              <el-select v-model="datainfo.type" placeholder="">
+              <el-select v-model="datainfo.type" clearable placeholder="">
                 <el-option
                   v-for="item in codemap.InvestType"
                   :key="item.value"
@@ -58,7 +58,7 @@
           </el-col>
           <el-col :span="10" :offset="2">
             <el-form-item label="出资币种" prop="currency">
-              <el-select v-model="datainfo.currency" placeholder="">
+              <el-select v-model="datainfo.currency" clearable placeholder="">
                 <el-option
                   v-for="item in codemap.Currency"
                   :key="item.value"
@@ -112,7 +112,7 @@
         <el-row>
           <el-col :span="10">
             <el-form-item label="是否有效" prop="isinuse">
-              <el-select v-model="datainfo.isinuse" placeholder="">
+              <el-select v-model="datainfo.isinuse" clearable placeholder="">
                 <el-option
                   v-for="item in codemap.IsNot"
                   :key="item.value"
@@ -159,7 +159,7 @@ export default {
       },
       certTypeOption: [],
       rules: {
-        relation: [{ required: true, message: '请输入投向企业客户类型', trigger: 'blur' }],
+        enttype: [{ required: true, message: '请输入投向企业客户类型', trigger: 'blur' }],
         name: [{ required: true, message: '请输入投向企业名称', trigger: 'blur' }],
         certtype: [{ required: true, message: '请输入证件类型', trigger: 'blur' }],
         certid: [{ required: true, message: '请输入证件编号', trigger: 'blur' }],

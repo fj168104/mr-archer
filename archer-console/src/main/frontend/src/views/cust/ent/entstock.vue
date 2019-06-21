@@ -4,22 +4,22 @@
     <el-form ref="dataInfoForm" v-loading="dataLoading" :rules="rules" :model="datainfo" label-position="left" label-width="160px">
 
         <el-row>
-          <el-col :span="10">
+          <el-col :span="16">
             <el-form-item label="股东名称" prop="name">
               <el-input v-model="datainfo.name"/>
             </el-form-item>
           </el-col>
-          <el-col :span="10" :offset="2">
+          <!-- <el-col :span="10" :offset="2">
             <el-form-item label="企业类型" prop="entkind">
               <el-input v-model="datainfo.entkind"/>
             </el-form-item>
-          </el-col>
+          </el-col> -->
         </el-row>
 
         <el-row>
           <el-col :span="10">
             <el-form-item label="证件类型" prop="certtype">
-              <el-select v-model="datainfo.certtype" placeholder="">
+              <el-select v-model="datainfo.certtype" clearable placeholder="">
                 <el-option-group
                   v-for="group in certTypeOption"
                   :key="group.label"
@@ -44,12 +44,19 @@
         <el-row>
           <el-col :span="10">
             <el-form-item label="出资方式" prop="type">
-              <el-input v-model="datainfo.type"/>
+              <el-select v-model="datainfo.type" clearable placeholder="">
+                <el-option
+                  v-for="item in codemap.InvestType"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value">
+                </el-option>
+              </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="10" :offset="2">
             <el-form-item label="出资币种" prop="currency">
-              <el-select v-model="datainfo.currency" placeholder="">
+              <el-select v-model="datainfo.currency" clearable placeholder="">
                 <el-option
                   v-for="item in codemap.Currency"
                   :key="item.value"
@@ -63,12 +70,12 @@
 
         <el-row>
           <el-col :span="10">
-            <el-form-item label="应出资金额" prop="money">
+            <el-form-item label="应出资金额（元）" prop="money">
               <el-input v-model="datainfo.money"/>
             </el-form-item>
           </el-col>
           <el-col :span="10" :offset="2">
-            <el-form-item label="实际投资金额" prop="realmoney">
+            <el-form-item label="实际投资金额（元）" prop="realmoney">
               <el-input v-model="datainfo.realmoney"/>
             </el-form-item>
           </el-col>
@@ -76,7 +83,7 @@
 
         <el-row>
           <el-col :span="10">
-            <el-form-item label="出资比例(%)" prop="percent">
+            <el-form-item label="出资比例（%）" prop="percent">
               <el-input v-model="datainfo.percent"/>
             </el-form-item>
           </el-col>
@@ -85,6 +92,7 @@
               <el-date-picker
                 v-model="datainfo.occurdate"
                 type="date"
+                value-format="yyyy-MM-dd"
                 placeholder="选择日期">
               </el-date-picker>
             </el-form-item>
@@ -93,8 +101,8 @@
 
         <el-row>
           <el-col :span="10">
-            <el-form-item label="是否有效" prop="scope">
-              <el-select v-model="datainfo.status" placeholder="">
+            <el-form-item label="是否有效" prop="status">
+              <el-select v-model="datainfo.status" clearable placeholder="">
                 <el-option
                   v-for="item in codemap.IsNot"
                   :key="item.value"
@@ -141,7 +149,16 @@ export default {
       },
       certTypeOption: [],
       rules: {
-        name: [{ required: true, message: '请输入股东名称', trigger: 'blur' }]
+        name: [{ required: true, message: '请输入股东名称', trigger: 'blur' }],
+        certtype: [{ required: true, message: '请输入证件类型', trigger: 'blur' }],
+        certid: [{ required: true, message: '请输入证件编号', trigger: 'blur' }],
+        type: [{ required: true, message: '请输入出资方式', trigger: 'blur' }],
+        currency: [{ required: true, message: '请输入出资币种', trigger: 'blur' }],
+        money: [{ required: true, message: '请输入应出资金额', trigger: 'blur' }],
+        realmoney: [{ required: true, message: '请输入实际投资金额', trigger: 'blur' }],
+        percent: [{ required: true, message: '请输入出资比例（%）', trigger: 'blur' }],
+        occurdate: [{ required: true, message: '请输入投资日期', trigger: 'blur' }],
+        status: [{ required: true, message: '请输入是否有效', trigger: 'blur' }]
       }
     }
   },
@@ -151,7 +168,7 @@ export default {
     }
   },
   created() {
-    queryCodeList({codelist:['EntCertType','PersonCertType','Currency','IsNot']}).then(response => {
+    queryCodeList({codelist:['EntCertType','PersonCertType','InvestType','Currency','IsNot']}).then(response => {
       this.codemap = response.data
       this.certTypeOption = [{
         label: '企业证件类型',

@@ -61,7 +61,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column label="实际投资金额" width="150">
+      <el-table-column label="实际投资金额（元）" width="150">
         <template slot-scope="scope">
           <span>{{ scope.row.realmoney }}</span>
         </template>
@@ -108,7 +108,7 @@
 
     <pagination v-show="listQuery.total>0" :total="listQuery.total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
 
-    <el-dialog :title="'对外股权投资详情'" :append-to-body="true" :visible.sync="viewDataDialogVisible" :v-if="viewDataDialogVisible" width="60%">
+    <el-dialog :title="'对外股权投资详情'" :append-to-body="true" :visible.sync="viewDataDialogVisible" :v-if="viewDataDialogVisible" width="70%">
       <ent-invest :curentinvestid="curentinvestid" :curcustomerid="curcustomerid" @refreshList="getList"></ent-invest>
     </el-dialog>
   </div>

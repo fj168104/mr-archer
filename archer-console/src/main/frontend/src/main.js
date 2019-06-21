@@ -32,20 +32,6 @@ Vue.use(Element, {
   size: Cookies.get('size') || 'small' // set element-ui default size
 })
 
-Vue.filter('showCodeName', function (value, codemap) {
-  let showName = value;
-  if (codemap) {
-    for (let i=0;i<codemap.length;i++) {
-      let code = codemap[i];
-      if (value === code.value) {
-        showName = code.label
-        break
-      }
-    }
-  }
-  return showName
-})
-
 // register global utility filters
 Object.keys(filters).forEach(key => {
   Vue.filter(key, filters[key])

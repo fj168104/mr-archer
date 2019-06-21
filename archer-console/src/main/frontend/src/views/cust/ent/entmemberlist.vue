@@ -31,7 +31,7 @@
         </template>
       </el-table-column> -->
 
-      <el-table-column label="成员名称" width="300" fixed="left">
+      <el-table-column label="成员名称" fixed="left">
         <template slot-scope="scope">
           <span>{{ scope.row.name }}</span>
         </template>
@@ -43,7 +43,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column label="证件号码" width="250">
+      <el-table-column label="证件号码">
         <template slot-scope="scope">
           <span>{{ scope.row.certid }}</span>
         </template>
@@ -55,7 +55,7 @@
         </template>
       </el-table-column>
       
-      <el-table-column label="是否有效"  align="center">
+      <el-table-column label="是否有效"  align="center" width="150">
         <template slot-scope="scope">
           <span>{{ scope.row.status | showCodeName(codemap.IsNot)}}</span>
         </template>

@@ -37,7 +37,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column label="证件类型"  align="center" width="150">
+      <el-table-column label="证件类型" align="center" width="150">
         <template slot-scope="scope">
           <span>{{ scope.row.certtype | showCodeName(certTypeOption)}}</span>
         </template>
@@ -49,43 +49,43 @@
         </template>
       </el-table-column>
 
-      <el-table-column label="出资方式"  align="center">
+      <el-table-column label="出资方式" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.type }}</span>
+          <span>{{ scope.row.type | showCodeName(codemap.InvestType)}}</span>
         </template>
       </el-table-column>
 
-      <el-table-column label="出资币种"  align="center">
+      <el-table-column label="出资币种" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.currency | showCodeName(codemap.Currency)}}</span>
         </template>
       </el-table-column>
 
-      <el-table-column label="应出资金额"  align="center">
+      <el-table-column label="应出资金额（元）" align="right" width="180">
         <template slot-scope="scope">
-          <span>{{ scope.row.money }}</span>
+          <span>{{ scope.row.money | toThousandFilter }}</span>
         </template>
       </el-table-column>
       
-      <el-table-column label="实际投资金额"  align="center">
+      <el-table-column label="实际投资金额（元）" align="right" width="180">
         <template slot-scope="scope">
-          <span>{{ scope.row.realmoney }}</span>
+          <span>{{ scope.row.realmoney | toThousandFilter}}</span>
         </template>
       </el-table-column>
       
-      <el-table-column label="出资比例(%)"  align="center">
+      <el-table-column label="出资比例（%）" align="right" width="120">
         <template slot-scope="scope">
           <span>{{ scope.row.percent }}</span>
         </template>
       </el-table-column>
       
-      <el-table-column label="投资日期"  align="center">
+      <el-table-column label="投资日期" align="center" width="120">
         <template slot-scope="scope">
           <span>{{ scope.row.occurdate }}</span>
         </template>
       </el-table-column>
       
-      <el-table-column label="是否有效"  align="center">
+      <el-table-column label="是否有效" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.status | showCodeName(codemap.IsNot)}}</span>
         </template>
@@ -182,7 +182,7 @@ export default {
     }
   },
   created() {
-    queryCodeList({codelist:['EntCertType','PersonCertType','Currency','IsNot']}).then(response => {
+    queryCodeList({codelist:['EntCertType','PersonCertType','InvestType','Currency','IsNot']}).then(response => {
       this.codemap = response.data
       // this.certTypeOption = Object.assign([], this.codemap.EntCertType, this.codemap.PersonCertType)
       this.certTypeOption = this.codemap.EntCertType.concat(this.codemap.PersonCertType)

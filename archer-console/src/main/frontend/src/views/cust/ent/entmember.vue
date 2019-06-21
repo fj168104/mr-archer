@@ -6,7 +6,7 @@
         <el-row>
           <el-col :span="10">
             <el-form-item label="家族关系" prop="relation">
-              <el-select v-model="datainfo.relation" placeholder="">
+              <el-select v-model="datainfo.relation" clearable placeholder="">
                 <el-option
                   v-for="item in codemap.FamilyRelationshipCode"
                   :key="item.value"
@@ -26,7 +26,7 @@
         <el-row>
           <el-col :span="10">
             <el-form-item label="证件类型" prop="certtype">
-              <el-select v-model="datainfo.certtype" placeholder="">
+              <el-select v-model="datainfo.certtype" clearable placeholder="">
                 <el-option
                   v-for="item in codemap.PersonCertType"
                   :key="item.value"
@@ -62,7 +62,7 @@
         <el-row>
           <el-col :span="10">
             <el-form-item label="是否有效" prop="status">
-              <el-select v-model="datainfo.status" placeholder="">
+              <el-select v-model="datainfo.status" clearable placeholder="">
                 <el-option
                   v-for="item in codemap.IsNot"
                   :key="item.value"

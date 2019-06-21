@@ -8,6 +8,8 @@ import Layout from '@/layout'
 
 /* 客户管理 */
 import custRouter from './modules/cust'
+/* 财务报表配置管理 */
+import finModelRouter from './modules/finmodel'
 /* Router Modules */
 import componentsRouter from './modules/components'
 import chartsRouter from './modules/charts'
@@ -132,6 +134,7 @@ export const constantRoutes = [
  */
 export const asyncRoutes = [
   custRouter,
+  finModelRouter,
   {
     path: '/system',
     component: Layout,

@@ -65,14 +65,15 @@
             <el-row>
               <el-col :span="8">
                 <el-form-item label="企业规模" prop="scale">
-                  <el-select v-model="entinfo.scale" placeholder="">
+                  <span>{{entinfo.scale | showCodeName(codemap.EntScale)}}</span>
+                  <!-- <el-select v-model="entinfo.scale" clearable placeholder="">
                     <el-option
                       v-for="item in codemap.EntScale"
                       :key="item.value"
                       :label="item.label"
                       :value="item.value">
                     </el-option>
-                  </el-select>
+                  </el-select> -->
                 </el-form-item>
               </el-col>
               <el-col :span="8" :offset="4">
@@ -128,7 +129,7 @@
             <el-row>
               <el-col :span="8">
                 <el-form-item label="注册资本币种" prop="regcurrency">
-                  <el-select v-model="entinfo.regcurrency" placeholder="">
+                  <el-select v-model="entinfo.regcurrency" clearable placeholder="">
                     <el-option
                       v-for="item in codemap.Currency"
                       :key="item.value"
@@ -139,7 +140,7 @@
                 </el-form-item>
               </el-col>
               <el-col :span="8" :offset="4">
-                <el-form-item label="注册资本" prop="regcapital">
+                <el-form-item label="注册资本（元）" prop="regcapital">
                   <el-input v-model="entinfo.regcapital"/>
                 </el-form-item>
               </el-col>
@@ -148,7 +149,7 @@
             <el-row>
               <el-col :span="8">
                 <el-form-item label="实收资本币种" prop="realcurrency">
-                  <el-select v-model="entinfo.realcurrency" placeholder="">
+                  <el-select v-model="entinfo.realcurrency" clearable placeholder="">
                     <el-option
                       v-for="item in codemap.Currency"
                       :key="item.value"
@@ -159,21 +160,8 @@
                 </el-form-item>
               </el-col>
               <el-col :span="8" :offset="4">
-                <el-form-item label="实收资本" prop="realcapital">
+                <el-form-item label="实收资本（元）" prop="realcapital">
                   <el-input v-model="entinfo.realcapital"/>
-                </el-form-item>
-              </el-col>
-            </el-row>
-            
-            <el-row>
-              <el-col :span="8">
-                <el-form-item label="注册地址" prop="regaddress">
-                  <el-input v-model="entinfo.regaddress"/>
-                </el-form-item>
-              </el-col>
-              <el-col :span="8" :offset="4">
-                <el-form-item label="注册地址邮政编码" prop="regpostcode">
-                  <el-input v-model="entinfo.regpostcode"/>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -187,6 +175,22 @@
               <el-col :span="8" :offset="4">
                 <el-form-item label="省份、直辖市、自治区" prop="province">
                   <el-input v-model="entinfo.province"/>
+                </el-form-item>
+              </el-col>
+            </el-row>
+            
+            <el-row>
+              <el-col :span="16">
+                <el-form-item label="注册地址" prop="regaddress">
+                  <el-input v-model="entinfo.regaddress"/>
+                </el-form-item>
+              </el-col>
+            </el-row>
+            
+            <el-row>
+              <el-col :span="8">
+                <el-form-item label="注册地址邮政编码" prop="regpostcode">
+                  <el-input v-model="entinfo.regpostcode"/>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -217,7 +221,7 @@
             <el-row>
               <el-col :span="8">
                 <el-form-item label="有无进出口经营权" prop="istrade">
-                  <el-select v-model="entinfo.istrade" placeholder="">
+                  <el-select v-model="entinfo.istrade" clearable placeholder="">
                     <el-option
                       v-for="item in codemap.HasNot"
                       :key="item.value"
@@ -229,7 +233,7 @@
               </el-col>
               <el-col :span="8" :offset="4">
                 <el-form-item label="是否担保公司" prop="isguaranty">
-                  <el-select v-model="entinfo.isguaranty" placeholder="">
+                  <el-select v-model="entinfo.isguaranty" clearable placeholder="">
                     <el-option
                       v-for="item in codemap.IsNot"
                       :key="item.value"

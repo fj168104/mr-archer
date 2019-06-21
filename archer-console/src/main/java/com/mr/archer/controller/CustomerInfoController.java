@@ -102,6 +102,8 @@ public class CustomerInfoController extends BaseController{
         // 新增客户基本信息
         EntInfo entInfo = new EntInfo();
         entInfo.setId(sCustomerId);
+        // 企业规模：03-小微客户
+        entInfo.setScale("03");
         entInfo.setCreateuser(sCurUserId);
         entInfo.setCreatetime(sCurTime);
         entInfo.setCreateorg(sCurUserOrg);

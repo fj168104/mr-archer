@@ -31,7 +31,7 @@
         </template>
       </el-table-column> -->
 
-      <el-table-column label="起诉人名称" width="300" fixed="left">
+      <el-table-column label="起诉人名称" fixed="left">
         <template slot-scope="scope">
           <span>{{ scope.row.name }}</span>
         </template>
@@ -43,19 +43,19 @@
         </template>
       </el-table-column>
 
-      <el-table-column label="币种" width="150">
+      <el-table-column label="币种" align="center" width="150">
         <template slot-scope="scope">
           <span>{{ scope.row.currency | showCodeName(codemap.Currency)}}</span>
         </template>
       </el-table-column>
 
-      <el-table-column label="判决执行金额" width="150">
+      <el-table-column label="判决执行金额（元）" align="right">
         <template slot-scope="scope">
-          <span>{{ scope.row.money }}</span>
+          <span>{{ scope.row.money | toThousandFilter}}</span>
         </template>
       </el-table-column>
       
-      <el-table-column label="是否有效"  align="center">
+      <el-table-column label="是否有效" align="center" width="150">
         <template slot-scope="scope">
           <span>{{ scope.row.status | showCodeName(codemap.IsNot)}}</span>
         </template>
