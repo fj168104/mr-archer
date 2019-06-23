@@ -1,7 +1,7 @@
-DROP DATABASE IF EXISTS `archer`;
-CREATE DATABASE `archer`;
+# DROP DATABASE IF EXISTS `credit`;
+CREATE DATABASE `credit`;
 
-USE archer;
+USE credit;
 
 -- DROP TABLE IF EXISTS `resources`;
 -- CREATE TABLE `resources` (
