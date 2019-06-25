@@ -9,7 +9,7 @@ const finModelRouter = {
   alwaysShow: true,
   name: 'fin',
   meta: {
-    perm: 'm:sys',
+    perm: 'm:fin',
     title: '财务报表配置管理',
     icon: 'peoples'
   },
@@ -18,18 +18,18 @@ const finModelRouter = {
       path: '/fin/model/list',
       component: () => import('@/views/fin/model/list'),
       name: 'finmodellist',
-      meta: { 
-        perm: 'm:sys',
+      meta: {
+        perm: 'm:fin:templete',
         title: '模板配置管理列表'
       }
     },
-    
+
     {
       path: '/fin/config/list',
       component: () => import('@/views/fin/config/list'),
       name: 'finconfiglist',
-      meta: { 
-        perm: 'm:sys',
+      meta: {
+        perm: 'm:fin:common',
         title: '基本配置管理列表'
       }
     }
