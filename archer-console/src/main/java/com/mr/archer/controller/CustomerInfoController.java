@@ -50,21 +50,6 @@ public class CustomerInfoController extends BaseController{
         String oper = "query cust xw";
         log.info("{}, body: {}", oper, body);
         JSONObject json = JSON.parseObject(body);
-        /*Wrapper<CustomerInfo> queryParams = new EntityWrapper<>();
-
-        JSONObject filterJson = json.getJSONObject("filters");
-        String sName = filterJson.getString("name");
-        if (StringUtils.isNotBlank(sName)) {
-            queryParams.like("name", sName);
-        }
-
-        String sCertId = filterJson.getString("certid");
-        if (StringUtils.isNotBlank(sCertId)) {
-            if(queryParams.isNotEmptyOfWhere()) queryParams.and();
-            queryParams.eq("certid", sCertId);
-        }
-
-        Page<CustomerInfo> page = customerInfoService.selectPage(PageUtils.getPageParam(json), queryParams);*/
 
         SysUser curUser = getCurUser();
         String sCurUserId = String.valueOf(curUser.getId());

@@ -18,16 +18,22 @@
           <el-row>
             <el-col>
               <el-row>
-                <el-col :span="11" style="padding:5px;font-weight:bold;border: 1px solid #DCDFE6;background-color: rgb(245, 246, 248);">
+                <el-col :span="8" style="padding:5px;font-weight:bold;border: 1px solid #DCDFE6;background-color: rgb(245, 246, 248);">
                   <span>名称</span>
                 </el-col>
-                <el-col :span="3" style="padding:5px;font-weight:bold;border: 1px solid #DCDFE6;background-color: rgb(245, 246, 248);">
+                <el-col :span="2" style="padding:5px;font-weight:bold;border: 1px solid #DCDFE6;background-color: rgb(245, 246, 248);">
                   <span>字段名</span>
                 </el-col>
                 <el-col :span="5" style="padding:5px;font-weight:bold;border: 1px solid #DCDFE6;background-color: rgb(245, 246, 248);">
-                  <span>可编辑</span>
+                  <span>计算公式</span>
+                </el-col>
+                <el-col :span="2" style="padding:5px;font-weight:bold;border: 1px solid #DCDFE6;background-color: rgb(245, 246, 248);">
+                  <span>序号</span>
                 </el-col>
                 <el-col :span="3" style="padding:5px;font-weight:bold;border: 1px solid #DCDFE6;background-color: rgb(245, 246, 248);">
+                  <span>可编辑</span>
+                </el-col>
+                <el-col :span="2" style="padding:5px;font-weight:bold;border: 1px solid #DCDFE6;background-color: rgb(245, 246, 248);">
                   <span>排序号</span>
                 </el-col>
                 <el-col :span="2" style="padding:5px;font-weight:bold;border: 1px solid #DCDFE6;background-color: rgb(245, 246, 248);">
@@ -39,13 +45,19 @@
           <el-row>
             <el-col :span="24" v-for="(item,j) in collist" :key="j">
               <el-row>
-                <el-col :span="11">
-                  <el-input v-model="item.name" placeholder="名称"/>
+                <el-col :span="8">
+                  <el-input v-model="item.name" placeholder=""/>
                 </el-col>
-                <el-col :span="3">
-                  <el-input v-model="item.colname" placeholder="字段名"/>
+                <el-col :span="2">
+                  <el-input v-model="item.colname" placeholder=""/>
                 </el-col>
-                <el-col :span="5" align="center">
+                <el-col :span="5">
+                  <el-input v-model="item.formulatxt" placeholder=""/>
+                </el-col>
+                <el-col :span="2">
+                  <el-input v-model="item.formulasortno" placeholder=""/>
+                </el-col>
+                <el-col :span="3" align="center">
                   <!-- <el-radio v-model="item.isedit" label="1">是</el-radio>
                   <el-radio v-model="item.isedit" label="0">否</el-radio> -->
                   <el-radio-group v-model="item.isedit">
@@ -53,8 +65,8 @@
                     <el-radio-button label="0">否</el-radio-button>
                   </el-radio-group>
                 </el-col>
-                <el-col :span="3">
-                  <el-input v-model="item.sortno" placeholder="排序号"/>
+                <el-col :span="2">
+                  <el-input v-model="item.sortno" placeholder=""/>
                 </el-col>
                 <el-col :span="2" align="center">
                   <el-button @click="handleDelete(item,i,j)" size="medium" type="danger" icon="el-icon-delete" circle plain></el-button>

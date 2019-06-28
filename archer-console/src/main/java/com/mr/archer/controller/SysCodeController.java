@@ -43,27 +43,29 @@ public class SysCodeController extends BaseController {
     log.info("{}, body: {}", oper, body);
     JSONObject resultJson = new JSONObject();
     JSONObject reqJson = JSON.parseObject(body);
-    JSONArray aCodeList = reqJson.getJSONArray("codelist");
-    for (int i = 0; i < aCodeList.size(); i++) {
-      Object oCode = aCodeList.get(i);
-      String sCurId = oCode.toString();
-      Wrapper<SysCode> queryParams = new EntityWrapper<>();
-      queryParams.eq("id", sCurId);
-      queryParams.orderBy("sortno");
-      queryParams.setSqlSelect("opt,name");
-      List<SysCode> curCodeList = sysCodeService.selectList(queryParams);
-      JSONArray aSelectCode = new JSONArray();
+    if (reqJson.containsKey("codelist")) {
+      JSONArray aCodeList = reqJson.getJSONArray("codelist");
+      for (int i = 0; i < aCodeList.size(); i++) {
+        Object oCode = aCodeList.get(i);
+        String sCurId = oCode.toString();
+        Wrapper<SysCode> queryParams = new EntityWrapper<>();
+        queryParams.eq("id", sCurId);
+        queryParams.orderBy("sortno");
+        queryParams.setSqlSelect("opt,name");
+        List<SysCode> curCodeList = sysCodeService.selectList(queryParams);
+        JSONArray aSelectCode = new JSONArray();
       /*JSONObject oEmptyCodeJson = new JSONObject();
       oEmptyCodeJson.put("value", "");
       oEmptyCodeJson.put("label", "");
       aSelectCode.add(oEmptyCodeJson);*/
-      for (SysCode code : curCodeList) {
-        JSONObject oCodeJson = new JSONObject();
-        oCodeJson.put("value", code.getOpt());
-        oCodeJson.put("label", code.getName());
-        aSelectCode.add(oCodeJson);
+        for (SysCode code : curCodeList) {
+          JSONObject oCodeJson = new JSONObject();
+          oCodeJson.put("value", code.getOpt());
+          oCodeJson.put("label", code.getName());
+          aSelectCode.add(oCodeJson);
+        }
+        resultJson.put(sCurId, aSelectCode);
       }
-      resultJson.put(sCurId, aSelectCode);
     }
 
     if (reqJson.containsKey("treelist")) {

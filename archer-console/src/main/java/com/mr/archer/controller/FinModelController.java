@@ -2,6 +2,7 @@ package com.mr.archer.controller;
 
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
@@ -18,6 +19,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * <p>
@@ -52,6 +55,27 @@ public class FinModelController extends BaseController {
     Page<FinModel> page = finModelService.selectPage(PageUtils.getPageParam(json), queryParams);
 
     return Json.succ(oper).data("data", page);
+  }
+
+  @PermInfo("查询所有财报模板列表信息")
+  @PostMapping("/codelist")
+  public Json queryCodeList(@RequestBody String body) {
+    String oper = "query codelist FinModel";
+    log.info("{}, body: {}", oper, body);
+    JSONObject json = JSON.parseObject(body);
+    JSONArray resultJson = new JSONArray();
+
+    Wrapper<FinModel> queryParams = new EntityWrapper<>();
+    queryParams.isNotNull("");
+    List<FinModel> list = finModelService.selectList(queryParams);
+    for (FinModel model : list) {
+      JSONObject curModelJson = new JSONObject();
+      curModelJson.put("label", model.getName());
+      curModelJson.put("value", model.getId());
+      resultJson.add(curModelJson);
+    }
+
+    return Json.succ(oper, resultJson);
   }
 
   @PermInfo("新增财报模板信息")

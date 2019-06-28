@@ -107,6 +107,7 @@ import waves from '@/directive/waves' // waves directive
 import { updateFinModel } from '@/api/fin/finmodel'
 import { queryFinModelConfigRefList,createFinModelConfigRef,updateFinModelConfigRefList,deleteFinModelConfigRef } from '@/api/fin/finmodelconfigref'
 import ChooseFinConfigList from '@/views/fin/config/choosefinconfiglist'
+import { queryCodeList } from '@/api/syscode'
 
 export default {
   name: 'FinModelView',
@@ -128,6 +129,7 @@ export default {
         name: this.curname,
         remark: this.curremark
       },
+      codemap:{},
       listLoading: false,
       datalist:[],
       rules:{
@@ -141,7 +143,12 @@ export default {
     }
   },
   created() {
-    this.getList()
+    queryCodeList({codelist:['FinDataType']}).then(response => {
+      this.codemap = response.data
+      this.getList()
+    }).catch(() => {
+      this.$message.info("获取数据失败！")
+    })
   },
   methods: {
     saveFinModel(){
@@ -225,6 +232,7 @@ export default {
       this.listLoading = true
       createFinModelConfigRef(data).then(response => {
         this.listLoading = false
+        this.newDataDialogVisible = false
         this.getList()
         this.$notify({
           title: 'Success',

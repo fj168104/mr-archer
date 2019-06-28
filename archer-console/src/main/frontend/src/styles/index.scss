@@ -195,7 +195,11 @@ aside {
   border-width: 0 0 1px 0;
 }
 
-.el-aside {
-  border: solid #c0c4cc;
-  border-width: 0 1px 0 0;
+// .el-aside {
+//   border: solid #c0c4cc;
+//   border-width: 0 1px 0 0;
+// }
+
+.finnumber .el-input__inner {
+  text-align: right;
 }

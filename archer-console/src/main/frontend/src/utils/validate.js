@@ -124,3 +124,18 @@ export function getTextLength(src) {
   }
   return realLength;
 }
+
+/**
+ * 整数验证
+ * @param {*} rule 
+ * @param {number} value 
+ * @param {*} callback 
+ */
+export function integerCheck(rule, value, callback) {
+  var reg = /^[1-9]\d*$/;
+  if(reg.test(value)) {
+    callback();
+  } else {
+    callback(new Error('请输入整数'));
+  }
+}

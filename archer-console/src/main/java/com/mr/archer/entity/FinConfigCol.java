@@ -49,11 +49,19 @@ public class FinConfigCol extends Model<FinConfigCol> {
      */
     private String tablename;
     /**
+     * 计算公式
+     */
+    private String formulatxt;
+    /**
+     * 计算公式排序号
+     */
+    private String formulasortno;
+    /**
      * 映射字段名
      */
     private String colname;
     /**
-     * 排序号
+     * 是否可修改
      */
     private String isedit;
     /**

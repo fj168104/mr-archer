@@ -4,6 +4,7 @@ package com.mr.archer.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.enums.SqlLike;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.mr.archer.annotation.PermInfo;
@@ -149,15 +150,15 @@ public class SysIndustryController extends BaseController {
         break;
       case "1":
         String sLevel1 = json.getString("p");
-        queryParams.like("l2", "concat(" + sLevel1 + ", '%')");
+        queryParams.like("l2", sLevel1, SqlLike.RIGHT);
         break;
       case "2":
         String sLevel2 = json.getString("p");
-        queryParams.like("l3", "concat(" + sLevel2 + ", '%')");
+        queryParams.like("l3", sLevel2, SqlLike.RIGHT);
         break;
       case "3":
         String sLevel3 = json.getString("p");
-        queryParams.like("l4", "concat(" + sLevel3 + ", '%')");
+        queryParams.like("l4", sLevel3, SqlLike.RIGHT);
         break;
       default:
         break;

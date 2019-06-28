@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mr.archer.dao.FinCashFlowMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.mr.archer.entity.FinCashFlow">
+        <id column="id" property="id" />
+        <result column="baseinfoid" property="baseinfoid" />
+        <result column="type" property="type" />
+        <result column="configid" property="configid" />
+        <result column="a1" property="a1" />
+        <result column="a2" property="a2" />
+        <result column="a3" property="a3" />
+        <result column="a4" property="a4" />
+        <result column="a5" property="a5" />
+        <result column="a6" property="a6" />
+        <result column="a7" property="a7" />
+        <result column="a8" property="a8" />
+        <result column="a9" property="a9" />
+        <result column="a10" property="a10" />
+        <result column="a11" property="a11" />
+        <result column="a12" property="a12" />
+        <result column="a13" property="a13" />
+        <result column="a14" property="a14" />
+        <result column="a15" property="a15" />
+        <result column="a16" property="a16" />
+        <result column="a17" property="a17" />
+        <result column="a18" property="a18" />
+        <result column="a19" property="a19" />
+        <result column="a20" property="a20" />
+        <result column="a21" property="a21" />
+        <result column="a22" property="a22" />
+    </resultMap>
+
+</mapper>

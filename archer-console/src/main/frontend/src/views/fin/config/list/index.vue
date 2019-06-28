@@ -25,7 +25,7 @@
       highlight-current-row
       style="width: 100%;"
     >
-      <el-table-column label="ID" prop="id" align="center">
+      <el-table-column label="ID" prop="id" align="center" width="150">
         <template slot-scope="scope">
           <span>{{ scope.row.id }}</span>
         </template>
@@ -37,13 +37,13 @@
         </template>
       </el-table-column>
 
-      <el-table-column label="财报数据类型">
+      <el-table-column label="财报数据类型" width="120">
         <template slot-scope="scope">
           <span>{{ scope.row.findatatype | showCodeName(codemap.FinDataType)}}</span>
         </template>
       </el-table-column>
 
-      <el-table-column label="分栏数">
+      <el-table-column label="分栏数" width="60">
         <template slot-scope="scope">
           <span>{{ scope.row.cols }}</span>
         </template>
@@ -55,22 +55,20 @@
         </template>
       </el-table-column>
 
-      <el-table-column label="创建时间"  align="center">
+      <el-table-column label="创建时间" align="center" width="150">
         <template slot-scope="scope">
           <span>{{ scope.row.createtime | parseTime('{y}-{m}-{d} {h}:{i}:{s}') }}</span>
         </template>
       </el-table-column>
 
-      <el-table-column label="操作" align="center" width="130" class-name="small-padding fixed-width" fixed="right">
+      <el-table-column label="操作" align="center" width="200" class-name="small-padding fixed-width" fixed="right">
 
         <template slot-scope="scope">
-          <el-tooltip content="详情" placement="top">
-            <el-button @click="viewData(scope.row)" size="medium" type="primary" icon="el-icon-edit" circle plain></el-button>
-          </el-tooltip>
-
-          <el-tooltip content="删除" placement="top">
-            <el-button @click="handleDelete(scope.$index,scope.row)" size="medium" type="danger" icon="el-icon-delete" circle plain></el-button>
-          </el-tooltip>
+          <el-button-group>
+            <el-button @click="editDataInfo(scope.row)" type="primary" size="mini">编辑</el-button>
+            <el-button @click="viewData(scope.row)" type="primary" size="mini">详情</el-button>
+            <el-button @click="handleDelete(scope.$index,scope.row)" type="danger" size="mini">删除</el-button>
+          </el-button-group>
         </template>
 
       </el-table-column>
@@ -98,7 +96,7 @@
         </el-form-item>
         
         <el-form-item label="分栏数" prop="cols">
-          <el-input v-model="newData.cols" />
+          <el-input v-model.number="newData.cols" type="number"/>
         </el-form-item>
         
         <el-form-item label="描述" prop="configdesc">
@@ -117,6 +115,46 @@
       </el-form>
     </el-dialog>
     <!-- 新增窗口 end -->
+    
+    <!-- 编辑窗口 start-->
+    <el-dialog :title="'修改'" :visible.sync="editDataDialogVisible">
+      <el-form ref="newDataForm" :rules="rules" :model="editData" label-position="left" label-width="160px" style="width: 50%; margin-left:50px;">
+
+        <el-form-item label="名称" prop="name">
+          <el-input v-model="editData.name" />
+        </el-form-item>
+        
+        <el-form-item label="财报数据类型" prop="findatatype">
+          <el-select v-model="editData.findatatype" clearable placeholder="">
+            <el-option
+              v-for="item in codemap.FinDataType"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        
+        <el-form-item label="分栏数" prop="cols">
+          <el-input v-model.number="editData.cols" type="number"/>
+        </el-form-item>
+        
+        <el-form-item label="描述" prop="configdesc">
+          <el-input type="textarea" :row="3" v-model="editData.configdesc" />
+        </el-form-item>
+
+        <el-form-item>
+          <el-button type="primary" @click="updateData()">
+            确定
+          </el-button>
+          <el-button @click="editDataDialogVisible = false">
+            取消
+          </el-button>
+        </el-form-item>
+
+      </el-form>
+    </el-dialog>
+    <!-- 编辑窗口 end -->
 
     <!-- 详情窗口 start-->
     <el-dialog top="5vh" :visible.sync="viewDataDialogVisible" :fullscreen="true" :v-if="viewDataDialogVisible" :show-close="false">
@@ -135,10 +173,12 @@
 <script>
 import waves from '@/directive/waves' // waves directive
 import { parseTime } from '@/utils'
-import { queryFinConfigList, createFinConfig, deleteFinConfig } from '@/api/fin/finconfig'
+import { queryFinConfigList, createFinConfig, updateFinConfig, deleteFinConfig } from '@/api/fin/finconfig'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 import FinConfigView from '@/views/fin/config/finconfigview'
 import { queryCodeList } from '@/api/syscode'
+import { integerCheck } from '@/utils/validate'
+
 
 export default {
   name: 'FinConfigList',
@@ -162,10 +202,12 @@ export default {
       newData: {
         name: '',
         findatatype: '',
-        cols: '',
+        cols: 1,
         configdesc: ''
       },
+      editData:{},
       newDataDialogVisible: false,
+      editDataDialogVisible: false,
       viewDataDialogVisible: false,
       curid: '',
       curcols: 0,
@@ -173,7 +215,10 @@ export default {
       rules: {
         name: [{ required: true, message: '请输入名称', trigger: 'blur' }],
         findatatype: [{ required: true, message: '请输入财报数据类型', trigger: 'blur' }],
-        cols: [{ required: true, message: '请输入分栏数', trigger: 'blur' }]
+        //cols: [{type: 'number', max: 2, required: true, trigger: 'blur' }],
+        cols: [{required: true, message: '请输入分栏数', trigger: 'blur' },
+        {type: 'number', max: 2, message: '分栏数最大值为2', trigger: 'blur' },
+        {validator: integerCheck, message: '请输入整数', trigger: 'blur' }]
       }
     }
   },
@@ -205,7 +250,7 @@ export default {
       this.newData = {
         name: '',
         findatatype: '',
-        cols: '',
+        cols: 1,
         configdesc: ''
       }
     },
@@ -232,6 +277,22 @@ export default {
         }
       })
     },
+    updateData() {
+      this.$refs['newDataForm'].validate((valid) => {
+        if (valid) {
+          updateFinConfig(this.editData).then((res) => {
+            this.editDataDialogVisible = false
+            this.getList()
+            this.$notify({
+              title: 'Success',
+              message: '保存成功',
+              type: 'success',
+              duration: 2000
+            })
+          })
+        }
+      })
+    },
     //删除
     handleDelete(idx, row) {
       this.$confirm('您确定要永久删除该信息？', '提示', confirm).then(() => {
@@ -242,6 +303,10 @@ export default {
       }).catch(() => {
         this.$message.info("已取消删除")
       });
+    },
+    editDataInfo(row) {
+      this.editData = JSON.parse(JSON.stringify(row));
+      this.editDataDialogVisible = true;
     },
     viewData(row) {
       this.curid = row.id;

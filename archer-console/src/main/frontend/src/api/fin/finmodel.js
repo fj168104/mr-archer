@@ -58,3 +58,14 @@ export function deleteFinModel(uid) {
     method: 'delete'
   })
 }
+
+/**
+ * 查询所有财报模板信息
+ */
+export function queryFinModelCodeList(data) {
+  return request({
+    url: '/finmodel/codelist',
+    method: 'post',
+    data
+  })
+}

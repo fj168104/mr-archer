@@ -10,6 +10,11 @@ import Layout from '@/layout'
 import custRouter from './modules/cust'
 /* 财务报表配置管理 */
 import finModelRouter from './modules/finmodel'
+/* 配置管理 */
+import configRouter from './modules/config'
+/* 授信申请管理 */
+import businessApplyRouter from './modules/businessapply'
+
 /* Router Modules */
 import componentsRouter from './modules/components'
 import chartsRouter from './modules/charts'
@@ -134,7 +139,9 @@ export const constantRoutes = [
  */
 export const asyncRoutes = [
   custRouter,
+  businessApplyRouter,
   finModelRouter,
+  configRouter,
   {
     path: '/system',
     component: Layout,

@@ -15,6 +15,7 @@ import com.mr.archer.utils.KeyUtils;
 import com.mr.archer.vo.Json;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -49,12 +50,12 @@ public class FinModelConfigRefController extends BaseController {
   }
 
   @PermInfo("批量更新财报模板配置关联信息列表")
+  @Transactional
   @PostMapping("/updatelist")
   public Json updateList(@RequestBody String body) {
     String oper = "updatelist FinModelConfigRef";
     log.info("{}, body: {}", oper, body);
     JSONArray json = JSON.parseArray(body);
-
     for (int i = 0; i < json.size(); i++) {
       JSONObject datainfo = json.getJSONObject(i);
       String sId = datainfo.getString("id");

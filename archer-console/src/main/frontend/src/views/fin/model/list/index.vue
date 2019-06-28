@@ -25,7 +25,7 @@
       highlight-current-row
       style="width: 100%;"
     >
-      <el-table-column label="ID" prop="id" align="center">
+      <el-table-column label="ID" prop="id" align="center" width="150">
         <template slot-scope="scope">
           <span>{{ scope.row.id }}</span>
         </template>
@@ -43,7 +43,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column label="创建时间"  align="center">
+      <el-table-column label="创建时间"  align="center" width="150">
         <template slot-scope="scope">
           <span>{{ scope.row.createtime | parseTime('{y}-{m}-{d} {h}:{i}:{s}') }}</span>
         </template>

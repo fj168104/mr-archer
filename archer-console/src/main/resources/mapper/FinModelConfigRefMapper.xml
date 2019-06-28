@@ -23,6 +23,7 @@
         from fin_model_config_ref fmcr
         left join fin_config fc on fc.id = fmcr.configid
         where fmcr.modelid = #{modelid}
+        order by fmcr.sortno
     </select>
 
     <update id="updateSortNoById">
