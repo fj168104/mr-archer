@@ -2,8 +2,7 @@ package com.mr.archer.exception;
 
 import com.mr.archer.constant.Codes;
 import com.mr.archer.vo.Json;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -14,10 +13,8 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
  * 统一捕捉异常，返回给前台一个json信息，前台根据这个信息显示对应的提示，或者做页面的跳转。
  */
 @ControllerAdvice
+@Slf4j
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
-
-
-    private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
     //不满足@RequiresGuest注解时抛出的异常信息
     private static final String GUEST_ONLY = "Attempting to perform a guest-only operation";
@@ -51,12 +48,14 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(ArcherBusinessException.class)
     @ResponseBody
     public Json bizError(ArcherBusinessException e) {
+        log.error(e.getMessage(), e);
         return new Json("bizError", false, Codes.BIZ_ERR, "业务处理异常", e.getMessage());
     }
 
     @ExceptionHandler(Exception.class)
     @ResponseBody
     public Json serverError(Exception e) {
+        log.error(e.getMessage(), e);
         return new Json("serverError", false, Codes.SERVER_ERR, "服务器异常", e.getMessage());
     }
 
