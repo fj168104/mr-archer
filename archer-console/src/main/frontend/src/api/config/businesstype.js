@@ -13,6 +13,18 @@ export function queryBusinessTypeList(data) {
 }
 
 /**
+ * 查询所有业务品种代码列表
+ * @param data
+ */
+export function queryBusinessTypeCodeList(data) {
+  return request({
+    url: '/businesstype/codelist',
+    method: 'post',
+    data
+  })
+}
+
+/**
  * 查询单个业务品种记录
  * @param data
  */

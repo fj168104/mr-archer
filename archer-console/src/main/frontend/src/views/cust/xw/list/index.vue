@@ -157,7 +157,7 @@
     </el-dialog>
     <!-- 新增客户窗口 end -->
 
-    <el-dialog top="5vh" :visible.sync="viewDataDialogVisible" :fullscreen="true" :v-if="viewDataDialogVisible" :show-close="false">
+    <el-dialog top="5vh" :visible.sync="viewDataDialogVisible" :fullscreen="true" v-if="viewDataDialogVisible" :show-close="false">
       <template slot="title">
         <div>
           <span style="font-weight: bold;font-size: 20px;">客户详情-{{curcustomername}}</span>

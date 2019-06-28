@@ -96,7 +96,7 @@
 
     <pagination v-show="listQuery.total>0" :total="listQuery.total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
 
-    <el-dialog :title="'上下游关联方详情'" :append-to-body="true" :visible.sync="viewDataDialogVisible" :v-if="viewDataDialogVisible" width="70%">
+    <el-dialog :title="'上下游关联方详情'" :append-to-body="true" :visible.sync="viewDataDialogVisible" v-if="viewDataDialogVisible" width="70%">
       <ent-relate :curentrelateid="curentrelateid" :curcustomerid="curcustomerid" @refreshList="getList"></ent-relate>
     </el-dialog>
   </div>

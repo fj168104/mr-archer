@@ -359,9 +359,9 @@ export default {
     };
   },
   watch: {
-    curcustomerid: function(newV, oldV) {
-      this.initData();
-    },
+    // curcustomerid: function(newV, oldV) {
+    //   this.initData();
+    // },
     curindustry: function(newV, oldV) {
       this.entinfo.industry = newV[newV.length - 1];
     },

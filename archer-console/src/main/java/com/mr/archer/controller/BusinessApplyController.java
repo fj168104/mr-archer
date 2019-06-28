@@ -6,15 +6,20 @@ import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.mr.archer.annotation.PermInfo;
 import com.mr.archer.entity.BusinessApply;
+import com.mr.archer.entity.BusinessType;
 import com.mr.archer.entity.SysUser;
 import com.mr.archer.service.BusinessApplyService;
+import com.mr.archer.service.BusinessTypeService;
 import com.mr.archer.utils.DateUtils;
 import com.mr.archer.utils.KeyUtils;
 import com.mr.archer.utils.PageUtils;
 import com.mr.archer.vo.Json;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+
+import java.math.BigDecimal;
 
 /**
  * <p>
@@ -29,7 +34,10 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/businessapply")
 public class BusinessApplyController extends BaseController {
 
+  @Autowired
   private BusinessApplyService businessApplyService;
+  @Autowired
+  private BusinessTypeService businessTypeService;
 
   @PermInfo("查询用户下的贷款申请列表")
   @PostMapping("/user/list")
@@ -55,12 +63,26 @@ public class BusinessApplyController extends BaseController {
     String oper = "create BusinessApply";
     log.info("{}, body: {}", oper, body);
     BusinessApply newData = JSON.parseObject(body, BusinessApply.class);
+
+    // 通过业务品种初始化贷款申请信息
+    String sBusinessType = newData.getBusinesstype();
+    BusinessType bt = businessTypeService.selectById(sBusinessType);
+    // 基础年利率
+    BigDecimal dRate = bt.getRate();
+    newData.setBaserate(dRate);
+    newData.setRate(dRate);
+    newData.setMonthrate(dRate.divide(new BigDecimal(12),6, BigDecimal.ROUND_HALF_UP));
+
     SysUser curUser = getCurUser();
     String sCurUserId = String.valueOf(curUser.getId());
     String sCurUserOrg = curUser.getOrgid();
     String sCurTime = DateUtils.getNowTime();
     String sApplyId = KeyUtils.getKey("BA");
     newData.setId(sApplyId);
+    // 发生类型：01-新发生
+    newData.setOccurtype("01");
+    // 币种：CNY-人民币
+    newData.setCurrency("CNY");
     newData.setCreateuser(sCurUserId);
     newData.setCreatetime(sCurTime);
     newData.setCreateorg(sCurUserOrg);
@@ -80,7 +102,7 @@ public class BusinessApplyController extends BaseController {
     JSONObject json = JSON.parseObject(body);
 
     String sId = json.getString("id");
-    BusinessApply data = businessApplyService.selectById(sId);
+    BusinessApply data = businessApplyService.selectBusinessApplyById(sId);
 
     return Json.succ(oper, data);
   }

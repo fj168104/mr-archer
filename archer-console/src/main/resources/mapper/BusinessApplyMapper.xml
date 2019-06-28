@@ -7,15 +7,26 @@
         <id column="id" property="id" />
         <result column="customerid" property="customerid" />
         <result column="customername" property="customername" />
+        <result column="occurtype" property="occurtype" />
         <result column="businesstype" property="businesstype" />
         <result column="currency" property="currency" />
         <result column="money" property="money" />
+        <result column="industry" property="industry" />
         <result column="termunit" property="termunit" />
         <result column="term" property="term" />
+        <result column="baseratetype" property="baseratetype" />
+        <result column="baserate" property="baserate" />
+        <result column="ratefloattype" property="ratefloattype" />
+        <result column="ratefloatval" property="ratefloatval" />
         <result column="iscycle" property="iscycle" />
         <result column="guaranttype" property="guaranttype" />
         <result column="rate" property="rate" />
+        <result column="monthrate" property="monthrate" />
         <result column="purpose" property="purpose" />
+        <result column="repaytype" property="repaytype" />
+        <result column="repayfrequency" property="repayfrequency" />
+        <result column="interestfrequency" property="interestfrequency" />
+        <result column="repaydesc" property="repaydesc" />
         <result column="reportid" property="reportid" />
         <result column="filelistid" property="filelistid" />
         <result column="createuser" property="createuser" />
@@ -28,7 +39,7 @@
 
     <select id="selectBusinessApplyListByUser" resultType="com.mr.archer.entity.BusinessApply">
         select
-        ba.*
+        ba.*,
         su.nick as createusername,
         so.name as createorgname,
         bt.name as businesstypename
@@ -36,10 +47,19 @@
         left join sys_user su on su.id = ba.createuser
         left join sys_org so on so.id = ba.createorg
         left join business_type bt on bt.id = ba.businesstype
-        where createuser = #{userid}
+        where ba.createuser = #{userid}
         <if test="customername != null and customername != ''">
-        and customername like concat('%',#{customername},'%')
+        and ba.customername like concat('%',#{customername},'%')
         </if>
-        order by createtime
+        order by ba.createtime
     </select>
+
+    <select id="selectBusinessApplyById" resultType="com.mr.archer.entity.BusinessApply">
+        select ba.* ,
+        bt.name as businesstypename
+        from business_apply ba
+        left join business_type bt on bt.id = ba.businesstype
+        where ba.id=#{id}
+    </select>
+
 </mapper>

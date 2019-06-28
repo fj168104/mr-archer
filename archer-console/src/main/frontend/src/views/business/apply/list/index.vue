@@ -6,7 +6,7 @@
         <el-menu
           default-active="10001010"
           class="el-menu-vertical-demo"
-          default-openeds="['1000','2000']"
+          :default-openeds="['1000','2000']"
           @select="selectMenu">
           <el-submenu index="1000">
             <template slot="title">
@@ -14,6 +14,7 @@
             </template>
             <el-menu-item index="10001010">待处理<span style="color:red;padding-left: 10px;" v-if="processcount > 0">[{{processcount}}]</span></el-menu-item>
             <el-menu-item index="10001020">已退回<span style="color:red;padding-left: 10px;" v-if="returncount > 0">[{{returncount}}]</span></el-menu-item>
+            <el-menu-item index="10001030">审批中<span style="color:red;padding-left: 10px;" v-if="approvingcount > 0">[{{approvingcount}}]</span></el-menu-item>
           </el-submenu>
           <el-submenu index="2000">
             <template slot="title">
@@ -26,7 +27,7 @@
         </el-menu>
       </el-aside>
       <el-main>
-        <!-- <business-type-list :type="curnodeid" :typename="curnodelabel"></business-type-list> -->
+        <business-apply-list :applyphase="curnodeid"></business-apply-list>
       </el-main>
     </el-container>
   </el-container>
@@ -34,13 +35,12 @@
 
 <script>
 import waves from '@/directive/waves' // waves directive
-//import BusinessTypeList from '@/views/config/businesstype/treeview/businesstypelist'
+import BusinessApplyList from '@/views/business/apply/list/businessapplylist'
 import { queryCodeList } from '@/api/syscode'
-import { when } from 'q';
 
 export default {
-  name: 'BusinessApplyTreeView',
-  //components: { BusinessTypeList },
+  name: 'BusinessApplyTreeList',
+  components: { BusinessApplyList },
   directives: { waves },
   filters: {},
   props: {
@@ -54,6 +54,7 @@ export default {
       },
       processcount: 2,
       returncount: 1,
+      approvingcount: 2,
       curnodeid: '10001010',
       curnodelabel: '待处理'
     }
@@ -77,20 +78,20 @@ export default {
       if (idx !== '1000' && idx !== '2000') {
         this.curnodeid = idx;
       }
-      switch(idx) {
-        case '10001010':
-          break;
-        case '10001020':
-          break;
-        case '20001010':
-          break;
-        case '20001020':
-          break;
-        case '20001030':
-          break;
-        default:
-          break;
-      }
+      // switch(idx) {
+      //   case '10001010':
+      //     break;
+      //   case '10001020':
+      //     break;
+      //   case '20001010':
+      //     break;
+      //   case '20001020':
+      //     break;
+      //   case '20001030':
+      //     break;
+      //   default:
+      //     break;
+      // }
     }
   }
 }

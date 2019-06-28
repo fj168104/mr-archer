@@ -15,4 +15,6 @@ import com.baomidou.mybatisplus.service.IService;
 public interface BusinessApplyService extends IService<BusinessApply> {
 
   Page<BusinessApply> selectBusinessApplyListByUser(Page<BusinessApply> page, String userid, String customername);
+
+  BusinessApply selectBusinessApplyById(String id);
 }

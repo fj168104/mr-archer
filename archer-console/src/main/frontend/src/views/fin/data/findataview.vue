@@ -34,15 +34,11 @@
             </el-col>
             <el-col :span="6" align="right">
               <el-input class="finnumber" v-if="item.isedit=='1'" v-model="curdatainfo[item.colname]" @change="checkNumber($event, curdatainfo, item.colname)"/>
-              <el-input class="finnumber" v-else :value="curdatainfo[item.colname]" :disabled="true"/>
-              <!-- <el-input-number v-if="item.isedit=='1'" v-model="curdatainfo[item.colname]" :precision="2" controls-position="right" ></el-input-number>
-              <el-input-number v-else :value="curdatainfo[item.colname]" :precision="2" controls-position="right" :disabled="true"/> -->
+              <el-input class="finnumber" v-else :value="curdatainfo[item.colname] | toThousandFilter" :disabled="true"/>
             </el-col>
             <el-col :span="6" align="right">
               <el-input class="finnumber" v-if="item.isedit=='1'" v-model="lastdatainfo[item.colname]" @change="checkNumber($event, lastdatainfo, item.colname)"/>
-              <el-input class="finnumber" v-else :value="lastdatainfo[item.colname]" :disabled="true"/>
-              <!-- <el-input-number v-if="item.isedit=='1'" v-model="lastdatainfo[item.colname]" :precision="2" controls-position="right" ></el-input-number>
-              <el-input-number v-else :value="lastdatainfo[item.colname]" :precision="2" controls-position="right" :disabled="true"/> -->
+              <el-input class="finnumber" v-else :value="lastdatainfo[item.colname] | toThousandFilter" :disabled="true"/>
             </el-col>
           </el-row>
         </el-col>

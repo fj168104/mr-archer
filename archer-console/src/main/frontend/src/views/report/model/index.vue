@@ -99,7 +99,7 @@
           <el-button type="primary" style="float: right;" @click="closeView()">返回</el-button>
         </div>
       </template>
-      <fin-model-view :curid="curid" :curname="curname" :curremark="curremark" @closeView="closeView"></fin-model-view>
+      <!-- <fin-model-view :curid="curid" :curname="curname" :curremark="curremark" @closeView="closeView"></fin-model-view> -->
     </el-dialog>
     <!-- 详情窗口 end-->
   </div>
@@ -147,12 +147,6 @@ export default {
     }
   },
   created() {
-    /*queryCodeList({codelist:['FinDataType']}).then(response => {
-      this.codemap = response.data
-      this.getList()
-    }).catch(() => {
-      this.$message.info("获取数据失败！")
-    })*/
     this.getList()
   },
   methods: {

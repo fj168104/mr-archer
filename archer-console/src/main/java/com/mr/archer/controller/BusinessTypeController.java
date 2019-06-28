@@ -2,6 +2,7 @@ package com.mr.archer.controller;
 
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.enums.SqlLike;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
@@ -19,6 +20,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * <p>
@@ -57,6 +60,29 @@ public class BusinessTypeController extends BaseController {
     Page<BusinessType> page = businessTypeService.selectPage(PageUtils.getPageParam(json), queryParams);
 
     return Json.succ(oper).data("data", page);
+  }
+
+  @PermInfo("查询业务品种代码列表信息")
+  @PostMapping("/codelist")
+  public Json queryCodeList(@RequestBody String body) {
+    String oper = "query codelist BusinessType";
+    log.info("{}, body: {}", oper, body);
+
+    Wrapper<BusinessType> queryParams = new EntityWrapper<>();
+    queryParams.orderBy("type");
+    List<BusinessType> list = businessTypeService.selectList(queryParams);
+    JSONArray codeList = new JSONArray();
+    if (list != null && list.size() > 0) {
+      for (int i = 0; i < list.size(); i++) {
+        BusinessType bt = list.get(i);
+        JSONObject code = new JSONObject();
+        code.put("label", bt.getName());
+        code.put("value", bt.getId());
+        codeList.add(code);
+      }
+    }
+
+    return Json.succ(oper, codeList);
   }
 
   @PermInfo("新增业务品种信息")

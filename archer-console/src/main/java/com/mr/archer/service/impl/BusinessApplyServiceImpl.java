@@ -21,4 +21,8 @@ public class BusinessApplyServiceImpl extends ServiceImpl<BusinessApplyMapper, B
   public Page<BusinessApply> selectBusinessApplyListByUser(Page<BusinessApply> page, String userid, String customername) {
     return page.setRecords(baseMapper.selectBusinessApplyListByUser(page, userid, customername));
   }
+
+  public BusinessApply selectBusinessApplyById(String id) {
+    return baseMapper.selectBusinessApplyById(id);
+  }
 }

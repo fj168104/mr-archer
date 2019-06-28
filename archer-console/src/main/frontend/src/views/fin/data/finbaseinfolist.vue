@@ -183,7 +183,7 @@
     </el-dialog>
     <!-- 新增窗口 end -->
 
-    <el-dialog :title="'报表详情'" :show-close="false" :append-to-body="true" :fullscreen="true" :visible.sync="viewDataDialogVisible" :v-if="viewDataDialogVisible">
+    <el-dialog :title="'报表详情'" :show-close="false" :append-to-body="true" :fullscreen="true" :visible.sync="viewDataDialogVisible" v-if="viewDataDialogVisible">
       <template slot="title">
         <div>
           <span style="font-weight: bold;font-size: 20px;">报表详情</span>

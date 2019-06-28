@@ -96,7 +96,7 @@
 
     <pagination v-show="listQuery.total>0" :total="listQuery.total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
 
-    <el-dialog :title="'家族成员详情'" :append-to-body="true" :visible.sync="viewDataDialogVisible" :v-if="viewDataDialogVisible" width="60%">
+    <el-dialog :title="'家族成员详情'" :append-to-body="true" :visible.sync="viewDataDialogVisible" v-if="viewDataDialogVisible" width="60%">
       <ent-member :curentmemberid="curentmemberid" :curcustomerid="curcustomerid" @refreshList="getList"></ent-member>
     </el-dialog>
   </div>

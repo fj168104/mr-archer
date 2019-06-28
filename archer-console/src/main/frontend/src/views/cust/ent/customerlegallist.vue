@@ -96,7 +96,7 @@
 
     <pagination v-show="listQuery.total>0" :total="listQuery.total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
 
-    <el-dialog :title="'客户涉诉信息详情'" :append-to-body="true" :visible.sync="viewDataDialogVisible" :v-if="viewDataDialogVisible" width="60%">
+    <el-dialog :title="'客户涉诉信息详情'" :append-to-body="true" :visible.sync="viewDataDialogVisible" v-if="viewDataDialogVisible" width="60%">
       <customer-legal :curcustomerlegalid="curcustomerlegalid" :curcustomerid="curcustomerid" @refreshList="getList"></customer-legal>
     </el-dialog>
   </div>

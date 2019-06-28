@@ -3,9 +3,9 @@
 import Layout from '@/layout'
 
 const businessApplyRouter = {
-  path: '/businessapply',
+  path: '/business/apply',
   component: Layout,
-  redirect: '/businessapply',
+  redirect: '/business/apply',
   alwaysShow: true,
   name: 'businessapply',
   meta: {
@@ -16,7 +16,7 @@ const businessApplyRouter = {
   children: [
     {
       path: 'list',
-      component: () => import('@/views/businessapply/list'),
+      component: () => import('@/views/business/apply/list'),
       name: 'businessapplylist',
       meta: { 
         perm: 'm:sys',

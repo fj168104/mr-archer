@@ -9,7 +9,7 @@
     </el-header>
     <el-main>
       <el-row>
-        <el-col :span="colspan" :v-if="curcols >= 1" v-for="(collist,i) in datalist" :key="i">
+        <el-col :span="colspan" v-for="(collist,i) in datalist" :key="i">
           <el-row>
             <el-col :span="24">
               <span style="font-weight:bold">【分栏-{{i+1}}】</span>

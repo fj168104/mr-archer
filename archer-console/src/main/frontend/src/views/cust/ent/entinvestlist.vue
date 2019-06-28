@@ -108,7 +108,7 @@
 
     <pagination v-show="listQuery.total>0" :total="listQuery.total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
 
-    <el-dialog :title="'对外股权投资详情'" :append-to-body="true" :visible.sync="viewDataDialogVisible" :v-if="viewDataDialogVisible" width="70%">
+    <el-dialog :title="'对外股权投资详情'" :append-to-body="true" :visible.sync="viewDataDialogVisible" v-if="viewDataDialogVisible" width="70%">
       <ent-invest :curentinvestid="curentinvestid" :curcustomerid="curcustomerid" @refreshList="getList"></ent-invest>
     </el-dialog>
   </div>

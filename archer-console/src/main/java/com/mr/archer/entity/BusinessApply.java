@@ -43,6 +43,10 @@ public class BusinessApply extends Model<BusinessApply> {
      */
     private String customername;
     /**
+     * 发生类型
+     */
+    private String occurtype;
+    /**
      * 业务品种编号
      */
     private String businesstype;
@@ -55,6 +59,10 @@ public class BusinessApply extends Model<BusinessApply> {
      */
     private BigDecimal money;
     /**
+     * 贷款投向
+     */
+    private String industry;
+    /**
      * 期限单位
      */
     private String termunit;
@@ -62,6 +70,22 @@ public class BusinessApply extends Model<BusinessApply> {
      * 期限
      */
     private Integer term;
+    /**
+     * 基准利率类型
+     */
+    private String baseratetype;
+    /**
+     * 基准年利率
+     */
+    private BigDecimal baserate;
+    /**
+     * 利率浮动方式
+     */
+    private String ratefloattype;
+    /**
+     * 利率浮动值
+     */
+    private BigDecimal ratefloatval;
     /**
      * 是否循环
      */
@@ -71,13 +95,33 @@ public class BusinessApply extends Model<BusinessApply> {
      */
     private String guaranttype;
     /**
-     * 年利率（%）
+     * 执行年利率（%）
      */
     private BigDecimal rate;
+    /**
+     * 执行月利率（‰）
+     */
+    private BigDecimal monthrate;
     /**
      * 授信用途
      */
     private String purpose;
+    /**
+     * 还款方式
+     */
+    private String repaytype;
+    /**
+     * 还款频率
+     */
+    private String repayfrequency;
+    /**
+     * 还息频率
+     */
+    private String interestfrequency;
+    /**
+     * 还款说明
+     */
+    private String repaydesc;
     /**
      * 调查报告配置编号
      */

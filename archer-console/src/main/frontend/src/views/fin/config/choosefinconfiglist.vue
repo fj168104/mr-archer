@@ -75,7 +75,7 @@
     <pagination v-show="listQuery.total>0" :total="listQuery.total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
 
     <!-- 详情窗口 start-->
-    <el-dialog top="5vh" :visible.sync="viewDataDialogVisible" :fullscreen="true" :v-if="viewDataDialogVisible" :show-close="false">
+    <el-dialog top="5vh" :visible.sync="viewDataDialogVisible" :fullscreen="true" v-if="viewDataDialogVisible" :show-close="false">
       <template slot="title">
         <div>
           <span style="font-weight: bold;font-size: 20px;">详情-{{curname}}</span>
