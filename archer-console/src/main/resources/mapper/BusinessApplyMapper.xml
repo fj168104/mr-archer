@@ -56,8 +56,12 @@
 
     <select id="selectBusinessApplyById" resultType="com.mr.archer.entity.BusinessApply">
         select ba.* ,
+        su.nick as createusername,
+        so.name as createorgname,
         bt.name as businesstypename
         from business_apply ba
+        left join sys_user su on su.id = ba.createuser
+        left join sys_org so on so.id = ba.createorg
         left join business_type bt on bt.id = ba.businesstype
         where ba.id=#{id}
     </select>

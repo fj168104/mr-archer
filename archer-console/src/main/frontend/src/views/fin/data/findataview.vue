@@ -1,8 +1,8 @@
 <template>
   <el-row>
     <el-col :span="24" align="right">
-      <el-button type="primary" @click="calculateData">计算</el-button>
-      <el-button type="primary" @click="saveData">保存</el-button>
+      <el-button v-if="isedit" type="primary" @click="calculateData">计算</el-button>
+      <el-button v-if="isedit" type="primary" @click="saveData">保存</el-button>
     </el-col>
     <el-col :span="colspan" v-for="(collist,i) in datalist" :key="i">
       <el-row>
@@ -61,7 +61,8 @@ export default {
   filters: {},
   props: {
     curid: String,
-    curconfig: Object
+    curconfig: Object,
+    isedit: Boolean
   },
   data: function() {
     return {

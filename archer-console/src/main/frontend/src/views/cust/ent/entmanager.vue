@@ -140,9 +140,9 @@
       </el-form>
       
       <div slot="footer">
-          <el-button type="primary" @click="updateData()">
-            保存
-          </el-button>
+        <el-button v-if="isedit" type="primary" :loading="btnLoading" @click="updateData()">
+          保存
+        </el-button>
       </div>
   </div>
 </template>
@@ -161,11 +161,13 @@ export default {
   filters: {},
   props: {
     curcustomerid: String,
-    curentmanagerid: String
+    curentmanagerid: String,
+    isedit: Boolean
   },
   data() {
     return {
       dataLoading : false,
+      btnLoading: false,
       datainfo: {
       },
       codemap: {
@@ -223,6 +225,7 @@ export default {
     updateData() {
       this.$refs['dataInfoForm'].validate((valid) => {
         if (valid) {
+          this.btnLoading = true
           if (this.curentmanagerid) {
             updateEntManager(this.datainfo).then((res) => {
               this.$notify({
@@ -231,6 +234,7 @@ export default {
                 type: 'success',
                 duration: 2000
               })
+              this.btnLoading = false
               this.$emit('refreshList')
             })
           } else {
@@ -241,6 +245,7 @@ export default {
                 type: 'success',
                 duration: 2000
               })
+              this.btnLoading = false
               this.$emit('refreshList')
             })
           }

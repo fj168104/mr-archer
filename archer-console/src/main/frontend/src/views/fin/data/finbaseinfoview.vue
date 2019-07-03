@@ -1,19 +1,19 @@
 <template>
   <el-tabs v-model="activeName" @tab-click="handleClick">
     <el-tab-pane label="基本信息" name="finbaseinfo">
-      <fin-base-info :curid="curid"></fin-base-info>
+      <fin-base-info :isedit="isedit" :curid="curid"></fin-base-info>
     </el-tab-pane>
     <!-- <el-tab-pane v-for="item in datalist" :key="item.id" :label="item.name" :name="item.id">
       <fin-data-view :curconfig="item"></fin-data-view>
     </el-tab-pane> -->
     <el-tab-pane label="资产负债表" name="finbalancesheet" v-if="sheetconfig">
-      <fin-data-view :curid="curid" :curconfig="sheetconfig"></fin-data-view>
+      <fin-data-view :isedit="isedit" :curid="curid" :curconfig="sheetconfig"></fin-data-view>
     </el-tab-pane>
     <el-tab-pane label="利润表" name="finprofit" v-if="profitconfig">
-      <fin-data-view :curid="curid" :curconfig="profitconfig"></fin-data-view>
+      <fin-data-view :isedit="isedit" :curid="curid" :curconfig="profitconfig"></fin-data-view>
     </el-tab-pane>
     <el-tab-pane label="现金流量表" name="fincashflow" v-if="cashconfig">
-      <fin-data-view :curid="curid" :curconfig="cashconfig"></fin-data-view>
+      <fin-data-view :isedit="isedit" :curid="curid" :curconfig="cashconfig"></fin-data-view>
     </el-tab-pane>
   </el-tabs>
 
@@ -32,7 +32,8 @@ export default {
   filters: {},
   props: {
     curid: String,
-    curfinmodelid: String
+    curfinmodelid: String,
+    isedit: Boolean
   },
   data: function() {
     return {

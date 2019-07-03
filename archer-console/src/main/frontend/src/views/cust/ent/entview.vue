@@ -29,14 +29,14 @@
         </el-menu>
       </el-aside>
       <el-main>
-        <ent-info :curcustomerid="curcustomerid" v-if="curnodeid==='1010'"></ent-info>
-        <ent-manager-list :curcustomerid="curcustomerid" v-if="curnodeid==='1020'"></ent-manager-list>
-        <ent-member-list :curcustomerid="curcustomerid" v-if="curnodeid==='1030'"></ent-member-list>
-        <ent-stock-list :curcustomerid="curcustomerid" v-if="curnodeid==='1040'"></ent-stock-list>
-        <ent-invest-list :curcustomerid="curcustomerid" v-if="curnodeid==='1050'"></ent-invest-list>
-        <ent-relate-list :curcustomerid="curcustomerid" v-if="curnodeid==='1060'"></ent-relate-list>
-        <customer-legal-list :curcustomerid="curcustomerid" v-if="curnodeid==='1070'"></customer-legal-list>
-        <fin-base-info-list :curcustomerid="curcustomerid" v-if="curnodeid==='2010'"></fin-base-info-list>
+        <ent-info :isedit="isedit" :curcustomerid="curcustomerid" v-if="curnodeid==='1010'"></ent-info>
+        <ent-manager-list :isedit="isedit" :curcustomerid="curcustomerid" v-if="curnodeid==='1020'"></ent-manager-list>
+        <ent-member-list :isedit="isedit" :curcustomerid="curcustomerid" v-if="curnodeid==='1030'"></ent-member-list>
+        <ent-stock-list :isedit="isedit" :curcustomerid="curcustomerid" v-if="curnodeid==='1040'"></ent-stock-list>
+        <ent-invest-list :isedit="isedit" :curcustomerid="curcustomerid" v-if="curnodeid==='1050'"></ent-invest-list>
+        <ent-relate-list :isedit="isedit" :curcustomerid="curcustomerid" v-if="curnodeid==='1060'"></ent-relate-list>
+        <customer-legal-list :isedit="isedit" :curcustomerid="curcustomerid" v-if="curnodeid==='1070'"></customer-legal-list>
+        <fin-base-info-list :isedit="isedit" :curcustomerid="curcustomerid" v-if="curnodeid==='2010'"></fin-base-info-list>
       </el-main>
     </el-container>
   </el-container>
@@ -60,7 +60,7 @@ export default {
   directives: { waves },
   filters: {},
   props: {
-    refreshdata: String,
+    isedit: Boolean,
     curcustomerid: String
   },
   data() {

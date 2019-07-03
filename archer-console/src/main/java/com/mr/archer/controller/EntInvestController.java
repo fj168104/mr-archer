@@ -8,10 +8,8 @@ import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.mr.archer.annotation.PermInfo;
 import com.mr.archer.entity.EntInvest;
-import com.mr.archer.entity.EntManager;
 import com.mr.archer.entity.SysUser;
 import com.mr.archer.service.EntInvestService;
-import com.mr.archer.service.EntManagerService;
 import com.mr.archer.utils.DateUtils;
 import com.mr.archer.utils.KeyUtils;
 import com.mr.archer.utils.PageUtils;
@@ -20,9 +18,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import org.springframework.stereotype.Controller;
-import com.mr.archer.controller.BaseController;
 
 /**
  * <p>

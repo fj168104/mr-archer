@@ -9,7 +9,7 @@
           <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
               搜索
           </el-button>
-          <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
+          <el-button v-if="isedit" class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
               新增
           </el-button>
         </el-form-item>
@@ -86,7 +86,7 @@
             <el-button @click="viewData(scope.row)" size="medium" type="primary" icon="el-icon-edit" circle plain></el-button>
           </el-tooltip>
 
-          <el-tooltip content="删除" placement="top">
+          <el-tooltip v-if="isedit" content="删除" placement="top">
             <el-button @click="handleDelete(scope.$index,scope.row)" size="medium" type="danger" icon="el-icon-delete" circle plain></el-button>
           </el-tooltip>
         </template>
@@ -97,7 +97,7 @@
     <pagination v-show="listQuery.total>0" :total="listQuery.total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
 
     <el-dialog :title="'上下游关联方详情'" :append-to-body="true" :visible.sync="viewDataDialogVisible" v-if="viewDataDialogVisible" width="70%">
-      <ent-relate :curentrelateid="curentrelateid" :curcustomerid="curcustomerid" @refreshList="getList"></ent-relate>
+      <ent-relate :isedit="isedit" :curentrelateid="curentrelateid" :curcustomerid="curcustomerid" @refreshList="getList"></ent-relate>
     </el-dialog>
   </div>
 </template>
@@ -117,6 +117,7 @@ export default {
   filters: {},
   props: {
     curcustomerid: String,
+    isedit: Boolean
   },
   data() {
     return {

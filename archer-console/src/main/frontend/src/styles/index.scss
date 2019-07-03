@@ -207,3 +207,47 @@ aside {
 .floatright {
   float: right;
 }
+
+.floatcenter {
+  float: center;
+}
+
+.report-data {
+  // font-family: KaiTi;
+}
+
+.report-data .el-col {
+  // border: #c0c4cc solid 0.5px;
+  border: 1px solid #dfe6ec;
+}
+.report-data .el-form-item__label {
+  border: solid #dfe6ec;
+  border-width: 0 1px 0 0;
+  width: 160px;
+  padding-left: 10px;
+  color: black;
+  font-size: 12px;
+}
+
+.report-data .el-form-item__content {
+  font-size: 12px;
+}
+
+.report-data .node-title {
+  height: 60px;
+  line-height: 60px;
+  color: black;
+  font-size: 20px;
+  font-weight: bold;
+  background-color: #a7b8e6;
+}
+
+.report-data .row-title {
+  height: 40px;
+  line-height: 40px;
+  color: black;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: left;
+  background-color: #c7dee3;
+}

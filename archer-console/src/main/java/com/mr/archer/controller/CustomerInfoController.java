@@ -43,6 +43,14 @@ public class CustomerInfoController extends BaseController{
     private CustomerLegalService customerLegalService;
     @Autowired
     private CustomerBelongService customerBelongService;
+    @Autowired
+    private FinBaseInfoService finBaseInfoService;
+    @Autowired
+    private FinBalanceSheetService finBalanceSheetService;
+    @Autowired
+    private FinProfitService finProfitService;
+    @Autowired
+    private FinCashFlowService finCashFlowService;
 
     @PermInfo("查询所有小微客户信息")
     @PostMapping("/xw/list")
@@ -153,6 +161,20 @@ public class CustomerInfoController extends BaseController{
         Wrapper<CustomerBelong> cbParams = new EntityWrapper<>();
         esParams.eq("customerid", uid);
         customerBelongService.delete(cbParams);
+
+        // 删除财务数据
+        Wrapper<FinBaseInfo> fbiParams = new EntityWrapper<>();
+        fbiParams.eq("customerid", uid);
+        finBaseInfoService.delete(fbiParams);
+        Wrapper<FinBalanceSheet> fbsParams = new EntityWrapper<>();
+        fbsParams.eq("customerid", uid);
+        finBalanceSheetService.delete(fbsParams);
+        Wrapper<FinProfit> fpParams = new EntityWrapper<>();
+        fpParams.eq("customerid", uid);
+        finProfitService.delete(fpParams);
+        Wrapper<FinCashFlow> fcfParams = new EntityWrapper<>();
+        fcfParams.eq("customerid", uid);
+        finCashFlowService.delete(fcfParams);
 
         return Json.succ(oper);
     }

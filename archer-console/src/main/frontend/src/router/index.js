@@ -14,6 +14,8 @@ import finModelRouter from './modules/finmodel'
 import configRouter from './modules/config'
 /* 授信申请管理 */
 import businessApplyRouter from './modules/businessapply'
+/* 调查报告配置管理 */
+import reportConfigRouter from './modules/reportconfig'
 
 /* Router Modules */
 import componentsRouter from './modules/components'
@@ -142,6 +144,7 @@ export const asyncRoutes = [
   businessApplyRouter,
   finModelRouter,
   configRouter,
+  reportConfigRouter,
   {
     path: '/system',
     component: Layout,

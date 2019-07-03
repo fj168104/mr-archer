@@ -56,9 +56,13 @@
     <select id="selectEntInfoById" resultType="com.mr.archer.entity.EntInfo">
         select
         ei.*,
+        getCodeName('Currency',ei.regcurrency) as regcurrencyname,
+        getCodeName('Currency',ei.realcurrency) as realcurrencyname,
+        getCodeName('EntScale',ei.scale) as scalename,
         ci.name as name,
         ci.type as type,
         ci.certtype as certtype,
+        getCodeName('EntCertType',ci.certtype) as certtypename,
         ci.certid as certid
         from ent_info ei
         left join customer_info ci on ci.id = ei.id

@@ -9,7 +9,7 @@
           <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
               搜索
           </el-button>
-          <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
+          <el-button v-if="isedit" class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
               新增
           </el-button>
         </el-form-item>
@@ -92,7 +92,7 @@
             <el-button @click="viewData(scope.row)" size="medium" type="primary" icon="el-icon-edit" circle plain></el-button>
           </el-tooltip>
 
-          <el-tooltip content="删除" placement="top">
+          <el-tooltip v-if="isedit" content="删除" placement="top">
             <el-button @click="handleDelete(scope.$index,scope.row)" size="medium" type="danger" icon="el-icon-delete" circle plain></el-button>
           </el-tooltip>
         </template>
@@ -190,7 +190,7 @@
           <el-button type="primary" style="float: right;" @click="viewDataDialogVisible = false">返回</el-button>
         </div>
       </template>
-      <fin-base-info-view :curid="curid" :curfinmodelid="curfinmodelid" @refreshList="getList"></fin-base-info-view>
+      <fin-base-info-view :isedit="isedit" :curid="curid" :curfinmodelid="curfinmodelid" @refreshList="getList"></fin-base-info-view>
     </el-dialog>
   </div>
 </template>
@@ -212,6 +212,7 @@ export default {
   filters: {},
   props: {
     curcustomerid: String,
+    isedit: Boolean
   },
   data() {
     return {

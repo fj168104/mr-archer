@@ -76,7 +76,7 @@
           </el-form-item>
           
           <el-form-item>
-            <el-button type="primary" @click="updateData()">
+            <el-button v-if="isedit" type="primary" @click="updateData()">
               保存
             </el-button>
           </el-form-item>
@@ -104,7 +104,8 @@ export default {
   directives: { waves },
   filters: {},
   props: {
-    curid: String
+    curid: String,
+    isedit: Boolean
   },
   data() {
     return {

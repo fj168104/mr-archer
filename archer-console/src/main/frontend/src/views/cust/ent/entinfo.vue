@@ -2,19 +2,19 @@
   <el-card class="box-card">
     <div slot="header" class="clearfix">
       <span>客户概况</span>
-      <el-button style="float: right;" type="primary" @click="updateData()">保存</el-button>
+      <el-button style="float: right;" type="primary" :loading="btnLoading" @click="updateData()" v-if="isedit">保存</el-button>
     </div>
-    <el-form
-      ref="entInfoForm"
-      v-loading="dataLoading"
-      :rules="rules"
-      :model="entinfo"
-      label-position="left"
-      label-width="160px"
-    >
-      <el-collapse v-model="activeNames">
+    <el-collapse v-model="activeNames">
+      <el-form
+        ref="entInfoForm"
+        v-loading="dataLoading"
+        :rules="rules"
+        :model="entinfo"
+        label-position="left"
+        label-width="160px"
+      >
 
-        <!-- 基本信息 -->
+        <!-- 基本信息 start-->
         <el-collapse-item name="1010">
           <template slot="title">
             <span style="color:#ee7e7e;font-weight: bold;">【基本信息】</span>
@@ -56,8 +56,9 @@
             </el-col>
           </el-row>
         </el-collapse-item>
+        <!-- 基本信息 end -->
         
-        <!-- 注册信息 -->
+        <!-- 注册信息 start -->
         <el-collapse-item name="1020">
           <template slot="title">
             <span style="color:#ee7e7e;font-weight: bold;">【注册信息】</span>
@@ -170,7 +171,7 @@
             </el-col>
           </el-row>
           
-          <el-row>
+          <!-- <el-row>
             <el-col :span="8">
               <el-form-item label="所在国家（地区）" prop="country">
                 <el-input v-model="entinfo.country"/>
@@ -181,9 +182,9 @@
                 <el-input v-model="entinfo.province"/>
               </el-form-item>
             </el-col>
-          </el-row>
+          </el-row> -->
           
-          <el-row>
+          <!-- <el-row>
             <el-col :span="16">
               <el-form-item label="注册地址" prop="regaddress">
                 <el-input v-model="entinfo.regaddress"/>
@@ -205,7 +206,7 @@
                 <el-input v-model="entinfo.country"/>
               </el-form-item>
             </el-col>
-          </el-row>
+          </el-row> -->
           
           <el-row>
             <el-col :span="16">
@@ -215,8 +216,9 @@
             </el-col>
           </el-row>
         </el-collapse-item>
+        <!-- 注册信息 end -->
 
-        <!-- 经营信息 -->
+        <!-- 经营信息 start-->
         <el-collapse-item name="1030">
           <template slot="title">
             <span style="color:#ee7e7e;font-weight: bold;">【经营信息】</span>
@@ -266,8 +268,9 @@
           </el-row>
 
         </el-collapse-item>
+        <!-- 经营信息 end-->
 
-        <!-- 【账户信息】 -->
+        <!-- 【账户信息】start -->
         <el-collapse-item name="1040">
           <template slot="title">
             <span style="color:#ee7e7e;font-weight: bold;">【账户信息】</span>
@@ -279,8 +282,8 @@
               </el-form-item>
             </el-col>
             <el-col :span="8" :offset="4">
-              <el-form-item label="财务报表类型" prop="financereport">
-                <el-input v-model="entinfo.financereport"/>
+              <el-form-item label="公司联系电话" prop="tel">
+                <el-input v-model="entinfo.tel"/>
               </el-form-item>
             </el-col>
           </el-row>
@@ -324,29 +327,39 @@
             </el-col>
           </el-row>
         </el-collapse-item>
-      </el-collapse>
-    </el-form>
+        <!-- 【账户信息】end -->
+      </el-form>
+      
+      <!-- 地址信息 start-->
+      <el-collapse-item name="1050">
+        <EntAddressList :isedit="isedit" :curcustomerid="curcustomerid"></EntAddressList>
+      </el-collapse-item>
+      <!-- 地址信息 end-->
+    </el-collapse>
   </el-card>
 </template>
 
 <script>
 import waves from "@/directive/waves"; // waves directive
+import EntAddressList from "@/views/cust/ent/entaddresslist";
 import { queryEntInfo, updateEntInfo } from "@/api/cust/ent";
 import { queryCodeList, queryIndustryList } from '@/api/syscode'
 
 export default {
   name: "EntInfo",
-  components: {},
+  components: { EntAddressList },
   directives: { waves },
   filters: {},
   props: {
-    curcustomerid: String
+    curcustomerid: String,
+    isedit: Boolean
   },
   data() {
     return {
       dataLoading: false,
+      btnLoading: false,
       entinfo: {},
-      activeNames: ["1010", "1020", "1030", "1040"],
+      activeNames: ["1010", "1020", "1030", "1040", "1050"],
       curindustry: [],
       curentkind: [],
       codemap: {},
@@ -421,6 +434,7 @@ export default {
     updateData() {
       this.$refs["entInfoForm"].validate(valid => {
         if (valid) {
+          this.btnLoading = true
           updateEntInfo(this.entinfo).then(res => {
             this.$notify({
               title: "Success",
@@ -428,6 +442,7 @@ export default {
               type: "success",
               duration: 2000
             });
+            this.btnLoading = false
           });
         }
       });

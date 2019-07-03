@@ -37,6 +37,12 @@
         </template>
       </el-table-column>
 
+      <el-table-column label="是否可用" width="100">
+        <template slot-scope="scope">
+          <span>{{ scope.row.isinuse | showCodeName(codemap.IsNot) }}</span>
+        </template>
+      </el-table-column>
+
       <el-table-column label="备注">
         <template slot-scope="scope">
           <span>{{ scope.row.remark }}</span>
@@ -74,6 +80,17 @@
           <el-input v-model="newData.name" />
         </el-form-item>
         
+        <el-form-item label="是否可用" prop="isinuse">
+          <el-select v-model="newData.isinuse" clearable placeholder="">
+            <el-option
+              v-for="item in codemap.IsNot"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        
         <el-form-item label="备注" prop="remark">
           <el-input type="textarea" :row="3" v-model="newData.remark" />
         </el-form-item>
@@ -99,7 +116,7 @@
           <el-button type="primary" style="float: right;" @click="closeView()">返回</el-button>
         </div>
       </template>
-      <!-- <fin-model-view :curid="curid" :curname="curname" :curremark="curremark" @closeView="closeView"></fin-model-view> -->
+      <report-config-view :curdata="curdata" @closeView="closeView"></report-config-view>
     </el-dialog>
     <!-- 详情窗口 end-->
   </div>
@@ -108,14 +125,14 @@
 <script>
 import waves from '@/directive/waves' // waves directive
 import { parseTime } from '@/utils'
-import { queryFinModelList, createFinModel, deleteFinModel } from '@/api/fin/finmodel'
+import { queryReportConfigList, createReportConfig, deleteReportConfig } from '@/api/report/reportconfig'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
-import FinModelView from '@/views/fin/model/finmodelview'
+import ReportConfigView from '@/views/report/config/reportconfigview'
 import { queryCodeList } from '@/api/syscode'
 
 export default {
-  name: 'FinModelList',
-  components: { Pagination,FinModelView },
+  name: 'ReportConfigList',
+  components: { Pagination,ReportConfigView },
   directives: { waves },
   filters: {},
   data() {
@@ -134,25 +151,29 @@ export default {
       codemap : {},
       newData: {
         name: '',
+        isinuse: '1',
         remark: ''
       },
       newDataDialogVisible: false,
       viewDataDialogVisible: false,
-      curid: '',
-      curname: '',
-      curremark: '',
+      curdata: {},
       rules: {
         name: [{ required: true, message: '请输入名称', trigger: 'blur' }]
       }
     }
   },
   created() {
-    this.getList()
+    queryCodeList({codelist:['IsNot']}).then(response => {
+      this.codemap = response.data
+      this.getList()
+    }).catch(() => {
+      this.$message.info("获取数据失败！")
+    })
   },
   methods: {
     getList() {
       this.listQuery.listLoading = true
-      queryFinModelList(this.listQuery).then(response => {
+      queryReportConfigList(this.listQuery).then(response => {
         this.listQuery.list = response.data.records
         this.listQuery.total = response.data.total
         this.listQuery.listLoading = false
@@ -168,6 +189,7 @@ export default {
     resetNewData() {
       this.newData = {
         name: '',
+        isinuse: '1',
         remark: ''
       }
     },
@@ -181,7 +203,7 @@ export default {
     createData() {
       this.$refs['newDataForm'].validate((valid) => {
         if (valid) {
-          createFinModel(this.newData).then((res) => {
+          createReportConfig(this.newData).then((res) => {
             this.newDataDialogVisible = false
             this.getList()
             this.$notify({
@@ -197,7 +219,7 @@ export default {
     //删除
     handleDelete(idx, row) {
       this.$confirm('您确定要永久删除该信息？', '提示', confirm).then(() => {
-        deleteFinModel(row.id).then(res => {
+        deleteReportConfig(row.id).then(res => {
           this.$message.success("删除成功")
           this.getList()
         })
@@ -206,15 +228,10 @@ export default {
       });
     },
     viewData(row) {
-      this.curid = row.id
-      this.curname = row.name
-      this.curremark = row.remark
+      this.curdata = row
       this.viewDataDialogVisible = true
     },
     closeView(){
-      this.curid = ''
-      this.curname = ''
-      this.curremark = ''
       this.viewDataDialogVisible = false
       this.getList()
     }

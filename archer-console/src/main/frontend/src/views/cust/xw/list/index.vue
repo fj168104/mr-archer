@@ -66,28 +66,28 @@
       <el-table-column label="客户主办权"  align="center" width="100">
         <template slot-scope="scope">
           <!-- <span>{{ scope.row.mainflag | showCodeName(codemap.IsNot)}}</span> -->
-          <i class="el-icon-check" :v-if="scope.row.mainflag === '1'"></i>
+          <i class="el-icon-check" v-if="scope.row.mainflag === '1'"></i>
         </template>
       </el-table-column>
 
       <el-table-column label="信息维护权"  align="center" width="100">
         <template slot-scope="scope">
           <!-- <span>{{ scope.row.modifyflag | showCodeName(codemap.IsNot)}}</span> -->
-          <i class="el-icon-check" :v-if="scope.row.modifyflag === '1'"></i>
+          <i class="el-icon-check" v-if="scope.row.modifyflag === '1'"></i>
         </template>
       </el-table-column>
 
       <el-table-column label="信息查看权"  align="center" width="100">
         <template slot-scope="scope">
           <!-- <span>{{ scope.row.viewflag | showCodeName(codemap.IsNot)}}</span> -->
-          <i class="el-icon-check" :v-if="scope.row.viewflag === '1'"></i>
+          <i class="el-icon-check" v-if="scope.row.viewflag === '1'"></i>
         </template>
       </el-table-column>
 
       <el-table-column label="业务申办权"  align="center" width="100">
         <template slot-scope="scope">
           <!-- <span>{{ scope.row.applyflag | showCodeName(codemap.IsNot)}}</span> -->
-          <i class="el-icon-check" :v-if="scope.row.applyflag === '1'"></i>
+          <i class="el-icon-check" v-if="scope.row.applyflag === '1'"></i>
         </template>
       </el-table-column>
 
@@ -145,7 +145,7 @@
         </el-form-item>
 
         <el-form-item>
-          <el-button type="primary" @click="createData()">
+          <el-button type="primary" :loading="btnLoading" @click="createData()">
             确定
           </el-button>
           <el-button @click="newDataDialogVisible = false">
@@ -164,7 +164,7 @@
           <el-button type="primary" style="float: right;" @click="closeView()">返回</el-button>
         </div>
       </template>
-      <ent-view :curcustomerid="curcustomerid" @closeView="closeView"></ent-view>
+      <ent-view :isedit="isedit" :curcustomerid="curcustomerid" @closeView="closeView"></ent-view>
     </el-dialog>
   </div>
 </template>
@@ -177,12 +177,6 @@ import Pagination from '@/components/Pagination' // secondary package based on e
 import EntView from '@/views/cust/ent/entview'
 import { queryCodeList } from '@/api/syscode'
 
-
-const certTypeOptions = [
-  { key: '0', name: '统一社会信用证代码' },
-  { key: '1', name: '营业执照' }
-]
-
 export default {
   name: 'CustXwList',
   components: { Pagination,EntView },
@@ -190,6 +184,7 @@ export default {
   filters: {},
   data() {
     return {
+      btnLoading: false,
       listQuery: {
         tableKey: 0,
         listLoading: true,
@@ -203,7 +198,6 @@ export default {
         list: null
       },
       codemap : {},
-      certTypeOptions,
       newData: {
         name: '',
         certtype: '',
@@ -211,6 +205,7 @@ export default {
       },
       newDataDialogVisible: false,
       viewDataDialogVisible: false,
+      isedit: false,
       curcustomerid: '',
       curcustomername: '',
       rules: {
@@ -261,7 +256,9 @@ export default {
     createData() {
       this.$refs['newDataForm'].validate((valid) => {
         if (valid) {
+          this.btnLoading = true
           createData(this.newData).then((res) => {
+            this.btnLoading = false
             this.newDataDialogVisible = false
             this.getList()
             this.$notify({
@@ -270,6 +267,9 @@ export default {
               type: 'success',
               duration: 2000
             })
+          }).catch(() => {
+            this.btnLoading = false
+            this.$message.info("保存数据失败！")
           })
         }
       })
@@ -288,6 +288,10 @@ export default {
     viewData(row) {
       this.curcustomerid = row.id;
       this.curcustomername = row.name;
+      if (row.modifyflag == "1")
+        this.isedit = true
+      else
+        this.isedit = false
       this.viewDataDialogVisible = true;
     },
     closeView(){

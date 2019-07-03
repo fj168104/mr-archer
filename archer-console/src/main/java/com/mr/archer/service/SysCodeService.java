@@ -1,5 +1,7 @@
 package com.mr.archer.service;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.mr.archer.entity.SysCode;
 import com.baomidou.mybatisplus.service.IService;
 
@@ -13,4 +15,5 @@ import com.baomidou.mybatisplus.service.IService;
  */
 public interface SysCodeService extends IService<SysCode> {
 
+  JSONObject queryCodeList(JSONArray aCodeList, JSONArray aTreeList);
 }

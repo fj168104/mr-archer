@@ -9,7 +9,9 @@ import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.mr.archer.annotation.PermInfo;
 import com.mr.archer.entity.FinModel;
+import com.mr.archer.entity.FinModelConfigRef;
 import com.mr.archer.entity.SysUser;
+import com.mr.archer.service.FinModelConfigRefService;
 import com.mr.archer.service.FinModelService;
 import com.mr.archer.utils.DateUtils;
 import com.mr.archer.utils.KeyUtils;
@@ -18,6 +20,7 @@ import com.mr.archer.vo.Json;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -37,6 +40,8 @@ public class FinModelController extends BaseController {
 
   @Autowired
   private FinModelService finModelService;
+  @Autowired
+  private FinModelConfigRefService finModelConfigRefService;
 
   @PermInfo("查询财报模板列表信息")
   @PostMapping("/list")
@@ -132,10 +137,16 @@ public class FinModelController extends BaseController {
   }
 
   @PermInfo("删除财报模板信息")
+  @Transactional
   @DeleteMapping("/delete/{uid}")
   public Json deleteData(@PathVariable String uid) {
     String oper = "delete FinModel";
     finModelService.deleteById(uid);
+
+    // 删除财报模板关联表信息
+    Wrapper<FinModelConfigRef> queryParams = new EntityWrapper<>();
+    queryParams.eq("modelid", uid);
+    finModelConfigRefService.delete(queryParams);
 
     return Json.succ(oper);
   }

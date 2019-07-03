@@ -234,6 +234,31 @@ public class EntInfo extends Model<EntInfo> {
      */
     @TableField(exist=false)
     private String certid;
+    /**
+     * 国标行业分类名称
+     */
+    @TableField(exist=false)
+    private String industryname;
+    /**
+     * 注册资本币种名称
+     */
+    @TableField(exist=false)
+    private String regcurrencyname;
+    /**
+     * 实收资本币种名称
+     */
+    @TableField(exist=false)
+    private String realcurrencyname;
+    /**
+     * 企业规模名称
+     */
+    @TableField(exist=false)
+    private String scalename;
+    /**
+     * 证件类型名称
+     */
+    @TableField(exist=false)
+    private String certtypename;
 
     @Override
     protected Serializable pkVal() {

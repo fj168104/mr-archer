@@ -3,13 +3,12 @@ package com.mr.archer.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.mr.archer.annotation.PermInfo;
-import com.mr.archer.entity.BusinessApply;
-import com.mr.archer.entity.BusinessType;
-import com.mr.archer.entity.SysUser;
-import com.mr.archer.service.BusinessApplyService;
-import com.mr.archer.service.BusinessTypeService;
+import com.mr.archer.entity.*;
+import com.mr.archer.service.*;
 import com.mr.archer.utils.DateUtils;
 import com.mr.archer.utils.KeyUtils;
 import com.mr.archer.utils.PageUtils;
@@ -20,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * <p>
@@ -37,7 +37,11 @@ public class BusinessApplyController extends BaseController {
   @Autowired
   private BusinessApplyService businessApplyService;
   @Autowired
+  private BusinessReportDataService businessReportDataService;
+  @Autowired
   private BusinessTypeService businessTypeService;
+  @Autowired
+  private ReportConfigRelaService reportConfigRelaService;
 
   @PermInfo("查询用户下的贷款申请列表")
   @PostMapping("/user/list")
@@ -63,6 +67,11 @@ public class BusinessApplyController extends BaseController {
     String oper = "create BusinessApply";
     log.info("{}, body: {}", oper, body);
     BusinessApply newData = JSON.parseObject(body, BusinessApply.class);
+    String sApplyId = KeyUtils.getKey("BA");
+    SysUser curUser = getCurUser();
+    String sCurUserId = String.valueOf(curUser.getId());
+    String sCurUserOrg = curUser.getOrgid();
+    String sCurTime = DateUtils.getNowTime();
 
     // 通过业务品种初始化贷款申请信息
     String sBusinessType = newData.getBusinesstype();
@@ -73,11 +82,22 @@ public class BusinessApplyController extends BaseController {
     newData.setRate(dRate);
     newData.setMonthrate(dRate.divide(new BigDecimal(12),6, BigDecimal.ROUND_HALF_UP));
 
-    SysUser curUser = getCurUser();
-    String sCurUserId = String.valueOf(curUser.getId());
-    String sCurUserOrg = curUser.getOrgid();
-    String sCurTime = DateUtils.getNowTime();
-    String sApplyId = KeyUtils.getKey("BA");
+    //调查报告
+    String sReportConfigId = bt.getReportid();
+    List<ReportConfigRela> nodelist = reportConfigRelaService.selectListByReportId(sReportConfigId);
+    for (ReportConfigRela reportConfigRela : nodelist) {
+      BusinessReportData businessReportData = new BusinessReportData();
+      businessReportData.setId(KeyUtils.getKey("BRD"));
+      businessReportData.setApplyid(sApplyId);
+      businessReportData.setReportid(reportConfigRela.getReportid());
+      businessReportData.setNodeid(reportConfigRela.getNodeid());
+      businessReportData.setTitle(reportConfigRela.getTitle());
+      businessReportData.setVuepath(reportConfigRela.getVuepath());
+      businessReportData.setSortno(reportConfigRela.getSortno());
+      businessReportData.setNodedesc(reportConfigRela.getNodedesc());
+      businessReportDataService.insert(businessReportData);
+    }
+
     newData.setId(sApplyId);
     // 发生类型：01-新发生
     newData.setOccurtype("01");
@@ -131,6 +151,11 @@ public class BusinessApplyController extends BaseController {
   public Json deleteData(@PathVariable String uid) {
     String oper = "delete BusinessApply";
     businessApplyService.deleteById(uid);
+
+    // 删除调查报告信息
+    Wrapper<BusinessReportData> brdParams = new EntityWrapper<>();
+    brdParams.eq("applyid", uid);
+    businessReportDataService.delete(brdParams);
 
     return Json.succ(oper);
   }

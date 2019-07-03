@@ -9,7 +9,7 @@
           <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
               搜索
           </el-button>
-          <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
+          <el-button v-if="isedit" class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
               新增
           </el-button>
         </el-form-item>
@@ -49,7 +49,7 @@
         </template>
       </el-table-column>
       
-      <el-table-column label="投资方式"  align="center" width="150">
+      <el-table-column label="投资方式" align="center" width="150">
         <template slot-scope="scope">
           <span>{{ scope.row.type | showCodeName(codemap.InvestType)}}</span>
         </template>
@@ -61,9 +61,9 @@
         </template>
       </el-table-column>
 
-      <el-table-column label="实际投资金额（元）" width="150">
+      <el-table-column label="实际投资金额（元）" align="right" width="150">
         <template slot-scope="scope">
-          <span>{{ scope.row.realmoney }}</span>
+          <span>{{ scope.row.realmoney | toThousandFilter}}</span>
         </template>
       </el-table-column>
       
@@ -98,7 +98,7 @@
             <el-button @click="viewData(scope.row)" size="medium" type="primary" icon="el-icon-edit" circle plain></el-button>
           </el-tooltip>
 
-          <el-tooltip content="删除" placement="top">
+          <el-tooltip v-if="isedit" content="删除" placement="top">
             <el-button @click="handleDelete(scope.$index,scope.row)" size="medium" type="danger" icon="el-icon-delete" circle plain></el-button>
           </el-tooltip>
         </template>
@@ -109,7 +109,7 @@
     <pagination v-show="listQuery.total>0" :total="listQuery.total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
 
     <el-dialog :title="'对外股权投资详情'" :append-to-body="true" :visible.sync="viewDataDialogVisible" v-if="viewDataDialogVisible" width="70%">
-      <ent-invest :curentinvestid="curentinvestid" :curcustomerid="curcustomerid" @refreshList="getList"></ent-invest>
+      <ent-invest :isedit="isedit" :curentinvestid="curentinvestid" :curcustomerid="curcustomerid" @refreshList="getList"></ent-invest>
     </el-dialog>
   </div>
 </template>
@@ -129,6 +129,7 @@ export default {
   filters: {},
   props: {
     curcustomerid: String,
+    isedit: Boolean
   },
   data() {
     return {

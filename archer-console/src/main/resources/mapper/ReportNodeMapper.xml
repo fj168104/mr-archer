@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mr.archer.dao.ReportNodeMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.mr.archer.entity.ReportNode">
+        <id column="id" property="id" />
+        <result column="title" property="title" />
+        <result column="nodedesc" property="nodedesc" />
+        <result column="vuepath" property="vuepath" />
+        <result column="createuser" property="createuser" />
+        <result column="createtime" property="createtime" />
+        <result column="createorg" property="createorg" />
+        <result column="updateuser" property="updateuser" />
+        <result column="updatetime" property="updatetime" />
+        <result column="updateorg" property="updateorg" />
+        <result column="isinuse" property="isinuse" />
+    </resultMap>
+
+</mapper>

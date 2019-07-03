@@ -13,6 +13,19 @@ export function queryEntInfo(data) {
 }
 
 /**
+ * 查询客户调查报告信息
+ * @param data
+ */
+export function queryEntInfoReport(data) {
+  return request({
+    url: '/cust/entinfo/queryreport',
+    method: 'post',
+    data
+  })
+}
+
+
+/**
  * 更新客户基本信息
  * @param data
  */
