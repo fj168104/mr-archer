@@ -100,14 +100,14 @@
     <!-- 新增窗口 end -->
 
     <!-- 详情窗口 start-->
-    <el-dialog top="5vh" :visible.sync="viewDataDialogVisible" :fullscreen="true" :v-if="viewDataDialogVisible" :show-close="false">
+    <el-dialog top="5vh" :visible.sync="viewDataDialogVisible" :v-if="viewDataDialogVisible" :show-close="false">
       <template slot="title">
         <div>
           <span style="font-weight: bold;font-size: 20px;">详情-{{curname}}</span>
           <el-button type="primary" style="float: right;" @click="closeView()">返回</el-button>
         </div>
       </template>
-      <!-- <fin-config-view :curid="curid" :curcols="curcols" @closeView="closeView"></fin-config-view> -->
+      <business-type :isedit="true" :curid="curid" @closeView="closeView"></business-type>
     </el-dialog>
     <!-- 详情窗口 end-->
   </el-container>
@@ -118,11 +118,12 @@ import waves from '@/directive/waves' // waves directive
 import { parseTime } from '@/utils'
 import { queryBusinessTypeList, createBusinessType, updateBusinessType, deleteBusinessType } from '@/api/config/businesstype'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
+import BusinessType from '@/views/config/businesstype/businesstype'
 import { queryCodeList } from '@/api/syscode'
 
 export default {
   name: 'BusinessTypeList',
-  components: { Pagination },
+  components: { Pagination,BusinessType },
   directives: { waves },
   filters: {},
   props:{

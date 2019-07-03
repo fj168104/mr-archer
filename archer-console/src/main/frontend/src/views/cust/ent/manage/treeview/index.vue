@@ -4,25 +4,23 @@
       <el-aside width="240px" style="background-color: rgb(255, 255, 255)">
         <!-- <el-tree :highlight-current="true" :expand-on-click-node="false" :data="treedata" node-key="id" default-expand-all :props="defaultProps" @node-click="handleNodeClick"></el-tree> -->
         <el-menu
-          default-active="01"
+          default-active="200010201010"
           class="el-menu-vertical-demo"
-          :default-openeds="['1000','2000']"
+          :default-openeds="['2000','20001020']"
           @select="selectMenu">
-          <el-submenu index="1000">
-            <template slot="title">
-              <span>当前任务</span>
-            </template>
-            <el-menu-item index="01">待处理<span style="color:red;padding-left: 10px;" v-if="processcount > 0">[{{processcount}}]</span></el-menu-item>
-            <el-menu-item index="02">已退回<span style="color:red;padding-left: 10px;" v-if="returncount > 0">[{{returncount}}]</span></el-menu-item>
-            <el-menu-item index="03">审批中<span style="color:red;padding-left: 10px;" v-if="approvingcount > 0">[{{approvingcount}}]</span></el-menu-item>
-          </el-submenu>
           <el-submenu index="2000">
             <template slot="title">
-              <span>已完成任务</span>
+              <span>客户权限转移</span>
             </template>
-            <el-menu-item index="04">审批通过</el-menu-item>
-            <el-menu-item index="05">审批拒绝</el-menu-item>
-            <el-menu-item index="06">已取消</el-menu-item>
+            <el-menu-item index="20001010">客户权限转移记录</el-menu-item>
+            <el-submenu index="20001020">
+              <template slot="title">
+                <span>客户权限转移任务</span>
+              </template>
+              <el-menu-item index="200010201010">待处理请求</el-menu-item>
+              <el-menu-item index="200010201020">已确认请求</el-menu-item>
+              <el-menu-item index="200010201030">已拒绝请求</el-menu-item>
+            </el-submenu>
           </el-submenu>
         </el-menu>
       </el-aside>
@@ -55,7 +53,7 @@ export default {
       processcount: 2,
       returncount: 1,
       approvingcount: 2,
-      curnodeid: '01',
+      curnodeid: '10001010',
       curnodelabel: '待处理'
     }
   },

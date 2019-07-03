@@ -2,8 +2,8 @@
   <div class="app-container">
     <div class="filter-container">
       <el-form :inline="true" class="demo-form-inline">
-        <el-form-item label="地址信息">
-          <el-input v-model="listQuery.filters.address" placeholder="地址信息" @keyup.enter.native="handleFilter"></el-input>
+        <el-form-item label="地址详情">
+          <el-input v-model="listQuery.filters.address" placeholder="地址详情" @keyup.enter.native="handleFilter"></el-input>
         </el-form-item>
         <el-form-item>
           <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">

@@ -1,6 +1,7 @@
 package com.mr.archer.entity;
 
 import com.baomidou.mybatisplus.activerecord.Model;
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.baomidou.mybatisplus.enums.IdType;
@@ -86,6 +87,12 @@ public class BusinessReportData extends Model<BusinessReportData> {
      */
     private String updateorg;
 
+
+    /**
+     * 节点数据文本
+     */
+    @TableField(exist=false)
+    private String nodedatatext;
 
     @Override
     protected Serializable pkVal() {

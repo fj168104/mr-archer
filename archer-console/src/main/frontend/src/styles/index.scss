@@ -204,6 +204,11 @@ aside {
   text-align: right;
 }
 
+.finint .el-input__inner {
+  text-align: right;
+}
+
+
 .floatright {
   float: right;
 }
@@ -250,4 +255,12 @@ aside {
   font-weight: bold;
   text-align: left;
   background-color: #c7dee3;
+}
+
+.collapse-bg .el-collapse-item__header {
+  background-color: #f5f7fa;
+}
+
+.el-form .el-collapse-item__content {
+  padding-top: 18px;
 }

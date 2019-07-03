@@ -13,4 +13,13 @@ public class CustomerInfoServiceImpl extends ServiceImpl<CustomerInfoMapper, Cus
   public Page<CustomerInfo> selectCustomerListByUser(Page<CustomerInfo> page, String userid, String name, String certid) {
     return page.setRecords(baseMapper.selectCustomerListByUser(page, userid, name, certid));
   }
+
+  public Page<CustomerInfo> selectBusiCustomerListByUser(Page<CustomerInfo> page, String userid, String name, String certid) {
+    return page.setRecords(baseMapper.selectBusiCustomerListByUser(page, userid, name, certid));
+  }
+
+  public Page<CustomerInfo> selectCustomerListByOrg(Page<CustomerInfo> page, String orgid, String name, String certid) {
+    return page.setRecords(baseMapper.selectCustomerListByOrg(page, orgid, name, certid));
+  }
+
 }

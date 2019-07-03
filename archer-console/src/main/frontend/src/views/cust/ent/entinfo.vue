@@ -4,7 +4,7 @@
       <span>客户概况</span>
       <el-button style="float: right;" type="primary" :loading="btnLoading" @click="updateData()" v-if="isedit">保存</el-button>
     </div>
-    <el-collapse v-model="activeNames">
+    <el-collapse v-model="activeNames" class="collapse-bg">
       <el-form
         ref="entInfoForm"
         v-loading="dataLoading"
@@ -142,7 +142,7 @@
             </el-col>
             <el-col :span="8" :offset="4">
               <el-form-item label="注册资本" prop="regcapital">
-                <el-input class="finnumber" v-model="entinfo.regcapital">
+                <el-input class="finnumber" v-model="entinfo.regcapital" @change="validNumber($event, entinfo, 'regcapital')">
                   <template slot="append">元</template>
                 </el-input>
               </el-form-item>
@@ -164,7 +164,7 @@
             </el-col>
             <el-col :span="8" :offset="4">
               <el-form-item label="实收资本" prop="realcapital">
-                <el-input class="finnumber" v-model="entinfo.realcapital">
+                <el-input class="finnumber" v-model="entinfo.realcapital" @change="validNumber($event, entinfo, 'realcapital')">
                   <template slot="append">元</template>
                 </el-input>
               </el-form-item>
@@ -254,7 +254,7 @@
           <el-row>
             <el-col :span="8">
               <el-form-item label="职工人数" prop="workers">
-                <el-input v-model="entinfo.workers"/>
+                <el-input class="finint" v-model="entinfo.workers"/>
               </el-form-item>
             </el-col>
           </el-row>
@@ -332,6 +332,9 @@
       
       <!-- 地址信息 start-->
       <el-collapse-item name="1050">
+        <template slot="title">
+          <span style="color:#ee7e7e;font-weight: bold;">【地址信息】</span>
+        </template>
         <EntAddressList :isedit="isedit" :curcustomerid="curcustomerid"></EntAddressList>
       </el-collapse-item>
       <!-- 地址信息 end-->
@@ -344,6 +347,7 @@ import waves from "@/directive/waves"; // waves directive
 import EntAddressList from "@/views/cust/ent/entaddresslist";
 import { queryEntInfo, updateEntInfo } from "@/api/cust/ent";
 import { queryCodeList, queryIndustryList } from '@/api/syscode'
+import { validNumber } from '@/utils/validate'
 
 export default {
   name: "EntInfo",
@@ -368,7 +372,8 @@ export default {
           { required: true, message: "请输入行业分类", trigger: "blur" }
         ]
       },
-      sysIndustryOptions: []
+      sysIndustryOptions: [],
+      validNumber: validNumber
     };
   },
   watch: {

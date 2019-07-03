@@ -112,7 +112,7 @@
     <el-dialog top="5vh" :visible.sync="viewDataDialogVisible" :fullscreen="true" v-if="viewDataDialogVisible" :show-close="false">
       <template slot="title">
         <div>
-          <span style="font-weight: bold;font-size: 20px;">详情-{{curname}}</span>
+          <span style="font-weight: bold;font-size: 20px;">详情-{{curdata.name}}</span>
           <el-button type="primary" style="float: right;" @click="closeView()">返回</el-button>
         </div>
       </template>

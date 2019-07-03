@@ -40,4 +40,49 @@
         </if>
     </select>
 
+    <select id="selectBusiCustomerListByUser" resultType="com.mr.archer.entity.CustomerInfo">
+        select
+        ci.*,
+        cb.mainflag as mainflag,
+        cb.modifyflag as modifyflag,
+        cb.viewflag as viewflag,
+        cb.applyflag as applyflag,
+        su1.nick as createusername,
+        so1.name as createorgname
+        from customer_info ci
+        left join customer_belong cb on ci.id = cb.customerid
+        left join sys_user su1 on ci.createuser = su1.id
+        left join sys_org so1 on ci.createorg = so1.id
+        where cb.userid = #{userid}
+        and cb.applyflag = '1'
+        <if test="name != null and name != ''">
+            and ci.`name` like concat('%',#{name},'%')
+        </if>
+        <if test="certid != null and certid != ''">
+            and ci.certid = #{certid}
+        </if>
+    </select>
+
+    <select id="selectCustomerListByOrg" resultType="com.mr.archer.entity.CustomerInfo">
+        select
+        ci.*,
+        cb.mainflag as mainflag,
+        cb.modifyflag as modifyflag,
+        cb.viewflag as viewflag,
+        cb.applyflag as applyflag,
+        su1.nick as createusername,
+        so1.name as createorgname
+        from customer_info ci
+        left join customer_belong cb on ci.id = cb.customerid
+        left join sys_user su1 on ci.createuser = su1.id
+        left join sys_org so1 on ci.createorg = so1.id
+        where ci.createorg like concat(#{orgid},'%')
+        <if test="name != null and name != ''">
+            and ci.`name` like concat('%',#{name},'%')
+        </if>
+        <if test="certid != null and certid != ''">
+            and ci.certid = #{certid}
+        </if>
+    </select>
+
 </mapper>

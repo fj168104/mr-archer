@@ -139,3 +139,19 @@ export function integerCheck(rule, value, callback) {
     callback(new Error('请输入整数'));
   }
 }
+
+export function validInt(val, obj, col){
+  let reg = new RegExp("")
+  if (!reg.test(val)) {
+    obj[col] = ''
+    this.$message.error('请输入正确的数字格式');
+  }
+}
+
+export function validNumber(val, obj, col){
+  let reg = new RegExp("^(-?\\d+)(\\.\\d+)?$")
+  if (!reg.test(val)) {
+    obj[col] = ''
+    this.$message.error('请输入正确的数字格式');
+  }
+}

@@ -83,7 +83,7 @@
 <script>
 import waves from '@/directive/waves' // waves directive
 import { parseTime } from '@/utils'
-import { queryDataList } from '@/api/cust/xw'
+import { queryBusiCustomerList } from '@/api/cust/xw'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 import { queryCodeList } from '@/api/syscode'
 
@@ -120,7 +120,7 @@ export default {
   methods: {
     getList() {
       this.listQuery.listLoading = true
-      queryDataList(this.listQuery).then(response => {
+      queryBusiCustomerList(this.listQuery).then(response => {
         this.listQuery.list = response.data.records
         this.listQuery.total = response.data.total
         this.listQuery.listLoading = false

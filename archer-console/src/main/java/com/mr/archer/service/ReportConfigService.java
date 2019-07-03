@@ -1,5 +1,6 @@
 package com.mr.archer.service;
 
+import com.alibaba.fastjson.JSONArray;
 import com.mr.archer.entity.ReportConfig;
 import com.baomidou.mybatisplus.service.IService;
 
@@ -13,4 +14,5 @@ import com.baomidou.mybatisplus.service.IService;
  */
 public interface ReportConfigService extends IService<ReportConfig> {
 
+  JSONArray getCodeList();
 }

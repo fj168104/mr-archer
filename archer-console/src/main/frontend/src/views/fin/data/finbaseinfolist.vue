@@ -31,7 +31,7 @@
         </template>
       </el-table-column> -->
 
-      <el-table-column label="报表日期" width="300" fixed="left">
+      <el-table-column label="报表日期" fixed="left">
         <template slot-scope="scope">
           <span>{{ scope.row.findate }}</span>
         </template>
@@ -43,25 +43,25 @@
         </template>
       </el-table-column>
 
-      <el-table-column label="报表周期" width="250">
+      <el-table-column label="报表周期" align="center" width="150">
         <template slot-scope="scope">
           <span>{{ scope.row.period | showCodeName(codemap.FinReportPeriod)}}</span>
         </template>
       </el-table-column>
 
-      <el-table-column label="币种" align="center">
+      <el-table-column label="币种" align="center" width="150">
         <template slot-scope="scope">
           <span>{{ scope.row.currency | showCodeName(codemap.Currency)}}</span>
         </template>
       </el-table-column>
 
-      <el-table-column label="报表单元" align="center">
+      <el-table-column label="报表单元" align="center" width="150">
         <template slot-scope="scope">
           <span>{{ scope.row.unit | showCodeName(codemap.FinReportUnit)}}</span>
         </template>
       </el-table-column>
 
-      <el-table-column label="报表状态" align="right" width="180">
+      <el-table-column label="报表状态" align="center" width="150">
         <template slot-scope="scope">
           <span>{{ scope.row.status | showCodeName(codemap.FinReportStatus)}}</span>
         </template>
@@ -73,7 +73,7 @@
         </template>
       </el-table-column> -->
 
-      <el-table-column label="创建时间"  align="center" width="180">
+      <el-table-column label="创建时间" align="center" width="180">
         <template slot-scope="scope">
           <span>{{ scope.row.createtime | parseTime('{y}-{m}-{d} {h}:{i}:{s}') }}</span>
         </template>

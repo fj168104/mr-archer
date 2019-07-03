@@ -2,13 +2,13 @@
   <el-container>
     <el-tabs v-model="activeName" @tab-click="handleClick" style="width:100%">
       <el-tab-pane label="申请信息" name="applyinfo">
-        <business-apply-tree-view :applyid="curapplyid"></business-apply-tree-view>
+        <business-apply-tree-view :applyphase="applyphase" :applyid="curapplyid"></business-apply-tree-view>
       </el-tab-pane>
       <el-tab-pane label="客户信息" name="customerinfo">
         <ent-view :isedit="false" :curcustomerid="customerid"></ent-view>
       </el-tab-pane>
       <el-tab-pane label="调查报告" name="reportinfo">
-        <business-report-data-tree-view :applyid="curapplyid" :customerid="customerid"></business-report-data-tree-view>
+        <business-report-data-tree-view :applyphase="applyphase" :applyid="curapplyid" :customerid="customerid"></business-report-data-tree-view>
       </el-tab-pane>
     </el-tabs>
   </el-container>
@@ -28,6 +28,7 @@ export default {
   filters: {},
   props: {
     applyid: String,
+    applyphase: String,
     customerid: String
   },
   data() {

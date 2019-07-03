@@ -1,25 +1,37 @@
 import request from '@/utils/request'
 
 /**
+ * 查询用户拥有信息查看权的客户列表
+ * @param data
+ */
+export function queryDataList(data) {
+  return request({
+    url: '/customerinfo/list',
+    method: 'post',
+    data
+  })
+}
+
+/**
+ * 查询用户拥有业务申办权的客户列表
+ * @param data
+ */
+export function queryBusiCustomerList(data) {
+  return request({
+    url: '/customerinfo/busilist',
+    method: 'post',
+    data
+  })
+}
+
+/**
  * 删除
  * @param uid
  */
 export function deleteData(uid) {
   return request({
-    url: `/cust/xw/delete/${uid}`,
+    url: `/customerinfo/delete/${uid}`,
     method: 'delete'
-  })
-}
-
-/**
- * 查询所有记录
- * @param data
- */
-export function queryDataList(data) {
-  return request({
-    url: '/cust/xw/list',
-    method: 'post',
-    data
   })
 }
 
@@ -29,7 +41,7 @@ export function queryDataList(data) {
  */
 export function createData(data) {
   return request({
-    url: '/cust/xw/create',
+    url: '/customerinfo/create',
     method: 'post',
     data
   })
@@ -41,7 +53,7 @@ export function createData(data) {
  */
 export function updateData(data) {
   return request({
-    url: '/cust/xw/update',
+    url: '/customerinfo/update',
     method: 'post',
     data
   })

@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
-@RequestMapping("/cust")
+@RequestMapping("/customerinfo")
 public class CustomerInfoController extends BaseController{
 
     @Autowired
@@ -52,10 +52,10 @@ public class CustomerInfoController extends BaseController{
     @Autowired
     private FinCashFlowService finCashFlowService;
 
-    @PermInfo("查询所有小微客户信息")
-    @PostMapping("/xw/list")
+    @PermInfo("查询用户拥有信息查看权的客户列表")
+    @PostMapping("/list")
     public Json query(@RequestBody String body) {
-        String oper = "query cust xw";
+        String oper = "query customerinfo list";
         log.info("{}, body: {}", oper, body);
         JSONObject json = JSON.parseObject(body);
 
@@ -71,11 +71,49 @@ public class CustomerInfoController extends BaseController{
         return result;
     }
 
+    @PermInfo("查询用户拥有业务申办权的客户列表")
+    @PostMapping("/busilist")
+    public Json busiList(@RequestBody String body) {
+        String oper = "query customerinfo busilist";
+        log.info("{}, body: {}", oper, body);
+        JSONObject json = JSON.parseObject(body);
+
+        SysUser curUser = getCurUser();
+        String sCurUserId = String.valueOf(curUser.getId());
+        JSONObject filterJson = json.getJSONObject("filters");
+        String sName = filterJson.getString("name");
+        String sCertId = filterJson.getString("certid");
+
+        Page<CustomerInfo> page = customerInfoService.selectBusiCustomerListByUser(PageUtils.getPageParam(json), sCurUserId, sName, sCertId);
+        Json result = Json.succ(oper).data("data", page);
+
+        return result;
+    }
+
+    @PermInfo("查询用户所属机构及以下的客户列表")
+    @PostMapping("/orglist")
+    public Json orgList(@RequestBody String body) {
+        String oper = "query customerinfo orglist";
+        log.info("{}, body: {}", oper, body);
+        JSONObject json = JSON.parseObject(body);
+
+        SysUser curUser = getCurUser();
+        String sOrgId = curUser.getOrgid();
+        JSONObject filterJson = json.getJSONObject("filters");
+        String sName = filterJson.getString("name");
+        String sCertId = filterJson.getString("certid");
+
+        Page<CustomerInfo> page = customerInfoService.selectCustomerListByOrg(PageUtils.getPageParam(json), sOrgId, sName, sCertId);
+        Json result = Json.succ(oper).data("data", page);
+
+        return result;
+    }
+
     @PermInfo("新增小微客户信息")
     @Transactional
-    @PostMapping("/xw/create")
+    @PostMapping("/create")
     public Json createData(@RequestBody String body) {
-        String oper = "create cust xw";
+        String oper = "create customerinfo";
         log.info("{}, body: {}", oper, body);
         CustomerInfo cust = JSON.parseObject(body, CustomerInfo.class);
         SysUser curUser = getCurUser();
@@ -127,9 +165,9 @@ public class CustomerInfoController extends BaseController{
 
     @PermInfo("删除小微客户信息")
     @Transactional
-    @DeleteMapping("/xw/delete/{uid}")
+    @DeleteMapping("/delete/{uid}")
     public Json deleteData(@PathVariable String uid) {
-        String oper = "delete cust xw";
+        String oper = "delete customerinfo";
         customerInfoService.deleteById(uid);
         // 删除关联的客户基本信息
         entInfoService.deleteById(uid);

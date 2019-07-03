@@ -71,7 +71,7 @@
         <el-table-column label="操作" align="center" width="130" class-name="small-padding fixed-width" fixed="right">
           <template slot-scope="scope">
             <el-tooltip content="删除" placement="top">
-              <el-button @click="handleDelete(scope.$index,scope.row)" size="medium" type="danger" icon="el-icon-delete" circle plain></el-button>
+              <el-button @click="handleDelete(scope.row,scope.$index)" size="medium" type="danger" icon="el-icon-delete" circle plain></el-button>
             </el-tooltip>
           </template>
         </el-table-column>
@@ -182,11 +182,11 @@ export default {
         this.listLoading = false
       })
     },
-    handleDelete(row,i,j){
+    handleDelete(row,idx){
       if (row.id) {
         this.listLoading = true
         deleteReportConfigRela(row.id).then(response => {
-          this.datalist[i].splice(j,1);
+          this.datalist.splice(idx,1);
           this.listLoading = false
           this.$notify({
             title: 'Success',

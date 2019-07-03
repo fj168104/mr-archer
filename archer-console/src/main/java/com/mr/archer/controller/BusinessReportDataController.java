@@ -7,16 +7,15 @@ import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.mr.archer.annotation.PermInfo;
 import com.mr.archer.entity.BusinessReportData;
+import com.mr.archer.entity.SysUser;
 import com.mr.archer.service.BusinessReportDataService;
+import com.mr.archer.utils.DateUtils;
 import com.mr.archer.vo.Json;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import org.springframework.stereotype.Controller;
-import com.mr.archer.controller.BaseController;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -54,6 +53,25 @@ public class BusinessReportDataController extends BaseController {
     return Json.succ(oper, list);
   }
 
+  @PermInfo("查询单个调查报告信息")
+  @PostMapping("/query")
+  public Json queryData(@RequestBody String body) {
+    String oper = "query BusinessReportData";
+    log.info("{}, body: {}", oper, body);
+    JSONObject json = JSON.parseObject(body);
+
+    String sId = json.getString("id");
+    BusinessReportData data = businessReportDataService.selectById(sId);
+    byte[] nodedata = data.getNodedata();
+    try {
+      data.setNodedatatext(new String(nodedata, "utf-8"));
+    } catch(Exception e) {
+      e.printStackTrace();
+    }
+
+    return Json.succ(oper, data);
+  }
+
   @PermInfo("更新单个调查报告信息")
   @PostMapping("/update")
   public Json update(@RequestBody String body) {
@@ -61,12 +79,39 @@ public class BusinessReportDataController extends BaseController {
     log.info("{}, body: {}", oper, body);
     JSONObject json = JSON.parseObject(body);
 
-    String sId = json.getString("id");
-    JSONObject reportData = json.getJSONObject("reportdata");
+    BusinessReportData data = JSON.toJavaObject(json, BusinessReportData.class);
+    SysUser curUser = getCurUser();
+    String sCurUserId = String.valueOf(curUser.getId());
+    String sCurUserOrg = curUser.getOrgid();
+    String sCurTime = DateUtils.getNowTime();
+    data.setUpdateuser(sCurUserId);
+    data.setUpdatetime(sCurTime);
+    data.setUpdateorg(sCurUserOrg);
+    businessReportDataService.updateById(data);
 
-    BusinessReportData curdata = businessReportDataService.selectById(sId);
-    curdata.setNodedata(reportData.toString().getBytes());
-    businessReportDataService.updateById(curdata);
+    return Json.succ(oper);
+  }
+
+  @PermInfo("更新调查报告节点数据")
+  @PostMapping("/updatenodedata")
+  public Json updateNodeData(@RequestBody String body) {
+    String oper = "updatenodedata BusinessReportData";
+    log.info("{}, body: {}", oper, body);
+    JSONObject json = JSON.parseObject(body);
+
+    String sId = json.getString("id");
+    JSONObject nodeData = json.getJSONObject("nodedata");
+
+    BusinessReportData data = businessReportDataService.selectById(sId);
+    data.setNodedata(nodeData.toString().getBytes());
+    SysUser curUser = getCurUser();
+    String sCurUserId = String.valueOf(curUser.getId());
+    String sCurUserOrg = curUser.getOrgid();
+    String sCurTime = DateUtils.getNowTime();
+    data.setUpdateuser(sCurUserId);
+    data.setUpdatetime(sCurTime);
+    data.setUpdateorg(sCurUserOrg);
+    businessReportDataService.updateById(data);
 
     return Json.succ(oper);
   }

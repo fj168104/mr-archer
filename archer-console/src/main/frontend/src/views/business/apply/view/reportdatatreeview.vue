@@ -5,7 +5,7 @@
       <el-button @click="printReport()" type="primary">打印</el-button>
     </el-header>
     <el-container>
-      <el-aside width="240px" style="background-color: rgb(255, 255, 255)">
+      <el-aside width="240px" style="background-color: rgb(255, 255, 255)" v-if="applyphase == '01' || applyphase == '02'">
         <el-menu
           class="el-menu-vertical-demo"
           @select="selectMenu">
@@ -41,6 +41,7 @@ export default {
   filters: {},
   props: {
     applyid: String,
+    applyphase: String,
     customerid: String
   },
   data() {
@@ -54,6 +55,9 @@ export default {
   created() {
     queryBusinessReportDataList({applyid: this.applyid}).then(response => {
       this.reportlist = response.data
+      if (this.applyphase != '01' && this.applyphase != '02') {
+        this.prePrintReport()
+      }
     }).catch(() => {
       this.$message.info("查询数据失败！")
       this.dataLoading = false
@@ -88,7 +92,7 @@ export default {
               default:
                 break
             }
-            curcomp = new reportviewcomp({propsData:{params:{title:(i+1) + "、" + curreportdata.title,applyid: this.curapplyid,customerid: this.curcustomerid},isedit:true}}).$mount()
+            curcomp = new reportviewcomp({propsData:{params:{title:(i+1) + "、" + curreportdata.title,applyphase:this.applyphase,curid:curreportdata.id,applyid: this.curapplyid,customerid: this.curcustomerid},isedit:true}}).$mount()
             let dom = document.querySelector("#reportview")
             while (dom.hasChildNodes()) {
               dom.removeChild(dom.firstChild)
@@ -122,7 +126,7 @@ export default {
           default:
             break
         }
-        let curcomp = new reportviewcomp({propsData:{params:{title:(i+1) + "、" + curreportdata.title,applyid: this.curapplyid,customerid: this.curcustomerid},isedit:false}}).$mount()
+        let curcomp = new reportviewcomp({propsData:{params:{title:(i+1) + "、" + curreportdata.title,curid:curreportdata.id,applyid: this.curapplyid,customerid: this.curcustomerid},isedit:false}}).$mount()
         dom.appendChild(curcomp.$el)
       }
     },

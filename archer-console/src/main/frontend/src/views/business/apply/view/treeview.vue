@@ -8,17 +8,17 @@
           :default-openeds="['2000']"
           @select="selectMenu">
           <el-menu-item index="1000">申请基本信息</el-menu-item>
-          <el-submenu index="2000">
+          <!-- <el-submenu index="2000">
             <template slot="title">
               <span>担保信息</span>
             </template>
             <el-menu-item index="20001010">新增的担保信息</el-menu-item>
             <el-menu-item index="20001020">引入的担保信息</el-menu-item>
-          </el-submenu>
+          </el-submenu> -->
         </el-menu>
       </el-aside>
       <el-main>
-        <business-apply :applyid="curapplyid" v-if="curnodeid == '1000'"></business-apply>
+        <business-apply :isedit="applyphase == '01' || applyphase == '02'" :applyid="curapplyid" v-if="curnodeid == '1000'"></business-apply>
       </el-main>
     </el-container>
   </el-container>
@@ -35,7 +35,8 @@ export default {
   directives: { waves },
   filters: {},
   props: {
-    applyid: String
+    applyid: String,
+    applyphase: String
   },
   data() {
     return {

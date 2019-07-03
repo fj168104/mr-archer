@@ -272,7 +272,7 @@
           </template>
         </el-table-column>
 
-        <el-table-column label="最高学历"  align="center">
+        <el-table-column label="最高学历" align="center">
           <template slot-scope="scope">
             <span>{{ scope.row.education | showCodeName(codemap.Education)}}</span>
           </template>
@@ -284,13 +284,13 @@
           </template>
         </el-table-column>
 
-        <el-table-column label="从业年限">
+        <el-table-column label="从业年限" align="right">
           <template slot-scope="scope">
             <span>{{ scope.row.workyears }}</span>
           </template>
         </el-table-column>
 
-        <el-table-column label="持股比例（%）">
+        <el-table-column label="持股比例（%）" align="right">
           <template slot-scope="scope">
             <span>{{ scope.row.stock }}</span>
           </template>
@@ -344,7 +344,6 @@ export default {
     }
   },
   created() {
-    console.log(this.params)
     this.getData()
   },
   methods: {

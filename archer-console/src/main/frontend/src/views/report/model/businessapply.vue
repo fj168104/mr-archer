@@ -1,8 +1,8 @@
 <template>
   <el-container>
-    <!-- <el-header>
-      <span class="report_node_title">{{title}}</span>
-    </el-header> -->
+    <el-header>
+      <el-button v-if="isedit" type="primary" @click="saveData">保存</el-button>
+    </el-header>
     <el-main class="report-data" >
       <el-row>
         <el-col :span="24" class="node-title">
@@ -100,6 +100,26 @@
           </el-col>
         </el-row>
       </el-form>
+      <el-row>
+        <el-col :span="24" class="row-title">
+          <span>（二）业务描述</span>
+        </el-col>
+      </el-row>
+      <el-form ref="reportDataInfoForm" v-loading="nodedataLoading" :model="nodedata" label-position="left" label-width="160px">
+        <el-row v-if="isedit">
+          <el-col :span="24">
+            <el-form-item label="业务描述" prop="repaytype">
+              <el-input type="textarea" rows="5" v-model="nodedata.remark"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row v-else>
+          <el-col :span="24">
+            <label class="el-form-item__label">业务描述</label>
+            <div class="el-form-item__content" style="margin-left: 160px;text-align: left;"><span>{{nodedata.remark}}</span></div>
+          </el-col>
+        </el-row>
+      </el-form>
     </el-main>
   </el-container>
 </template>
@@ -107,6 +127,8 @@
 <script>
 import { queryCodeList } from '@/api/syscode'
 import { queryBusinessApply } from '@/api/busi/businessapply'
+import { queryBusinessReportData,updateNodeData } from '@/api/busi/businessreportdata'
+
 
 export default {
   name: 'ReportBusinessApply',
@@ -117,23 +139,30 @@ export default {
   data: function() {
     return {
       dataLoading: false,
+      nodedataLoading: false,
       codemap: {},
       title: this.params.title,
       datainfo: {},
+      nodedata: {
+        remark: ''
+      },
       rules:{}
     }
   },
   created() {
-    console.log(this.params)
     this.getData()
+    this.getNodeData()
   },
   methods: {
-    getData(){
+    getData() {
       this.dataLoading = true;
       queryCodeList({codelist:['BusiOccurType','Currency','TermUnit','RepayType','RepayFrequency']}).then(response => {
         this.codemap = response.data
         queryBusinessApply({id: this.params.applyid}).then(response => {
           this.datainfo = response.data
+          if (this.datainfo.nodedata) {
+            this.nodedata = JSON.parse(this.datainfo.nodedata)
+          }
           this.dataLoading = false
         }).catch(() => {
           this.$message.info("查询业务申请数据失败！")
@@ -142,6 +171,32 @@ export default {
       }).catch(() => {
         this.$message.info("查询代码数据失败！")
         this.dataLoading = false
+      })
+    },
+    getNodeData() {
+      this.nodedataLoading = true
+      queryBusinessReportData({id:this.params.curid}).then(response => {
+        if (response.data.nodedatatext)
+          this.nodedata = JSON.parse(response.data.nodedatatext)
+        this.nodedataLoading = false
+      }).catch(() => {
+        this.$message.info("查询数据失败！")
+        this.nodedataLoading = false
+      })
+    },
+    saveData() {
+      this.nodedataLoading = true
+      updateNodeData({id:this.params.curid,nodedata:this.nodedata}).then(response => {
+        this.$notify({
+          title: "Success",
+          message: "保存成功",
+          type: "success",
+          duration: 2000
+        });
+        this.nodedataLoading = false
+      }).catch(() => {
+        this.$message.info("保存数据失败！")
+        this.nodedataLoading = false
       })
     }
   }

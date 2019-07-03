@@ -9,7 +9,7 @@
           <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
               搜索
           </el-button>
-          <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
+          <el-button v-if="applyphase == '01'" class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
               新增
           </el-button>
         </el-form-item>
@@ -38,13 +38,13 @@
           </template>
         </el-table-column>
 
-        <el-table-column label="业务品种" width="150">
+        <el-table-column label="业务品种" align="center" width="150">
           <template slot-scope="scope">
             <span>{{ scope.row.businesstypename }}</span>
           </template>
         </el-table-column>
 
-        <el-table-column label="币种" width="120">
+        <el-table-column label="币种" align="center" width="120">
           <template slot-scope="scope">
             <span>{{ scope.row.currency | showCodeName(codemap.Currency)}}</span>
           </template>
@@ -79,7 +79,7 @@
           <template slot-scope="scope">
             <el-button-group>
               <el-button @click="viewData(scope.row)" type="primary" size="mini">详情</el-button>
-              <el-button @click="handleDelete(scope.$index,scope.row)" type="danger" size="mini">删除</el-button>
+              <el-button v-if="applyphase == '01'" @click="handleDelete(scope.$index,scope.row)" type="danger" size="mini">删除</el-button>
             </el-button-group>
           </template>
 
@@ -154,7 +154,7 @@
           <el-button type="primary" style="float: right;" @click="closeView()">返回</el-button>
         </div>
       </template>
-      <business-apply-tab-view :applyid="applyid" :customerid="customerid" :customername="customername" @closeView="closeView"></business-apply-tab-view>
+      <business-apply-tab-view :applyphase="applyphase" :applyid="applyid" :customerid="customerid" :customername="customername" @closeView="closeView"></business-apply-tab-view>
     </el-dialog>
     <!-- 详情窗口 end-->
   </el-container>

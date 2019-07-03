@@ -2,17 +2,17 @@
   <el-card class="box-card">
     <div slot="header" class="clearfix">
       <span>申请基本信息</span>
-      <el-button style="float: right;" type="primary" @click="updateData()">保存</el-button>
+      <el-button v-if="isedit" style="float: right;" type="primary" @click="updateData()">保存</el-button>
     </div>
-    <el-form
-      ref="dataInfoForm"
-      v-loading="dataLoading"
-      :rules="rules"
-      :model="datainfo"
-      label-position="left"
-      label-width="160px"
-    >
-      <el-collapse v-model="activeNames">
+    <el-collapse v-model="activeNames" class="collapse-bg">
+      <el-form
+        ref="dataInfoForm"
+        v-loading="dataLoading"
+        :rules="rules"
+        :model="datainfo"
+        label-position="left"
+        label-width="160px"
+      >
 
         <!-- 基本信息 -->
         <el-collapse-item name="1010">
@@ -239,8 +239,8 @@
           </el-row>
 
         </el-collapse-item>
-      </el-collapse>
-    </el-form>
+      </el-form>
+    </el-collapse>
   </el-card>
 </template>
 
@@ -255,7 +255,8 @@ export default {
   directives: { waves },
   filters: {},
   props: {
-    applyid: String
+    applyid: String,
+    isedit: Boolean
   },
   data() {
     return {

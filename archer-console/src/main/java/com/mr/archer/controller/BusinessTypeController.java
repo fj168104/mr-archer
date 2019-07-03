@@ -10,8 +10,11 @@ import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.mr.archer.annotation.PermInfo;
 import com.mr.archer.entity.BusinessType;
+import com.mr.archer.entity.ReportConfig;
 import com.mr.archer.entity.SysUser;
 import com.mr.archer.service.BusinessTypeService;
+import com.mr.archer.service.ReportConfigService;
+import com.mr.archer.service.SysCodeService;
 import com.mr.archer.utils.DateUtils;
 import com.mr.archer.utils.KeyUtils;
 import com.mr.archer.utils.PageUtils;
@@ -38,6 +41,10 @@ public class BusinessTypeController extends BaseController {
 
   @Autowired
   private BusinessTypeService businessTypeService;
+  @Autowired
+  private SysCodeService sysCodeService;
+  @Autowired
+  private ReportConfigService reportConfigService;
 
   @PermInfo("查询业务品种列表信息")
   @PostMapping("/list")
@@ -113,11 +120,20 @@ public class BusinessTypeController extends BaseController {
     String oper = "query BusinessType";
     log.info("{}, body: {}", oper, body);
     JSONObject json = JSON.parseObject(body);
+    JSONObject resultJson = new JSONObject();
 
     String sId = json.getString("id");
     BusinessType data = businessTypeService.selectById(sId);
+    resultJson.put("datainfo", JSONObject.toJSON(data));
 
-    return Json.succ(oper, data);
+    JSONArray aCodeList = json.getJSONArray("codelist");
+    JSONObject list = sysCodeService.queryCodeList(aCodeList, null);
+    resultJson.put("codemap", list);
+
+    // 调查报告代码列表
+    resultJson.put("reportmodellist", reportConfigService.getCodeList());
+
+    return Json.succ(oper, resultJson);
   }
 
   @PermInfo("更新业务品种信息")
