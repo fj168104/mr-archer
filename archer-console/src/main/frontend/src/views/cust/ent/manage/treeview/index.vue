@@ -4,7 +4,7 @@
       <el-aside width="240px" style="background-color: rgb(255, 255, 255)">
         <!-- <el-tree :highlight-current="true" :expand-on-click-node="false" :data="treedata" node-key="id" default-expand-all :props="defaultProps" @node-click="handleNodeClick"></el-tree> -->
         <el-menu
-          default-active="200010201010"
+          default-active="20001010"
           class="el-menu-vertical-demo"
           :default-openeds="['2000','20001020']"
           @select="selectMenu">
@@ -25,7 +25,8 @@
         </el-menu>
       </el-aside>
       <el-main>
-        <business-apply-list :applyphase="curnodeid"></business-apply-list>
+        <customer-transfer-list v-if="showTransferList"></customer-transfer-list>
+        <customer-transfer-approve-list :status="status" v-if="showTransferApproveList"></customer-transfer-approve-list>
       </el-main>
     </el-container>
   </el-container>
@@ -33,12 +34,13 @@
 
 <script>
 import waves from '@/directive/waves' // waves directive
-import BusinessApplyList from '@/views/business/apply/list/businessapplylist'
+import CustomerTransferList from '@/views/cust/ent/manage/customertransferlist'
+import CustomerTransferApproveList from '@/views/cust/ent/manage/customertransferapprovelist'
 import { queryCodeList } from '@/api/syscode'
 
 export default {
   name: 'BusinessApplyTreeList',
-  components: { BusinessApplyList },
+  components: { CustomerTransferList,CustomerTransferApproveList },
   directives: { waves },
   filters: {},
   props: {
@@ -53,8 +55,9 @@ export default {
       processcount: 2,
       returncount: 1,
       approvingcount: 2,
-      curnodeid: '10001010',
-      curnodelabel: '待处理'
+      showTransferList: true,
+      showTransferApproveList: false,
+      status: ''
     }
   },
   created() {
@@ -73,23 +76,29 @@ export default {
       this.curnodelabel = data.label;
     },
     selectMenu(idx){
-      if (idx !== '1000' && idx !== '2000') {
-        this.curnodeid = idx;
+      switch(idx) {
+        case '20001010':
+          this.showTransferList = true
+          this.showTransferApproveList = false
+          break;
+        case '200010201010':
+          this.showTransferList = false
+          this.status = '01'
+          this.showTransferApproveList = true
+          break;
+        case '200010201020':
+          this.showTransferList = false
+          this.status = '02'
+          this.showTransferApproveList = true
+          break;
+        case '200010201030':
+          this.showTransferList = false
+          this.status = '03'
+          this.showTransferApproveList = true
+          break;
+        default:
+          break;
       }
-      // switch(idx) {
-      //   case '10001010':
-      //     break;
-      //   case '10001020':
-      //     break;
-      //   case '20001010':
-      //     break;
-      //   case '20001020':
-      //     break;
-      //   case '20001030':
-      //     break;
-      //   default:
-      //     break;
-      // }
     }
   }
 }

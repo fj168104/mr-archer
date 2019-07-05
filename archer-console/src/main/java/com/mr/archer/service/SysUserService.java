@@ -20,4 +20,6 @@ public interface SysUserService extends IService<SysUser> {
 	SysUser selectUserByToken(String token);
 
 	String selectUsernameByToken(String token);
+
+	Page<SysUser> selectAllUserList(Page<SysUser> page, String userid, String nick);
 }

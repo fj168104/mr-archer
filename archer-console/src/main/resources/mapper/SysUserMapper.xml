@@ -46,4 +46,15 @@
         SELECT username FROM sys_user_token WHERE token = #{token}
     </select>
 
+    <select id="selectAllUserList" resultType="com.mr.archer.entity.SysUser">
+        select
+        su.*,
+        so.name as orgname
+        from sys_user su
+        left join sys_org so on so.id = su.orgid
+        where su.id != #{userid}
+        <if test="nick != null and nick != ''">
+            and su.`nick` like concat('%',#{nick},'%')
+        </if>
+    </select>
 </mapper>

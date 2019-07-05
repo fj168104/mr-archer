@@ -22,6 +22,16 @@ const custRouter = {
         perm: 'm:sys',
         title: '小微客户列表'
       }
+    },
+    
+    {
+      path: '/cust/ent/manager/treeview',
+      component: () => import('@/views/cust/ent/manage/treeview'),
+      name: 'xwlist',
+      meta: { 
+        perm: 'm:sys',
+        title: '客户管理工具'
+      }
     }
   ]
 }

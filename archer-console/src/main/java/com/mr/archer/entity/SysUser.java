@@ -42,6 +42,8 @@ public class SysUser extends Model<SysUser> {
     private Date updateTime;
 
     @TableField(exist = false)
+    private String orgname;
+    @TableField(exist = false)
     private List<SysRole> roleList = new ArrayList<>();    //用户所有角色值，在管理后台显示用户的角色
     @TableField(exist = false)
     private Set<AuthVo> roles = new HashSet<>();    //用户所有角色值，用于做角色权限的判断

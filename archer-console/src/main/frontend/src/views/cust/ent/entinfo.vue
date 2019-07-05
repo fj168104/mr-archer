@@ -46,12 +46,12 @@
           <el-row>
             <el-col :span="8">
               <el-form-item label="税务登记证号（国税）" prop="statetaxno">
-                <el-input v-model="entinfo.statetaxno"/>
+                <el-input v-model="entinfo.statetaxno" @change="validMaxLength($event, entinfo, 'statetaxno', 40)"/>
               </el-form-item>
             </el-col>
             <el-col :span="8" :offset="4">
               <el-form-item label="税务登记证号（地税）" prop="localtaxno">
-                <el-input v-model="entinfo.localtaxno"/>
+                <el-input v-model="entinfo.localtaxno" @change="validMaxLength($event, entinfo, 'localtaxno', 40)"/>
               </el-form-item>
             </el-col>
           </el-row>
@@ -102,7 +102,7 @@
           <el-row>
             <el-col :span="8">
               <el-form-item label="工商营业执照号码" prop="businessno">
-                <el-input v-model="entinfo.businessno"/>
+                <el-input v-model="entinfo.businessno" @change="validMaxLength($event, entinfo, 'businessno', 40)"/>
               </el-form-item>
             </el-col>
             <el-col :span="8" :offset="4">
@@ -211,7 +211,7 @@
           <el-row>
             <el-col :span="16">
               <el-form-item label="公司网址" prop="website">
-                <el-input v-model="entinfo.website"/>
+                <el-input v-model="entinfo.website" @change="validMaxLength($event, entinfo, 'website', 40)"/>
               </el-form-item>
             </el-col>
           </el-row>
@@ -254,7 +254,7 @@
           <el-row>
             <el-col :span="8">
               <el-form-item label="职工人数" prop="workers">
-                <el-input class="finint" v-model="entinfo.workers"/>
+                <el-input class="finint" v-model="entinfo.workers" @change="validInt($event, entinfo, 'workers')"/>
               </el-form-item>
             </el-col>
           </el-row>
@@ -262,7 +262,7 @@
           <el-row>
             <el-col :span="16">
               <el-form-item label="经营范围" prop="scope">
-                <el-input type="textarea" :rows="3" v-model="entinfo.scope"/>
+                <el-input type="textarea" :rows="3" v-model="entinfo.scope" @change="validMaxLength($event, entinfo, 'scope', 300)"/>
               </el-form-item>
             </el-col>
           </el-row>
@@ -278,12 +278,12 @@
           <el-row>
             <el-col :span="8">
               <el-form-item label="财务部联系电话" prop="financetel">
-                <el-input v-model="entinfo.financetel"/>
+                <el-input v-model="entinfo.financetel" @change="validMaxLength($event, entinfo, 'financetel', 20)"/>
               </el-form-item>
             </el-col>
             <el-col :span="8" :offset="4">
               <el-form-item label="公司联系电话" prop="tel">
-                <el-input v-model="entinfo.tel"/>
+                <el-input v-model="entinfo.tel" @change="validMaxLength($event, entinfo, 'tel', 20)"/>
               </el-form-item>
             </el-col>
           </el-row>
@@ -291,12 +291,12 @@
           <el-row>
             <el-col :span="8">
               <el-form-item label="基本帐户行" prop="basebank">
-                <el-input v-model="entinfo.basebank"/>
+                <el-input v-model="entinfo.basebank" @change="validMaxLength($event, entinfo, 'basebank', 40)"/>
               </el-form-item>
             </el-col>
             <el-col :span="8" :offset="4">
               <el-form-item label="基本帐户号" prop="baseaccount">
-                <el-input v-model="entinfo.baseaccount"/>
+                <el-input v-model="entinfo.baseaccount" @change="validMaxLength($event, entinfo, 'baseaccount', 40)"/>
               </el-form-item>
             </el-col>
           </el-row>
@@ -304,12 +304,12 @@
           <el-row>
             <el-col :span="8">
               <el-form-item label="我行开户行" prop="mybank">
-                <el-input v-model="entinfo.mybank"/>
+                <el-input v-model="entinfo.mybank" @change="validMaxLength($event, entinfo, 'mybank', 40)"/>
               </el-form-item>
             </el-col>
             <el-col :span="8" :offset="4">
               <el-form-item label="我行开户帐号" prop="myaccount">
-                <el-input v-model="entinfo.myaccount"/>
+                <el-input v-model="entinfo.myaccount" @change="validMaxLength($event, entinfo, 'myaccount', 40)"/>
               </el-form-item>
             </el-col>
           </el-row>
@@ -317,12 +317,12 @@
           <el-row>
             <el-col :span="8">
               <el-form-item label="他行开户行" prop="otherbank">
-                <el-input v-model="entinfo.otherbank"/>
+                <el-input v-model="entinfo.otherbank" @change="validMaxLength($event, entinfo, 'otherbank', 40)"/>
               </el-form-item>
             </el-col>
             <el-col :span="8" :offset="4">
               <el-form-item label="他行开户帐号" prop="otheraccount">
-                <el-input v-model="entinfo.otheraccount"/>
+                <el-input v-model="entinfo.otheraccount" @change="validMaxLength($event, entinfo, 'otheraccount', 40)"/>
               </el-form-item>
             </el-col>
           </el-row>
@@ -347,7 +347,7 @@ import waves from "@/directive/waves"; // waves directive
 import EntAddressList from "@/views/cust/ent/entaddresslist";
 import { queryEntInfo, updateEntInfo } from "@/api/cust/ent";
 import { queryCodeList, queryIndustryList } from '@/api/syscode'
-import { validNumber } from '@/utils/validate'
+import { validNumber,validInt,validMaxLength } from '@/utils/validate'
 
 export default {
   name: "EntInfo",
@@ -373,7 +373,9 @@ export default {
         ]
       },
       sysIndustryOptions: [],
-      validNumber: validNumber
+      validNumber: validNumber,
+      validInt: validInt,
+      validMaxLength: validMaxLength
     };
   },
   watch: {

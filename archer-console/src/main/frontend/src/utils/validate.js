@@ -125,33 +125,63 @@ export function getTextLength(src) {
   return realLength;
 }
 
+
+/**
+ * 字符最大长度验证
+ * @param {*} val 
+ * @param {*} obj 
+ * @param {*} col 
+ */
+export function validMaxLength(val, obj, col, max){
+  if (val !== '') {
+    var newval = ''
+    var realLength = 0, len = val.length, charCode = -1;
+    for (var i = 0; i < len; i++) {
+        charCode = val.charCodeAt(i);
+        if (charCode >= 0 && charCode <= 128) 
+          realLength += 1;
+        else
+          realLength += 2;
+        if (max != null && realLength > max) {
+          obj[col] = newval
+          this.$message.error('字符长度最大为' + max + '！（中文占2字符）');
+          return
+        }
+        newval += String.fromCharCode(charCode)
+    }
+  }
+}
+
 /**
  * 整数验证
- * @param {*} rule 
- * @param {number} value 
- * @param {*} callback 
+ * @param {*} val 
+ * @param {*} obj 
+ * @param {*} col 
  */
-export function integerCheck(rule, value, callback) {
-  var reg = /^[1-9]\d*$/;
-  if(reg.test(value)) {
-    callback();
-  } else {
-    callback(new Error('请输入整数'));
-  }
-}
-
 export function validInt(val, obj, col){
-  let reg = new RegExp("")
-  if (!reg.test(val)) {
-    obj[col] = ''
-    this.$message.error('请输入正确的数字格式');
+  if (val !== '' && val != '0') {
+    // let reg = new RegExp("^((\\+|-)?[1-9])\\d*$")
+    let reg = /^((\+|-)?[1-9])\d*$/
+    if (!reg.test(val)) {
+      obj[col] = ''
+      this.$message.error('请输入正确的整数格式');
+    }
   }
 }
 
+/**
+ * 数字验证
+ * @param {*} val 
+ * @param {*} obj 
+ * @param {*} col 
+ */
 export function validNumber(val, obj, col){
-  let reg = new RegExp("^(-?\\d+)(\\.\\d+)?$")
-  if (!reg.test(val)) {
-    obj[col] = ''
-    this.$message.error('请输入正确的数字格式');
+  if (val !== '' && val != '0') {
+    // let reg = new RegExp("^(-?\\d+)(\\.\\d+)?$")
+    let reg = /(^((\+|-)?[1-9])\d*(\.\d+)?$)|(^((\+|-)?0)(\.\d+)?$)/
+    if (!reg.test(val)) {
+      obj[col] = ''
+      this.$message.error('请输入正确的数字格式');
+    }
   }
 }

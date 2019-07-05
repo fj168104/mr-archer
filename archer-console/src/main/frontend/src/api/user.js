@@ -81,3 +81,15 @@ export function updateUser(data) {
     data
   })
 }
+
+/**
+ * 查询所有用户记录
+ * @param query
+ */
+export function queryUserAllList(data) {
+  return request({
+    url: '/user/alllist',
+    method: 'post',
+    data
+  })
+}

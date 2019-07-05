@@ -1,7 +1,6 @@
 package com.mr.archer.service.impl;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.google.common.collect.Lists;
@@ -105,4 +104,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         return baseMapper.selectUsernameByToken(token);
     }
 
+    public Page<SysUser> selectAllUserList(Page<SysUser> page, String userid, String nick) {
+        return page.setRecords(baseMapper.selectAllUserList(page, userid, nick));
+    }
 }
