@@ -6,7 +6,7 @@
     <resultMap id="BaseResultMap" type="com.mr.archer.entity.CustomerInfo">
         <id column="id" property="id" />
         <result column="name" property="name" />
-        <result column="type" property="type" />
+        <result column="customertype" property="customertype" />
         <result column="certtype" property="certtype" />
         <result column="certid" property="certid" />
         <result column="createuser" property="createuser" />

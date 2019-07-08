@@ -21,7 +21,7 @@ public class CustomerInfo extends Model<CustomerInfo> {
     @TableId(value = "id",type = IdType.INPUT)
     private String id;
     private String name;
-    private String type;
+    private String customertype;
     private String certtype;
     private String certid;
     private String mfcustomerid;
