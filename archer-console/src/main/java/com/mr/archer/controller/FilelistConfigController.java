@@ -4,18 +4,14 @@ package com.mr.archer.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.baomidou.mybatisplus.enums.SqlLike;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.mr.archer.annotation.PermInfo;
 import com.mr.archer.entity.BusinessType;
-import com.mr.archer.entity.ReportConfig;
+import com.mr.archer.entity.FilelistConfig;
 import com.mr.archer.entity.SysUser;
-import com.mr.archer.service.BusinessTypeService;
 import com.mr.archer.service.FilelistConfigService;
-import com.mr.archer.service.ReportConfigService;
-import com.mr.archer.service.SysCodeService;
 import com.mr.archer.utils.DateUtils;
 import com.mr.archer.utils.KeyUtils;
 import com.mr.archer.utils.PageUtils;
@@ -29,65 +25,57 @@ import java.util.List;
 
 /**
  * <p>
- * 业务品种 前端控制器
+ * 资料清单配置表 前端控制器
  * </p>
  *
  * @author jiang.feng
- * @since 2019-06-27
+ * @since 2019-07-05
  */
 @Slf4j
 @RestController
-@RequestMapping("/businesstype")
-public class BusinessTypeController extends BaseController {
+@RequestMapping("/filelistconfig")
+public class FilelistConfigController extends BaseController {
 
-  @Autowired
-  private BusinessTypeService businessTypeService;
-  @Autowired
-  private SysCodeService sysCodeService;
-  @Autowired
-  private ReportConfigService reportConfigService;
   @Autowired
   private FilelistConfigService filelistConfigService;
 
-  @PermInfo("查询业务品种列表信息")
+  @PermInfo("查询资料清单配置列表信息")
   @PostMapping("/list")
   public Json query(@RequestBody String body) {
-    String oper = "query BusinessType";
+    String oper = "query FilelistConfig";
     log.info("{}, body: {}", oper, body);
     JSONObject json = JSON.parseObject(body);
 
-    Wrapper<BusinessType> queryParams = new EntityWrapper<>();
+    Wrapper<FilelistConfig> queryParams = new EntityWrapper<>();
+
     JSONObject filterJson = json.getJSONObject("filters");
-    String sType = filterJson.getString("type");
-    if (StringUtils.isNotBlank(sType)) {
-      queryParams.like("type", sType, SqlLike.RIGHT);
-    }
     String sName = filterJson.getString("name");
     if (StringUtils.isNotBlank(sName)) {
       queryParams.like("name", sName);
     }
-
-    Page<BusinessType> page = businessTypeService.selectPage(PageUtils.getPageParam(json), queryParams);
+    Page<FilelistConfig> page = filelistConfigService.selectPage(PageUtils.getPageParam(json), queryParams);
 
     return Json.succ(oper).data("data", page);
   }
 
-  @PermInfo("查询业务品种代码列表信息")
+  @PermInfo("查询资料清单配置代码列表信息")
   @PostMapping("/codelist")
   public Json queryCodeList(@RequestBody String body) {
-    String oper = "query codelist BusinessType";
+    String oper = "query codelist FilelistConfig";
     log.info("{}, body: {}", oper, body);
+    JSONObject bodyJson = JSON.parseObject(body);
 
-    Wrapper<BusinessType> queryParams = new EntityWrapper<>();
-    queryParams.orderBy("type");
-    List<BusinessType> list = businessTypeService.selectList(queryParams);
+    String sType = bodyJson.getString("type");
+    Wrapper<FilelistConfig> queryParams = new EntityWrapper<>();
+    queryParams.eq("type", sType);
+    List<FilelistConfig> list = filelistConfigService.selectList(queryParams);
     JSONArray codeList = new JSONArray();
     if (list != null && list.size() > 0) {
       for (int i = 0; i < list.size(); i++) {
-        BusinessType bt = list.get(i);
+        FilelistConfig fc = list.get(i);
         JSONObject code = new JSONObject();
-        code.put("label", bt.getName());
-        code.put("value", bt.getId());
+        code.put("label", fc.getName());
+        code.put("value", fc.getId());
         codeList.add(code);
       }
     }
@@ -95,59 +83,47 @@ public class BusinessTypeController extends BaseController {
     return Json.succ(oper, codeList);
   }
 
-  @PermInfo("新增业务品种信息")
+  @PermInfo("新增资料清单配置信息")
   @PostMapping("/create")
   public Json createData(@RequestBody String body) {
-    String oper = "create BusinessType";
+    String oper = "create FilelistConfig";
     log.info("{}, body: {}", oper, body);
-    BusinessType newData = JSON.parseObject(body, BusinessType.class);
+    FilelistConfig newData = JSON.parseObject(body, FilelistConfig.class);
     SysUser curUser = getCurUser();
     String sCurUserId = String.valueOf(curUser.getId());
     String sCurUserOrg = curUser.getOrgid();
     String sCurTime = DateUtils.getNowTime();
-    newData.setId(KeyUtils.getKey("BT"));
+    newData.setId(KeyUtils.getKey("FC"));
     newData.setCreateuser(sCurUserId);
     newData.setCreatetime(sCurTime);
     newData.setCreateorg(sCurUserOrg);
     newData.setUpdateuser(sCurUserId);
     newData.setUpdatetime(sCurTime);
     newData.setUpdateorg(sCurUserOrg);
-    businessTypeService.insert(newData);
+    filelistConfigService.insert(newData);
 
     return Json.succ(oper, newData);
   }
 
-  @PermInfo("查询单个业务品种信息")
+  @PermInfo("查询单个资料清单配置信息")
   @PostMapping("/query")
   public Json queryData(@RequestBody String body) {
-    String oper = "query BusinessType";
+    String oper = "query FilelistConfig";
     log.info("{}, body: {}", oper, body);
     JSONObject json = JSON.parseObject(body);
-    JSONObject resultJson = new JSONObject();
 
     String sId = json.getString("id");
-    BusinessType data = businessTypeService.selectById(sId);
-    resultJson.put("datainfo", JSONObject.toJSON(data));
+    FilelistConfig data = filelistConfigService.selectById(sId);
 
-    JSONArray aCodeList = json.getJSONArray("codelist");
-    JSONObject list = sysCodeService.queryCodeList(aCodeList, null);
-    resultJson.put("codemap", list);
-
-    // 调查报告代码列表
-    resultJson.put("reportmodellist", reportConfigService.getCodeList());
-
-    // 资料清单代码列表
-    resultJson.put("filelistmodellist", filelistConfigService.getCodeList("CreditApply"));
-
-    return Json.succ(oper, resultJson);
+    return Json.succ(oper, data);
   }
 
-  @PermInfo("更新业务品种信息")
+  @PermInfo("更新资料清单配置信息")
   @PostMapping("/update")
   public Json updateData(@RequestBody String body) {
-    String oper = "update BusinessType";
+    String oper = "update FilelistConfig";
     log.info("{}, body: {}", oper, body);
-    BusinessType data = JSON.parseObject(body, BusinessType.class);
+    FilelistConfig data = JSON.parseObject(body, FilelistConfig.class);
     SysUser curUser = getCurUser();
     String sCurUserId = String.valueOf(curUser.getId());
     String sCurUserOrg = curUser.getOrgid();
@@ -155,16 +131,16 @@ public class BusinessTypeController extends BaseController {
     data.setUpdateuser(sCurUserId);
     data.setUpdatetime(sCurTime);
     data.setUpdateorg(sCurUserOrg);
-    businessTypeService.updateById(data);
+    filelistConfigService.updateById(data);
 
     return Json.succ(oper, data);
   }
 
-  @PermInfo("删除业务品种信息")
+  @PermInfo("删除资料清单配置信息")
   @DeleteMapping("/delete/{uid}")
   public Json deleteData(@PathVariable String uid) {
-    String oper = "delete BusinessType";
-    businessTypeService.deleteById(uid);
+    String oper = "delete FilelistConfig";
+    filelistConfigService.deleteById(uid);
 
     return Json.succ(oper);
   }

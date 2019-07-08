@@ -16,6 +16,9 @@ import configRouter from './modules/config'
 import businessApplyRouter from './modules/businessapply'
 /* 调查报告配置管理 */
 import reportConfigRouter from './modules/reportconfig'
+/* 资料清单配置管理 */
+import filelistRouter from './modules/filelist'
+
 
 /* Router Modules */
 import componentsRouter from './modules/components'
@@ -142,9 +145,10 @@ export const constantRoutes = [
 export const asyncRoutes = [
   custRouter,
   businessApplyRouter,
-  finModelRouter,
   configRouter,
+  finModelRouter,
   reportConfigRouter,
+  filelistRouter,
   {
     path: '/system',
     component: Layout,

@@ -32,7 +32,7 @@
             <el-form-item label="资料清单模板" prop="filelistid">
               <el-select v-model="datainfo.filelistid" clearable placeholder="">
                 <el-option
-                  v-for="item in FileModelList"
+                  v-for="item in FilelistModelList"
                   :key="item.value"
                   :label="item.label"
                   :value="item.value">
@@ -87,6 +87,7 @@
 import waves from '@/directive/waves' // waves directive
 import { queryBusinessType,createBusinessType,updateBusinessType } from '@/api/config/businesstype'
 import { queryCodeList } from '@/api/syscode'
+import { queryFilelistConfigCodeList } from '@/api/filelist/filelistconfig'
 
 
 export default {
@@ -104,7 +105,7 @@ export default {
       btnLoading: false,
       ReportModelList: [],
       FlowModelList: [],
-      FileModelList: [],
+      FilelistModelList: [],
       datainfo: {
       },
       codemap: {
@@ -131,6 +132,7 @@ export default {
       this.dataLoading = true
       queryBusinessType({id:this.curid,codelist:['IsNot']}).then(response => {
         this.ReportModelList = response.data.reportmodellist
+        this.FilelistModelList = response.data.filelistmodellist
         this.codemap = response.data.codemap
         this.datainfo = response.data.datainfo
         this.dataLoading = false

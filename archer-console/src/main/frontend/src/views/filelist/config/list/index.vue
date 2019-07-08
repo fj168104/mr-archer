@@ -1,9 +1,7 @@
 <template>
-  <el-container>
-
-    <el-header height="100px">
-      <el-divider content-position="left">【{{typename}}】</el-divider>
-      <el-form :inline="true" class="demo-form-inline">
+  <el-container class="app-container">
+    <el-header>
+      <el-form :inline="true" class="demo-form-inline filter-container">
         <el-form-item label="名称">
           <el-input v-model="listQuery.filters.name" placeholder="名称" @keyup.enter.native="handleFilter"></el-input>
         </el-form-item>
@@ -28,21 +26,27 @@
         highlight-current-row
         style="width: 100%;"
       >
-        <el-table-column label="ID" prop="id" align="center" width="150">
+        <el-table-column label="ID" prop="id" align="center" width="180">
           <template slot-scope="scope">
             <span>{{ scope.row.id }}</span>
           </template>
         </el-table-column>
 
-        <el-table-column label="业务品种名称">
+        <el-table-column label="名称" width="300">
           <template slot-scope="scope">
-            <a @click="viewData(scope.row)">{{ scope.row.name }}</a>
+            <span>{{ scope.row.name }}</span>
           </template>
         </el-table-column>
 
-        <el-table-column label="是否有效" width="120">
+        <el-table-column label="所属类型" align="center" width="120">
           <template slot-scope="scope">
-            <span>{{ scope.row.isinuse | showCodeName(codemap.IsNot)}}</span>
+            <span>{{ scope.row.type | showCodeName(codemap.FilelistType)}}</span>
+          </template>
+        </el-table-column>
+
+        <el-table-column label="描述">
+          <template slot-scope="scope">
+            <span>{{ scope.row.remark}}</span>
           </template>
         </el-table-column>
 
@@ -56,8 +60,9 @@
 
           <template slot-scope="scope">
             <el-button-group>
-              <el-button @click="viewData(scope.row)" type="primary" size="mini">详情</el-button>
-              <el-button @click="handleDelete(scope.$index,scope.row)" type="danger" size="mini">删除</el-button>
+              <el-button @click="editViewData(scope.row)" type="primary">编辑</el-button>
+              <el-button @click="ViewData(scope.row)" type="primary">详情</el-button>
+              <el-button @click="handleDelete(scope.$index,scope.row)" type="danger">删除</el-button>
             </el-button-group>
           </template>
 
@@ -67,47 +72,51 @@
       <pagination v-show="listQuery.total>0" :total="listQuery.total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
     </el-main>
 
-    <!-- 新增窗口 start-->
-    <el-dialog :title="'新增'" :visible.sync="newDataDialogVisible">
-      <el-form ref="newDataForm" :rules="rules" :model="newData" label-position="left" label-width="160px" style="width: 50%; margin-left:50px;">
+    <!-- 新增/编辑窗口 start-->
+    <el-dialog :title="'详情'" :visible.sync="editDataDialogVisible">
+      <el-form ref="editDataForm" :rules="rules" :model="editData" label-position="left" label-width="160px" style="width: 50%; margin-left:50px;">
 
         <el-form-item label="名称" prop="name">
-          <el-input v-model="newData.name" />
+          <el-input v-model="editData.name" />
         </el-form-item>
         
-        <el-form-item label="是否有效" prop="isinuse">
-          <el-select v-model="newData.isinuse" clearable placeholder="">
+        <el-form-item label="所属类型" prop="type">
+          <el-select v-model="editData.type" clearable placeholder="">
             <el-option
-              v-for="item in codemap.IsNot"
+              v-for="item in codemap.FilelistType"
               :key="item.value"
               :label="item.label"
               :value="item.value">
             </el-option>
           </el-select>
         </el-form-item>
+        
+        <el-form-item label="描述" prop="remark">
+          <el-input type="textarea" rows="3" v-model="editData.remark" />
+        </el-form-item>
 
         <el-form-item>
           <el-button type="primary" @click="createData()">
             确定
           </el-button>
-          <el-button @click="newDataDialogVisible = false">
+          <el-button @click="editDataDialogVisible = false">
             取消
           </el-button>
         </el-form-item>
 
       </el-form>
     </el-dialog>
-    <!-- 新增窗口 end -->
+    <!-- 新增/编辑窗口 end -->
 
     <!-- 详情窗口 start-->
-    <el-dialog top="5vh" :visible.sync="viewDataDialogVisible" v-if="viewDataDialogVisible" :show-close="false">
+    <el-dialog top="5vh" :visible.sync="viewDataDialogVisible" :append-to-body="true" :fullscreen="true" v-if="viewDataDialogVisible" :show-close="false">
       <template slot="title">
         <div>
           <span style="font-weight: bold;font-size: 20px;">详情-{{curname}}</span>
           <el-button type="primary" style="float: right;" @click="closeView()">返回</el-button>
         </div>
       </template>
-      <business-type :isedit="true" :curid="curid" @closeView="closeView"></business-type>
+      <FilelistConfgiView :configid="configid" @closeView="closeView"></FilelistConfgiView>
     </el-dialog>
     <!-- 详情窗口 end-->
   </el-container>
@@ -116,20 +125,16 @@
 <script>
 import waves from '@/directive/waves' // waves directive
 import { parseTime } from '@/utils'
-import { queryBusinessTypeList, createBusinessType, updateBusinessType, deleteBusinessType } from '@/api/config/businesstype'
+import { queryFilelistConfigList, createFilelistConfig, updateFilelistConfig, deleteFilelistConfig } from '@/api/filelist/filelistconfig'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
-import BusinessType from '@/views/config/businesstype/businesstype'
 import { queryCodeList } from '@/api/syscode'
+import FilelistConfgiView from '@/views/filelist/config/filelistconfigview'
 
 export default {
-  name: 'BusinessTypeList',
-  components: { Pagination,BusinessType },
+  name: 'FilelistConfigList',
+  components: { Pagination,FilelistConfgiView },
   directives: { waves },
   filters: {},
-  props:{
-    type: String,
-    typename: String
-  },
   data() {
     return {
       listQuery: {
@@ -139,38 +144,30 @@ export default {
         total: 0,
         limit: 10,
         filters:{
-          type: this.type,
           name: ''
         },
         list: null
       },
       codemap : {},
-      newData: {
-        type: this.type,
+      edittype: 'Add',
+      editData: {
+        id: '',
+        type: '',
         name: '',
-        isinuse: '1'
+        remark: ''
       },
-      newDataDialogVisible: false,
+      editDataDialogVisible: false,
       viewDataDialogVisible: false,
-      curid: '',
+      configid: '',
       curname: '',
       rules: {
         name: [{ required: true, message: '请输入名称', trigger: 'blur' }],
-        isinuse: [{ required: true, message: '请输入是否有效', trigger: 'blur' }]
+        type: [{ required: true, message: '请选择所属类型', trigger: 'blur' }]
       }
-    }
-  },
-  watch: {
-    type: function(newv, oldv){
-      this.listQuery.filters = {
-        type: this.type,
-        name: ''
-      }
-      this.getList()
     }
   },
   created() {
-    queryCodeList({codelist:['IsNot']}).then(response => {
+    queryCodeList({codelist:['FilelistType']}).then(response => {
       this.codemap = response.data
       this.getList()
     }).catch(() => {
@@ -180,7 +177,7 @@ export default {
   methods: {
     getList() {
       this.listQuery.listLoading = true
-      queryBusinessTypeList(this.listQuery).then(response => {
+      queryFilelistConfigList(this.listQuery).then(response => {
         this.listQuery.list = response.data.records
         this.listQuery.total = response.data.total
         this.listQuery.listLoading = false
@@ -194,39 +191,54 @@ export default {
       this.getList()
     },
     resetNewData() {
-      this.newData = {
-        type: this.type,
+      this.editData = {
+        id: '',
+        type: '',
         name: '',
-        isinuse: '1'
+        remark: ''
       }
     },
     handleCreate() {
       this.resetNewData()
-      this.newDataDialogVisible = true
+      this.edittype = "Add"
+      this.editDataDialogVisible = true
       this.$nextTick(() => {
-        this.$refs['newDataForm'].clearValidate()
+        this.$refs['editDataForm'].clearValidate()
       })
     },
     createData() {
-      this.$refs['newDataForm'].validate((valid) => {
+      this.$refs['editDataForm'].validate((valid) => {
         if (valid) {
-          createBusinessType(this.newData).then((res) => {
-            this.newDataDialogVisible = false
-            this.getList()
-            this.$notify({
-              title: 'Success',
-              message: '新增成功',
-              type: 'success',
-              duration: 2000
+          if (this.edittype == "Add") {
+            createFilelistConfig(this.editData).then((res) => {
+              this.editDataDialogVisible = false
+              this.getList()
+              this.$notify({
+                title: 'Success',
+                message: '新增成功',
+                type: 'success',
+                duration: 2000
+              })
             })
-          })
+          } else {
+            updateFilelistConfig(this.editData).then((res) => {
+              this.editDataDialogVisible = false
+              this.getList()
+              this.$notify({
+                title: 'Success',
+                message: '保存成功',
+                type: 'success',
+                duration: 2000
+              })
+            })
+          }
         }
       })
     },
     //删除
     handleDelete(idx, row) {
       this.$confirm('您确定要永久删除该信息？', '提示', confirm).then(() => {
-        deleteBusinessType(row.id).then(res => {
+        deleteFilelistConfig(row.id).then(res => {
           this.$message.success("删除成功")
           this.getList()
         })
@@ -234,9 +246,14 @@ export default {
         this.$message.info("已取消删除")
       });
     },
-    viewData(row) {
-      this.curid = row.id;
-      this.curname = row.name;
+    editViewData(row) {
+      this.editData = row
+      this.edittype = "Update"
+      this.editDataDialogVisible = true;
+    },
+    ViewData(row) {
+      this.configid = row.id
+      this.curname = row.name
       this.viewDataDialogVisible = true;
     },
     closeView(){

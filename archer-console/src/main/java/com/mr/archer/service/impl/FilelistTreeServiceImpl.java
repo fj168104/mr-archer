@@ -2,12 +2,11 @@ package com.mr.archer.service.impl;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.baomidou.mybatisplus.mapper.Wrapper;
-import com.baomidou.mybatisplus.service.impl.ServiceImpl;
-import com.mr.archer.dao.SysCodeMapper;
+import com.mr.archer.entity.FilelistTree;
+import com.mr.archer.dao.FilelistTreeMapper;
 import com.mr.archer.entity.SysCode;
-import com.mr.archer.service.SysCodeService;
+import com.mr.archer.service.FilelistTreeService;
+import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
 import java.util.Iterator;
@@ -15,64 +14,26 @@ import java.util.List;
 
 /**
  * <p>
- * 代码表 服务实现类
+ * 资料清单树图 服务实现类
  * </p>
  *
  * @author jiang.feng
- * @since 2019-06-16
+ * @since 2019-07-05
  */
 @Service
-public class SysCodeServiceImpl extends ServiceImpl<SysCodeMapper, SysCode> implements SysCodeService {
+public class FilelistTreeServiceImpl extends ServiceImpl<FilelistTreeMapper, FilelistTree> implements FilelistTreeService {
 
-  public JSONObject queryCodeList(JSONArray aCodeList, JSONArray aTreeList) {
-    JSONObject resultJson = new JSONObject();
-    if (aCodeList != null) {
-      for (int i = 0; i < aCodeList.size(); i++) {
-        Object oCode = aCodeList.get(i);
-        String sCurId = oCode.toString();
-        Wrapper<SysCode> queryParams = new EntityWrapper<>();
-        queryParams.eq("id", sCurId);
-        queryParams.orderBy("sortno");
-        // queryParams.setSqlSelect("opt,name");
-        List<SysCode> curCodeList = this.selectList(queryParams);
-        JSONArray aSelectCode = new JSONArray();
-        for (SysCode code : curCodeList) {
-          JSONObject oCodeJson = new JSONObject();
-          oCodeJson.put("value", code.getOpt());
-          oCodeJson.put("label", code.getName());
-          aSelectCode.add(oCodeJson);
-        }
-        resultJson.put(sCurId, aSelectCode);
-      }
-    }
-
-    if (aTreeList != null) {
-      for (int j = 0; j < aTreeList.size(); j++) {
-        String sTreeId = aTreeList.get(j).toString();
-        Wrapper<SysCode> queryParams = new EntityWrapper<>();
-        queryParams.eq("id", sTreeId);
-        queryParams.orderBy("sortno");
-        // queryParams.setSqlSelect("sortno,opt,name");
-        List<SysCode> curTreeList = this.selectList(queryParams);
-        JSONArray aTree = getTreeList(curTreeList);
-        resultJson.put(sTreeId, aTree);
-      }
-    }
-
-    return resultJson;
-  }
-
-  private JSONArray getTreeList(List<SysCode> treeList) {
+  public JSONArray getTreeList(List<FilelistTree> treeList) {
     JSONArray aTreeList = new JSONArray();
     int iLength = treeList.get(0).getSortno().length();
 
-    Iterator<SysCode> treeIt = treeList.iterator();
+    Iterator<FilelistTree> treeIt = treeList.iterator();
     // 按长度分类代码列表，L1:[],L2:[]....Ln:[]
     JSONObject oTreeLevelList = new JSONObject();
     // 最大层级
     int iMaxLevel = 0;
     while (treeIt.hasNext()) {
-      SysCode curCode = treeIt.next();
+      FilelistTree curCode = treeIt.next();
       String sSortno = curCode.getSortno();
       int iCurOptLength = sSortno.length();
       int iLevel = iCurOptLength / iLength;
@@ -101,14 +62,16 @@ public class SysCodeServiceImpl extends ServiceImpl<SysCodeMapper, SysCode> impl
     JSONArray aLevelList = oTreeLevelList.getJSONArray("L" + iCurLevel);
     Iterator<Object> treeIt = aLevelList.iterator();
     while (treeIt.hasNext()) {
-      SysCode curCode = (SysCode) treeIt.next();
+      FilelistTree curCode = (FilelistTree) treeIt.next();
       String sSortno = curCode.getSortno();
 
       if ("".equals(sParentSortno) || sSortno.startsWith(sParentSortno)) {
         String sName = curCode.getName();
         JSONObject oCodeJson = new JSONObject();
-        oCodeJson.put("value", curCode.getOpt());
+        oCodeJson.put("value", curCode.getId());
         oCodeJson.put("label", sName);
+        oCodeJson.put("isinuse", curCode.getIsinuse());
+        oCodeJson.put("sortno", sSortno);
         JSONArray aTemp = new JSONArray();
         oCodeJson.put("children", aTemp);
         findLevel(aTemp, oTreeLevelList, sSortno, iMaxLength, iCurLevel + 1);

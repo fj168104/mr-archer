@@ -13,6 +13,18 @@ export function queryDataList(data) {
 }
 
 /**
+ * 查询单个客户信息
+ * @param data
+ */
+export function queryCustomerInfo(data) {
+  return request({
+    url: '/customerinfo/query',
+    method: 'post',
+    data
+  })
+}
+
+/**
  * 查询用户拥有业务申办权的客户列表
  * @param data
  */

@@ -172,7 +172,7 @@
 <script>
 import waves from '@/directive/waves' // waves directive
 import { parseTime } from '@/utils'
-import { queryDataList, createData, deleteData } from '@/api/cust/xw'
+import { queryDataList, createData, deleteData } from '@/api/cust/customerinfo'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 import EntView from '@/views/cust/ent/entview'
 import { queryCodeList } from '@/api/syscode'

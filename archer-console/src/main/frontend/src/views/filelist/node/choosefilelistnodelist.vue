@@ -1,12 +1,9 @@
 <template>
-  <el-container>
+  <el-container class="app-container">
     <el-header>
-      <el-form :inline="true" class="demo-form-inline">
-        <el-form-item label="客户姓名">
-          <el-input v-model="listQuery.filters.name" placeholder="客户姓名" @keyup.enter.native="handleFilter"></el-input>
-        </el-form-item>
-        <el-form-item label="证件号码">
-          <el-input v-model="listQuery.filters.certid" placeholder="证件号码" @keyup.enter.native="handleFilter"></el-input>
+      <el-form :inline="true" class="demo-form-inline filter-container">
+        <el-form-item label="名称">
+          <el-input v-model="listQuery.filters.name" placeholder="名称" @keyup.enter.native="handleFilter"></el-input>
         </el-form-item>
         <el-form-item>
           <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
@@ -26,52 +23,44 @@
         highlight-current-row
         style="width: 100%;"
       >
-        <el-table-column label="ID" prop="id" align="center" width="250">
+        <el-table-column label="ID" prop="id" align="center" width="180">
           <template slot-scope="scope">
             <span>{{ scope.row.id }}</span>
           </template>
         </el-table-column>
 
-        <el-table-column label="客户名称" width="300">
+        <el-table-column label="名称">
           <template slot-scope="scope">
-            <a @click="viewData(scope.row)">{{ scope.row.name }}</a>
+            <span>{{ scope.row.name }}</span>
           </template>
         </el-table-column>
 
-        <el-table-column label="证件类型"  align="center" width="150">
+        <el-table-column label="文件类型" align="center" width="120">
           <template slot-scope="scope">
-            <span>{{ scope.row.certtype | showCodeName(codemap.EntCertType)}}</span>
+            <span>{{ scope.row.filetype | showCodeName(codemap.FileType)}}</span>
           </template>
         </el-table-column>
 
-        <el-table-column label="证件号码" width="250">
+        <el-table-column label="文件数量限制" align="center" width="150">
           <template slot-scope="scope">
-            <span>{{ scope.row.certid }}</span>
+            <span>{{ scope.row.count}}</span>
           </template>
         </el-table-column>
 
-        <el-table-column label="创建人"  align="center" width="130">
+        <el-table-column label="是否可用" align="center" width="120">
           <template slot-scope="scope">
-            <span>{{ scope.row.createusername }}</span>
+            <span>{{ scope.row.isinuse | showCodeName(codemap.IsNot)}}</span>
           </template>
         </el-table-column>
 
-        <el-table-column label="创建时间"  align="center" width="180">
-          <template slot-scope="scope">
-            <span>{{ scope.row.createtime | parseTime('{y}-{m}-{d} {h}:{i}:{s}') }}</span>
-          </template>
-        </el-table-column>
+        <el-table-column label="操作" align="center" width="200" class-name="small-padding fixed-width" fixed="right">
 
-        <el-table-column label="创建机构"  align="center" width="200">
           <template slot-scope="scope">
-            <span>{{ scope.row.createorgname }}</span>
+            <el-tooltip content="确认选择" placement="top">
+              <el-button @click="$emit('confirmChooseFilelistNode', scope.row)" type="primary">确认选择</el-button>
+            </el-tooltip>
           </template>
-        </el-table-column>
 
-        <el-table-column label="操作" align="center" width="130" class-name="small-padding fixed-width" fixed="right">
-          <template slot-scope="scope">
-            <el-button @click="$emit('confirmChooseCustomer', scope.row)" type="primary">确认</el-button>
-          </template>
         </el-table-column>
       </el-table>
 
@@ -83,12 +72,12 @@
 <script>
 import waves from '@/directive/waves' // waves directive
 import { parseTime } from '@/utils'
-import { queryBusiCustomerList } from '@/api/cust/customerinfo'
+import { queryFilelistNodeList } from '@/api/filelist/filelistnode'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 import { queryCodeList } from '@/api/syscode'
 
 export default {
-  name: 'EntChooseList',
+  name: 'ChooseFilelistNodeList',
   components: { Pagination },
   directives: { waves },
   filters: {},
@@ -101,16 +90,24 @@ export default {
         total: 0,
         limit: 10,
         filters:{
-          name: '',
-          certid:''
+          name: ''
         },
         list: null
       },
-      codemap : {}
+      codemap : {},
+      edittype: 'Add',
+      editData: {
+        id: '',
+        filetype: '',
+        name: '',
+        remark: '',
+        count: 0,
+        isinuse: ''
+      }
     }
   },
   created() {
-    queryCodeList({codelist:['EntCertType']}).then(response => {
+    queryCodeList({codelist:['FileType','IsNot']}).then(response => {
       this.codemap = response.data
       this.getList()
     }).catch(() => {
@@ -120,7 +117,7 @@ export default {
   methods: {
     getList() {
       this.listQuery.listLoading = true
-      queryBusiCustomerList(this.listQuery).then(response => {
+      queryFilelistNodeList(this.listQuery).then(response => {
         this.listQuery.list = response.data.records
         this.listQuery.total = response.data.total
         this.listQuery.listLoading = false

@@ -71,6 +71,19 @@ public class CustomerInfoController extends BaseController {
     return result;
   }
 
+  @PermInfo("查询单个客户基本信息")
+  @PostMapping("/query")
+  public Json queryData(@RequestBody String body) {
+    String oper = "query customerinfo";
+    log.info("{}, body: {}", oper, body);
+    JSONObject json = JSON.parseObject(body);
+
+    String sId = json.getString("id");
+    CustomerInfo data = customerInfoService.selectById(sId);
+
+    return Json.succ(oper, data);
+  }
+
   @PermInfo("查询用户拥有业务申办权的客户列表")
   @PostMapping("/busilist")
   public Json busiList(@RequestBody String body) {

@@ -26,6 +26,7 @@
             </template>
               <el-menu-item index="2010">财务报表</el-menu-item>
           </el-submenu>
+            <el-menu-item index="3000">资料清单</el-menu-item>
         </el-menu>
       </el-aside>
       <el-main>
@@ -37,6 +38,7 @@
         <ent-relate-list :isedit="isedit" :curcustomerid="curcustomerid" v-if="curnodeid==='1060'"></ent-relate-list>
         <customer-legal-list :isedit="isedit" :curcustomerid="curcustomerid" v-if="curnodeid==='1070'"></customer-legal-list>
         <fin-base-info-list :isedit="isedit" :curcustomerid="curcustomerid" v-if="curnodeid==='2010'"></fin-base-info-list>
+        <FilelistTreeEditView :belongtype="'Customer'" :belongid="curcustomerid" :configid="filelistconfigid" v-if="curnodeid==='3000' && isedit"></FilelistTreeEditView>
       </el-main>
     </el-container>
   </el-container>
@@ -44,6 +46,8 @@
 
 <script>
 import waves from '@/directive/waves' // waves directive
+import { queryCustomerInfo } from "@/api/cust/customerinfo";
+import { queryCustomerConfig } from "@/api/cust/customerconfig";
 import EntInfo from '@/views/cust/ent/entinfo'
 import EntStockList from '@/views/cust/ent/entstocklist'
 import EntManagerList from '@/views/cust/ent/entmanagerlist'
@@ -52,11 +56,12 @@ import EntInvestList from '@/views/cust/ent/entinvestlist'
 import EntRelateList from '@/views/cust/ent/entrelatelist'
 import CustomerLegalList from '@/views/cust/ent/customerlegallist'
 import FinBaseInfoList from '@/views/fin/data/finbaseinfolist'
+import FilelistTreeEditView from '@/views/filelist/tree/filelisttreeeditview'
 
 
 export default {
   name: 'EntView',
-  components: { EntInfo,EntStockList,EntManagerList,EntMemberList,EntInvestList,EntRelateList,CustomerLegalList,FinBaseInfoList },
+  components: { EntInfo,EntStockList,EntManagerList,EntMemberList,EntInvestList,EntRelateList,CustomerLegalList,FinBaseInfoList,FilelistTreeEditView },
   directives: { waves },
   filters: {},
   props: {
@@ -66,10 +71,29 @@ export default {
   data() {
     return {
       customerid: this.curcustomerid,
-      curnodeid: '1010'
+      filelistconfigid: '',
+      dataLoading: false,
+      curnodeid: '1010',
+      customerinfo:{}
     }
   },
   created() {
+    if (this.isedit) {
+      this.dataLoading = true;
+      queryCustomerInfo({ id: this.curcustomerid }).then(response => {
+        this.customerinfo = response.data;
+        queryCustomerConfig({ id: this.customerinfo.customertype }).then(response => {
+          this.filelistconfigid = response.data.filelistid;
+          this.dataLoading = false;
+        }).catch(() => {
+          this.$message.info("获取数据失败！");
+          this.dataLoading = false;
+        });
+      }).catch(() => {
+        this.$message.info("获取数据失败！");
+        this.dataLoading = false;
+      });
+    }
   },
   methods: {
     selectMenu(idx){

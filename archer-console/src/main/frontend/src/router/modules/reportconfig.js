@@ -3,7 +3,7 @@
 import Layout from '@/layout'
 
 const reportConfigRouter = {
-  path: '/report/',
+  path: '/report/config',
   component: Layout,
   redirect: '/report/config/list',
   alwaysShow: true,
@@ -15,7 +15,7 @@ const reportConfigRouter = {
   },
   children: [
     {
-      path: '/config/list',
+      path: '/report/config/list',
       component: () => import('@/views/report/config/list'),
       name: 'reportconfiglist',
       meta: {
@@ -25,7 +25,7 @@ const reportConfigRouter = {
     },
 
     {
-      path: '/node/list',
+      path: '/report/node/list',
       component: () => import('@/views/report/node/list'),
       name: 'reportnodelist',
       meta: {

@@ -60,7 +60,7 @@
         getCodeName('Currency',ei.realcurrency) as realcurrencyname,
         getCodeName('EntScale',ei.scale) as scalename,
         ci.name as name,
-        ci.type as type,
+        ci.customertype as customertype,
         ci.certtype as certtype,
         getCodeName('EntCertType',ci.certtype) as certtypename,
         ci.certid as certid
