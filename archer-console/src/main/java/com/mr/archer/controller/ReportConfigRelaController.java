@@ -51,7 +51,7 @@ public class ReportConfigRelaController extends BaseController {
     String oper = "create ReportConfigRela";
     log.info("{}, body: {}", oper, body);
     ReportConfigRela newData = JSON.parseObject(body, ReportConfigRela.class);
-    newData.setId(KeyUtils.getKey());
+    newData.setId(KeyUtils.getKey("RCR"));
     reportConfigRelaService.insert(newData);
 
     return Json.succ(oper, newData);

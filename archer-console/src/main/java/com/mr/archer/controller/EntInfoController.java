@@ -33,13 +33,9 @@ import java.util.List;
 public class EntInfoController extends BaseController {
 
   @Autowired
-  private SysUserService userService;
-  @Autowired
   private EntInfoService entInfoService;
   @Autowired
   private EntManagerService entManagerService;
-  @Autowired
-  private EntMemberService entMemberService;
   @Autowired
   private EntStockService entStockService;
   @Autowired
@@ -87,13 +83,6 @@ public class EntInfoController extends BaseController {
     JSONObject oEntInfo = (JSONObject)JSON.toJSON(entInfo);
     resultJson.put("entinfo", oEntInfo);
 
-    // 法人代表
-//    Wrapper<EntManager> emParams = new EntityWrapper<>();
-//    emParams.eq("customerid", sCustomerId);
-//    emParams.eq("duty", "01");
-//    EntManager entManager = entManagerService.selectOne(emParams);
-//    JSONObject oEntManager = (JSONObject)JSON.toJSON(entManager);
-//    resultJson.put("entmanager", oEntManager);
     // 高管信息
     Wrapper<EntManager> emParams = new EntityWrapper<>();
     emParams.eq("customerid", sCustomerId);

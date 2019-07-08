@@ -93,7 +93,7 @@ public class FinModelController extends BaseController {
     String sCurUserId = String.valueOf(curUser.getId());
     String sCurUserOrg = curUser.getOrgid();
     String sCurTime = DateUtils.getNowTime();
-    newData.setId(KeyUtils.getKey());
+    newData.setId(KeyUtils.getKey("FM"));
     newData.setCreateuser(sCurUserId);
     newData.setCreatetime(sCurTime);
     newData.setCreateorg(sCurUserOrg);

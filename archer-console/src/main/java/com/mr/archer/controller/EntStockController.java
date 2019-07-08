@@ -10,7 +10,6 @@ import com.mr.archer.annotation.PermInfo;
 import com.mr.archer.entity.EntStock;
 import com.mr.archer.entity.SysUser;
 import com.mr.archer.service.EntStockService;
-import com.mr.archer.service.SysUserService;
 import com.mr.archer.utils.DateUtils;
 import com.mr.archer.utils.KeyUtils;
 import com.mr.archer.utils.PageUtils;
@@ -34,14 +33,12 @@ import org.springframework.web.bind.annotation.*;
 public class EntStockController extends BaseController {
 
   @Autowired
-  private SysUserService userService;
-  @Autowired
   private EntStockService entStockService;
 
-  @PermInfo("查询单个客户的股东列表信息")
+  @PermInfo("查询股东列表信息")
   @PostMapping("/list")
   public Json query(@RequestBody String body) {
-    String oper = "query cust entstock";
+    String oper = "query EntStock";
     log.info("{}, body: {}", oper, body);
     JSONObject json = JSON.parseObject(body);
 
@@ -59,17 +56,17 @@ public class EntStockController extends BaseController {
     return Json.succ(oper).data("data", page);
   }
 
-  @PermInfo("新增客户的股东信息")
+  @PermInfo("新增股东信息")
   @PostMapping("/create")
   public Json createData(@RequestBody String body) {
-    String oper = "create cust entstock";
+    String oper = "create EntStock";
     log.info("{}, body: {}", oper, body);
     EntStock newData = JSON.parseObject(body, EntStock.class);
     SysUser curUser = getCurUser();
     String sCurUserId = String.valueOf(curUser.getId());
     String sCurUserOrg = curUser.getOrgid();
     String sCurTime = DateUtils.getNowTime();
-    newData.setId(KeyUtils.getKey());
+    newData.setId(KeyUtils.getKey("ES"));
     newData.setCreateuser(sCurUserId);
     newData.setCreatetime(sCurTime);
     newData.setCreateorg(sCurUserOrg);
@@ -84,7 +81,7 @@ public class EntStockController extends BaseController {
   @PermInfo("查询单个股东信息")
   @PostMapping("/query")
   public Json queryData(@RequestBody String body) {
-    String oper = "query cust entstock";
+    String oper = "query EntStock";
     log.info("{}, body: {}", oper, body);
     JSONObject json = JSON.parseObject(body);
 
@@ -94,10 +91,10 @@ public class EntStockController extends BaseController {
     return Json.succ(oper, data);
   }
 
-  @PermInfo("更新客户的股东信息")
+  @PermInfo("更新股东信息")
   @PostMapping("/update")
   public Json updateData(@RequestBody String body) {
-    String oper = "update cust entstock";
+    String oper = "update EntStock";
     log.info("{}, body: {}", oper, body);
     EntStock data = JSON.parseObject(body, EntStock.class);
     SysUser curUser = getCurUser();
@@ -112,10 +109,10 @@ public class EntStockController extends BaseController {
     return Json.succ(oper, data);
   }
 
-  @PermInfo("删除客户的股东信息")
+  @PermInfo("删除股东信息")
   @DeleteMapping("/delete/{uid}")
   public Json deleteData(@PathVariable String uid) {
-    String oper = "delete cust entstock";
+    String oper = "delete EntStock";
     entStockService.deleteById(uid);
 
     return Json.succ(oper);

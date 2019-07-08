@@ -84,7 +84,7 @@ public class FinConfigColController extends BaseController {
         String sId = oCol.getString("id");
         if (sId == null || "".equals(sId)) {
           FinConfigCol newData = JSON.toJavaObject(oCol, FinConfigCol.class);
-          String sNewId = KeyUtils.getKey();
+          String sNewId = KeyUtils.getKey("FCC");
           newData.setId(sNewId);
           newData.setCreateuser(sCurUserId);
           newData.setCreatetime(sCurTime);
@@ -123,7 +123,7 @@ public class FinConfigColController extends BaseController {
     String sCurUserId = String.valueOf(curUser.getId());
     String sCurUserOrg = curUser.getOrgid();
     String sCurTime = DateUtils.getNowTime();
-    newData.setId(KeyUtils.getKey());
+    newData.setId(KeyUtils.getKey("FCC"));
     newData.setCreateuser(sCurUserId);
     newData.setCreatetime(sCurTime);
     newData.setCreateorg(sCurUserOrg);

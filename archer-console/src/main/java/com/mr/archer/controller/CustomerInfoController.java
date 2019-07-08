@@ -129,7 +129,7 @@ public class CustomerInfoController extends BaseController {
     String sCurUserId = String.valueOf(curUser.getId());
     String sCurUserOrg = curUser.getOrgid();
     String sCurTime = DateUtils.getNowTime();
-    String sCustomerId = KeyUtils.getKey("XW");
+    String sCustomerId = KeyUtils.getKey("CI");
     cust.setId(sCustomerId);
     cust.setCreateuser(sCurUserId);
     cust.setCreatetime(sCurTime);
