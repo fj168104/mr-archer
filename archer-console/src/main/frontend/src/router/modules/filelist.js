@@ -11,7 +11,7 @@ const filelistRouter = {
   meta: {
     perm: 'm:sys',
     title: '资料清单配置管理',
-    icon: 'peoples'
+    icon: 'm_filelistconfig'
   },
   children: [
     {

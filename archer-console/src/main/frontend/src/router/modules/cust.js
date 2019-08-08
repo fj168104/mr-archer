@@ -11,7 +11,7 @@ const custRouter = {
   meta: {
     perm: 'm:sys',
     title: '客户管理',
-    icon: 'peoples'
+    icon: 'm_customer'
   },
   children: [
     {

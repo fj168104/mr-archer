@@ -158,7 +158,7 @@ export const asyncRoutes = [
     meta: {
       perm: 'm:sys',
       title: '系统',
-      icon: 'example'
+      icon: 'm_system'
     },
     children: [
       {

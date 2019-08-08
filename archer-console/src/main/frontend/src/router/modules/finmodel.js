@@ -11,7 +11,7 @@ const finModelRouter = {
   meta: {
     perm: 'm:fin',
     title: '财务报表配置管理',
-    icon: 'peoples'
+    icon: 'm_finconfig'
   },
   children: [
     {

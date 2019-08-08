@@ -11,7 +11,7 @@ const configRouter = {
   meta: {
     perm: 'm:sys',
     title: '配置管理',
-    icon: 'example'
+    icon: 'm_config'
   },
   children: [
     {

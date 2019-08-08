@@ -4,6 +4,7 @@
       <el-tree :highlight-current="true" :expand-on-click-node="false" :data="treedata" node-key="id" default-expand-all :props="defaultProps" @node-click="handleNodeClick"></el-tree>
     </el-aside>
     <el-main>
+      <FilelistTreeNodeRelaListView :belongtype="belongtype" :belongid="belongid" :configid="configid" :treeid="treeid"></FilelistTreeNodeRelaListView>
     </el-main>
   </el-container>
 </template>
@@ -13,11 +14,11 @@ import waves from '@/directive/waves' // waves directive
 import { parseTime } from '@/utils'
 import { queryFilelistTreeView } from '@/api/filelist/filelisttree'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
-// import FileListTreeNodeRelaList from '@/views/filelist/tree/filelisttreenoderelalist'
+import FilelistTreeNodeRelaListView from '@/views/filelist/tree/filelisttreenoderelalistview'
 
 export default {
   name: 'FilelistTreeEditView',
-  components: { Pagination },
+  components: { Pagination,FilelistTreeNodeRelaListView },
   directives: { waves },
   filters: {},
   props:{
@@ -33,8 +34,7 @@ export default {
         children: 'children',
         label: 'label'
       },
-      curnodeid: '1000',
-      curnodelabel: '所有业务'
+      treeid: ''
     }
   },
   created() {
@@ -52,7 +52,7 @@ export default {
       })
     },
     handleNodeClick(data) {
-
+      this.treeid = data.value
     }
   }
 }

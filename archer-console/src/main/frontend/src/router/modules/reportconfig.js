@@ -11,7 +11,7 @@ const reportConfigRouter = {
   meta: {
     perm: 'm:sys',
     title: '调查报告配置管理',
-    icon: 'peoples'
+    icon: 'm_reportconfig'
   },
   children: [
     {

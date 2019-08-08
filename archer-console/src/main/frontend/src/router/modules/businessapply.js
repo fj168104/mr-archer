@@ -11,7 +11,7 @@ const businessApplyRouter = {
   meta: {
     perm: 'm:sys',
     title: '授信申请管理',
-    icon: 'peoples'
+    icon: 'm_riskmanage'
   },
   children: [
     {
