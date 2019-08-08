@@ -1,6 +1,7 @@
 package com.mr.archer.controller;
 
 
+import com.mr.archer.constant.SystemConstant;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -18,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @Slf4j
 @RestController
-@RequestMapping("/custbelong")
+@RequestMapping(SystemConstant.APP_CONTEXT + "/custbelong")
 public class CustomerBelongController extends BaseController {
 
 }

@@ -1,6 +1,7 @@
 package com.mr.archer.controller;
 
 
+import com.mr.archer.constant.SystemConstant;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @since 2019-05-19
  */
 @RestController
-@RequestMapping("/appAudit")
+@RequestMapping(SystemConstant.APP_CONTEXT + "/appAudit")
 public class AppAuditController extends BaseController {
 
 }

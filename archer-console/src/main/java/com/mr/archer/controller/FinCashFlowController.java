@@ -6,6 +6,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.mr.archer.annotation.PermInfo;
+import com.mr.archer.constant.SystemConstant;
 import com.mr.archer.entity.FinCashFlow;
 import com.mr.archer.entity.FinProfit;
 import com.mr.archer.service.FinCashFlowService;
@@ -34,7 +35,7 @@ import java.util.List;
  */
 @Slf4j
 @RestController
-@RequestMapping("/fincashflow")
+@RequestMapping(SystemConstant.APP_CONTEXT + "/fincashflow")
 public class FinCashFlowController extends BaseController {
 
   @Autowired

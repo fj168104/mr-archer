@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.mr.archer.annotation.PermInfo;
+import com.mr.archer.constant.SystemConstant;
 import com.mr.archer.entity.FilelistTreeNodeRela;
 import com.mr.archer.entity.SysUser;
 import com.mr.archer.service.FilelistTreeNodeRelaService;
@@ -29,7 +30,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @Slf4j
 @RestController
-@RequestMapping("/filelisttreenoderela")
+@RequestMapping(SystemConstant.APP_CONTEXT + "/filelisttreenoderela")
 public class FilelistTreeNodeRelaController extends BaseController {
 
   @Autowired

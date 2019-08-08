@@ -4,6 +4,7 @@ package com.mr.archer.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.mr.archer.annotation.PermInfo;
+import com.mr.archer.constant.SystemConstant;
 import com.mr.archer.entity.CustomerConfig;
 import com.mr.archer.service.CustomerConfigService;
 import com.mr.archer.vo.Json;
@@ -27,7 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @Slf4j
 @RestController
-@RequestMapping("/customerconfig")
+@RequestMapping(SystemConstant.APP_CONTEXT + "/customerconfig")
 public class CustomerConfigController extends BaseController {
 
   @Autowired

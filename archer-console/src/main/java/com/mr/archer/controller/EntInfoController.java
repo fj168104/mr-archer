@@ -7,6 +7,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.mr.archer.annotation.PermInfo;
+import com.mr.archer.constant.SystemConstant;
 import com.mr.archer.entity.*;
 import com.mr.archer.service.*;
 import com.mr.archer.vo.Json;
@@ -29,7 +30,7 @@ import java.util.List;
  */
 @Slf4j
 @RestController
-@RequestMapping("/cust/entinfo")
+@RequestMapping(SystemConstant.APP_CONTEXT + "/cust/entinfo")
 public class EntInfoController extends BaseController {
 
   @Autowired

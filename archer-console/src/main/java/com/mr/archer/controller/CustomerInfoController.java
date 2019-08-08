@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.mr.archer.annotation.PermInfo;
+import com.mr.archer.constant.SystemConstant;
 import com.mr.archer.entity.*;
 import com.mr.archer.service.*;
 import com.mr.archer.utils.DateUtils;
@@ -20,7 +21,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
-@RequestMapping("/customerinfo")
+@RequestMapping(SystemConstant.APP_CONTEXT + "/customerinfo")
 public class CustomerInfoController extends BaseController {
 
   @Autowired

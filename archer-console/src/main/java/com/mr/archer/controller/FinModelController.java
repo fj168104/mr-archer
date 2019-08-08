@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.mr.archer.annotation.PermInfo;
+import com.mr.archer.constant.SystemConstant;
 import com.mr.archer.entity.FinModel;
 import com.mr.archer.entity.FinModelConfigRef;
 import com.mr.archer.entity.SysUser;
@@ -35,7 +36,7 @@ import java.util.List;
  */
 @Slf4j
 @RestController
-@RequestMapping("/finmodel")
+@RequestMapping(SystemConstant.APP_CONTEXT + "/finmodel")
 public class FinModelController extends BaseController {
 
   @Autowired

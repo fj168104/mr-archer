@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.google.common.collect.Sets;
 import com.mr.archer.annotation.PermInfo;
+import com.mr.archer.constant.SystemConstant;
 import com.mr.archer.entity.SysPerm;
 import com.mr.archer.entity.SysRolePerm;
 import com.mr.archer.service.*;
@@ -21,7 +22,7 @@ import java.util.*;
 @Slf4j
 @PermInfo(value = "系统权限模块")
 @RestController
-@RequestMapping("/perm")
+@RequestMapping(SystemConstant.APP_CONTEXT + "/perm")
 public class SysPermController extends BaseController {
 
 	@Autowired

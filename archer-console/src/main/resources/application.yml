@@ -1,8 +1,7 @@
-db: archer
+db: credit
 server:
   port: 8888
   servlet:
-    context-path: /dev-api
     session:
       cookie:
         name: BIUSID
@@ -10,11 +9,13 @@ spring:
   profiles:
     active: dev
     include: druid,mybatisplus,siro
+  resources:
+    static-locations: classpath:/META-INF/resources/,classpath:/resources/,classpath:/dist/,classpath:/public/
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://47.101.152.45:3306/${db}?characterEncoding=UTF-8&useSSL=false
-    username: root
-    password: root1234
+    url: jdbc:mysql://47.101.152.45:3333/${db}?characterEncoding=UTF-8&useSSL=false
+    username: credit
+    password: Microcredit_45
 logging:
   path: ./logs
   level:

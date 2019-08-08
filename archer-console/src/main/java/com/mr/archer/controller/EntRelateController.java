@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.mr.archer.annotation.PermInfo;
+import com.mr.archer.constant.SystemConstant;
 import com.mr.archer.entity.EntInvest;
 import com.mr.archer.entity.EntRelate;
 import com.mr.archer.entity.SysUser;
@@ -34,7 +35,7 @@ import com.mr.archer.controller.BaseController;
  */
 @Slf4j
 @RestController
-@RequestMapping("/entrelate")
+@RequestMapping(SystemConstant.APP_CONTEXT + "/entrelate")
 public class EntRelateController extends BaseController {
 
   @Autowired

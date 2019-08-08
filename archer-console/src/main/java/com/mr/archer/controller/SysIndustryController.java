@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.enums.SqlLike;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.mr.archer.annotation.PermInfo;
+import com.mr.archer.constant.SystemConstant;
 import com.mr.archer.entity.SysIndustry;
 import com.mr.archer.service.SysIndustryService;
 import com.mr.archer.utils.ListUtils;
@@ -31,7 +32,7 @@ import java.util.List;
  */
 @Slf4j
 @RestController
-@RequestMapping("/sysindustry")
+@RequestMapping(SystemConstant.APP_CONTEXT + "/sysindustry")
 public class SysIndustryController extends BaseController {
 
   @Autowired

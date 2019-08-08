@@ -6,6 +6,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.mr.archer.annotation.PermInfo;
+import com.mr.archer.constant.SystemConstant;
 import com.mr.archer.entity.FinConfig;
 import com.mr.archer.entity.FinModelConfigRef;
 import com.mr.archer.entity.SysUser;
@@ -30,7 +31,7 @@ import java.util.List;
  */
 @Slf4j
 @RestController
-@RequestMapping("/finmodelconfigref")
+@RequestMapping(SystemConstant.APP_CONTEXT + "/finmodelconfigref")
 public class FinModelConfigRefController extends BaseController {
 
   @Autowired

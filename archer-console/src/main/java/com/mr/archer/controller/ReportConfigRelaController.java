@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.mr.archer.annotation.PermInfo;
+import com.mr.archer.constant.SystemConstant;
 import com.mr.archer.entity.ReportConfigRela;
 import com.mr.archer.service.ReportConfigRelaService;
 import com.mr.archer.utils.KeyUtils;
@@ -26,7 +27,7 @@ import java.util.List;
  */
 @Slf4j
 @RestController
-@RequestMapping("/reportconfigrela")
+@RequestMapping(SystemConstant.APP_CONTEXT + "/reportconfigrela")
 public class ReportConfigRelaController extends BaseController {
 
   @Autowired

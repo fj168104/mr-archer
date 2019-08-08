@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.mr.archer.annotation.PermInfo;
+import com.mr.archer.constant.SystemConstant;
 import com.mr.archer.entity.FinConfig;
 import com.mr.archer.entity.SysUser;
 import com.mr.archer.service.FinConfigService;
@@ -29,7 +30,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @Slf4j
 @RestController
-@RequestMapping("/finconfig")
+@RequestMapping(SystemConstant.APP_CONTEXT + "/finconfig")
 public class FinConfigController extends BaseController {
 
   @Autowired

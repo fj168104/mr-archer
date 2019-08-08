@@ -7,6 +7,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.mr.archer.annotation.PermInfo;
+import com.mr.archer.constant.SystemConstant;
 import com.mr.archer.entity.SysCode;
 import com.mr.archer.service.SysCodeService;
 import com.mr.archer.vo.Json;
@@ -30,7 +31,7 @@ import java.util.List;
  */
 @Slf4j
 @RestController
-@RequestMapping("/syscode")
+@RequestMapping(SystemConstant.APP_CONTEXT + "/syscode")
 public class SysCodeController extends BaseController {
 
   @Autowired

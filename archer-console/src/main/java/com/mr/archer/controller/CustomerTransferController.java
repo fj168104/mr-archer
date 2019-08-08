@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.mr.archer.annotation.PermInfo;
+import com.mr.archer.constant.SystemConstant;
 import com.mr.archer.entity.CustomerBelong;
 import com.mr.archer.entity.CustomerTransfer;
 import com.mr.archer.entity.SysUser;
@@ -31,7 +32,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @Slf4j
 @RestController
-@RequestMapping("/customertransfer")
+@RequestMapping(SystemConstant.APP_CONTEXT + "/customertransfer")
 public class CustomerTransferController extends BaseController {
 
   @Autowired

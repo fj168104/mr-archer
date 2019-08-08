@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.mr.archer.annotation.PermInfo;
+import com.mr.archer.constant.SystemConstant;
 import com.mr.archer.entity.FilelistRecord;
 import com.mr.archer.entity.SysUser;
 import com.mr.archer.service.FilelistRecordService;
@@ -31,7 +32,7 @@ import java.util.List;
  */
 @Slf4j
 @RestController
-@RequestMapping("/filelistrecord")
+@RequestMapping(SystemConstant.APP_CONTEXT + "/filelistrecord")
 public class FilelistRecordController extends BaseController {
   @Autowired
   private FilelistRecordService filelistRecordService;

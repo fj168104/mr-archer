@@ -7,6 +7,7 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.mr.archer.annotation.PermInfo;
 import com.mr.archer.constant.Codes;
+import com.mr.archer.constant.SystemConstant;
 import com.mr.archer.entity.SysUser;
 import com.mr.archer.exception.*;
 import com.mr.archer.service.SysPermService;
@@ -33,7 +34,7 @@ import static com.mr.archer.constant.SystemConstant.*;
 @Slf4j
 @PermInfo(value = "登录模块")
 @RestController
-@RequestMapping("/auth")
+@RequestMapping(SystemConstant.APP_CONTEXT + "/auth")
 public class AuthController extends BaseController{
 
     @Autowired

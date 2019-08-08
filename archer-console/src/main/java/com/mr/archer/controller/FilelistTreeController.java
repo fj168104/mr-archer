@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.mr.archer.annotation.PermInfo;
+import com.mr.archer.constant.SystemConstant;
 import com.mr.archer.entity.FilelistTree;
 import com.mr.archer.entity.SysUser;
 import com.mr.archer.service.FilelistTreeService;
@@ -32,7 +33,7 @@ import java.util.List;
  */
 @Slf4j
 @RestController
-@RequestMapping("/filelisttree")
+@RequestMapping(SystemConstant.APP_CONTEXT + "/filelisttree")
 public class FilelistTreeController extends BaseController {
 
   @Autowired

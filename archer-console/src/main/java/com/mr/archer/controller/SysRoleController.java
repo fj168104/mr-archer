@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.google.common.collect.Sets;
 import com.mr.archer.annotation.PermInfo;
+import com.mr.archer.constant.SystemConstant;
 import com.mr.archer.entity.SysPerm;
 import com.mr.archer.entity.SysRole;
 import com.mr.archer.entity.SysRolePerm;
@@ -32,7 +33,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @PermInfo(value = "系统角色模块")
 @RestController
-@RequestMapping
+@RequestMapping(SystemConstant.APP_CONTEXT)
 public class SysRoleController extends BaseController {
 
 	@Autowired

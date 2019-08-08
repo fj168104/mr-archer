@@ -2,6 +2,7 @@ package com.mr.archer.controller;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.mr.archer.annotation.PermInfo;
+import com.mr.archer.constant.SystemConstant;
 import com.mr.archer.entity.SysRole;
 import com.mr.archer.service.SysRoleService;
 import com.mr.archer.vo.Json;
@@ -24,7 +25,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @PermInfo(value = "选项模块", pval = "a:option")
 @RestController
-@RequestMapping("/option")
+@RequestMapping(SystemConstant.APP_CONTEXT + "/option")
 public class OptionController extends BaseController{
 
     @Autowired

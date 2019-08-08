@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.mr.archer.annotation.PermInfo;
+import com.mr.archer.constant.SystemConstant;
 import com.mr.archer.entity.*;
 import com.mr.archer.exception.ArcherBusinessException;
 import com.mr.archer.service.*;
@@ -25,7 +26,7 @@ import java.util.Objects;
 @Slf4j
 @PermInfo(value = "系统用户模块")
 @RestController
-@RequestMapping("/user")
+@RequestMapping(SystemConstant.APP_CONTEXT + "/user")
 public class SysUserController extends BaseController {
 
   @Autowired

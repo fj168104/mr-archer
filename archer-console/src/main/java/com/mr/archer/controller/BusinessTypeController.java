@@ -9,6 +9,7 @@ import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.mr.archer.annotation.PermInfo;
+import com.mr.archer.constant.SystemConstant;
 import com.mr.archer.entity.BusinessType;
 import com.mr.archer.entity.ReportConfig;
 import com.mr.archer.entity.SysUser;
@@ -37,7 +38,7 @@ import java.util.List;
  */
 @Slf4j
 @RestController
-@RequestMapping("/businesstype")
+@RequestMapping(SystemConstant.APP_CONTEXT + "/businesstype")
 public class BusinessTypeController extends BaseController {
 
   @Autowired

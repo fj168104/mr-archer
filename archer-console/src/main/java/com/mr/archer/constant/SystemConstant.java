@@ -11,6 +11,8 @@ public class SystemConstant {
 
 	public static String SYSTEM_NAME = "Archer-console";
 
+	public final static String APP_CONTEXT = "/api";
+
 	/**
 	 * 管理员相关
 	 */
